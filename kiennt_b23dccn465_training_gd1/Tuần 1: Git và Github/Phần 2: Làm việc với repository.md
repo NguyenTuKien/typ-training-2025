@@ -73,3 +73,44 @@
   - `git commit -m "commit message"`: Tạo một commit mới với thông điệp mô tả các thay đổi.
   - `git commit -a -m "commit message"`: Tạo một commit mới và tự động thêm tất cả các file đã theo dõi (tracked files) vào Staging Area trước khi commit (giống như chạy `git add` cho tất cả các file đã theo dõi trước).
   - `git commit --amend`: Sửa đổi commit cuối cùng (thêm thay đổi hoặc chỉnh sửa thông điệp commit).
+7. **Cấu trúc nên có cho 1 commit**
+- 1 commit nên bao gồm:
+  - Một tiêu đề ngắn gọn tóm tắt các thay đổi.
+  - Phần mô tả chi tiết (nếu cần) giải thích lý do và bối cảnh của các thay đổi.
+  - Phần tham chiếu (nếu cần) liên kết đến các issue hoặc pull request liên quan.
+  - Giữa các phần nên có dòng trắng để tách biệt.
+- 7 quy tắc viết commit message:
+  1. Sử dụng dòng trắng để tách tiêu đề, mô tả và phần tham chiếu.
+  2. Nên giới hạn tiêu đề commit trong khoảng 50 ký tự.
+  3. Viết hoa dòng tiêu đề commit.
+  4. Không sử dụng dấu câu để kết thúc dòng tiêu đề commit.
+  5. Viết tiêu đề có dạng mệnh lệnh (imperative mood).
+  6. Trình bày mô tả commit bằng những dòng không quá 72 ký tự.
+  7. Sử dụng phần mô tả của commit để trả lời câu hỏi "Cái gì", "Tại sao" và "Như thế nào".
+- Ví dụ về commit message tốt:
+```
+commit eb0b56b19017ab5c16c745e6da39c53126924ed6
+Author: Pieter Wuille <pieter.wuille@gmail.com>
+Date:   Fri Aug 1 22:57:55 2014 +0200
+
+   Simplify serialize.h's exception handling
+
+   Remove the 'state' and 'exceptmask' from serialize.h's stream
+   implementations, as well as related methods.
+
+   As exceptmask always included 'failbit', and setstate was always
+   called with bits = failbit, all it did was immediately raise an
+   exception. Get rid of those variables, and replace the setstate
+   with direct exception throwing (which also removes some dead
+   code).
+
+   As a result, good() is never reached after a failure (there are
+   only 2 calls, one of which is in tests), and can just be replaced
+   by !eof().
+
+   fail(), clear(n) and exceptions() are just never called. Delete
+   them.
+```
+
+  
+ 
