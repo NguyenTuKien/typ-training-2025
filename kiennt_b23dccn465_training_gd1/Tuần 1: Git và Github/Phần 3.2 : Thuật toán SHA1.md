@@ -1,4 +1,4 @@
-## Phần 3.2: Thuật toán SHA-1
+## Phần 3.2 : Thuật toán SHA-1
 * SHA-1 hoạt động giống như một chiếc **"máy xay sinh tố" kỹ thuật số** 🌪️. Bạn đưa bất kỳ dữ liệu nào vào (dù là một chữ cái hay cả một bộ phim), nó sẽ "xay" dữ liệu đó qua một quy trình toán học phức tạp và cho ra một "ly sinh tố" có kích thước cố định, gọi là **hash** (hoặc dấu vân tay kỹ thuật số).
 Dấu vân tay này dài 160 bit, thường được biểu diễn dưới dạng 40 ký tự thập lục phân (hexadecimal).
 ---
