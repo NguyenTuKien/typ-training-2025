@@ -1,5 +1,5 @@
 ## Phần 3+: Thuật toán SHA-1
-SHA-1 hoạt động giống như một chiếc **"máy xay sinh tố" kỹ thuật số** 🌪️. Bạn đưa bất kỳ dữ liệu nào vào (dù là một chữ cái hay cả một bộ phim), nó sẽ "xay" dữ liệu đó qua một quy trình toán học phức tạp và cho ra một "ly sinh tố" có kích thước cố định, gọi là **hash** (hoặc dấu vân tay kỹ thuật số).
+* SHA-1 hoạt động giống như một chiếc **"máy xay sinh tố" kỹ thuật số** 🌪️. Bạn đưa bất kỳ dữ liệu nào vào (dù là một chữ cái hay cả một bộ phim), nó sẽ "xay" dữ liệu đó qua một quy trình toán học phức tạp và cho ra một "ly sinh tố" có kích thước cố định, gọi là **hash** (hoặc dấu vân tay kỹ thuật số).
 Dấu vân tay này dài 160 bit, thường được biểu diễn dưới dạng 40 ký tự thập lục phân (hexadecimal).
 ---
 * Các đặc tính cốt lõi
@@ -9,7 +9,7 @@ SHA-1 được thiết kế với những đặc tính quan trọng sau:
 - **Cực kỳ nhạy cảm (Avalanche Effect):** Chỉ cần thay đổi một chi tiết cực nhỏ trong dữ liệu đầu vào (ví dụ, thay đổi một chữ cái), dấu vân tay SHA-1 tạo ra sẽ **hoàn toàn khác biệt**.
 - **Ít đụng độ (Collision Resistant):** Về lý thuyết, rất khó để tìm ra hai khối dữ liệu khác nhau mà lại tạo ra cùng một dấu vân tay SHA-1. *(Xem lưu ý quan trọng bên dưới)*.
 ---
-# Cách hoạt động (phiên bản đơn giản)
+## Cách hoạt động (phiên bản đơn giản)
 Quá trình "xay" dữ liệu của SHA-1 trải qua các bước chính sau:
 1.  **Bước 1: Chuẩn bị dữ liệu (Padding):** Đầu tiên, thuật toán thêm các bit vào cuối dữ liệu gốc để đảm bảo tổng độ dài của nó là một bội số của 512 bit.
 2.  **Bước 2: Chia thành các khối (Chunking):** Dữ liệu sau khi được chuẩn bị sẽ được chia thành các khối (chunk) bằng nhau, mỗi khối dài 512 bit.
