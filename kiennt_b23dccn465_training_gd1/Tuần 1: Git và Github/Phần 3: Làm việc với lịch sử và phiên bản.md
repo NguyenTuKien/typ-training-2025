@@ -24,8 +24,8 @@
    - Thời gian tạo commit
    - Mã hash của commit cha (nếu có)
 * Chi tiết hơn :
-    [Phần 3.2: Thuật toán SHA1.md](Ph%E1%BA%A7n%203.2%3A%20Thu%E1%BA%ADt%20to%C3%A1n%20SHA1.md)
-    [Phần 3.2: Cách SHA1 tạo ra commit ID.md](Ph%E1%BA%A7n%203.2%3A%20C%C3%A1ch%20SHA1%20t%E1%BA%A1o%20ra%20commit%20ID.md)
+   - [Phần 3.2: Thuật toán SHA1.md](Ph%E1%BA%A7n%203.2%3A%20Thu%E1%BA%ADt%20to%C3%A1n%20SHA1.md)
+   - [Phần 3.2: Cách SHA1 tạo ra commit ID.md](Ph%E1%BA%A7n%203.2%3A%20C%C3%A1ch%20SHA1%20t%E1%BA%A1o%20ra%20commit%20ID.md)
 ## 3. **Undo / Revert / Reset thay đổi**
 - Undo thay đổi
    - `git checkout -- <file>`: Hoàn tác các thay đổi trong Working Directory, đưa file trở về trạng thái của lần commit gần nhất.
