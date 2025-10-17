@@ -51,15 +51,15 @@
   ![img.png](Image/img.png)
 * Cấu hình ban đầu:
     - Mở terminal hoặc command prompt.
-    - Chạy lệnh 'git config --global user.name "Your Name"' để thiết lập tên người dùng.
-    - Chạy lệnh 'git config --global user.email "Your Email"' để thiết lập email người dùng.
+    - Chạy lệnh `git config --global user.name "Your Name"` để thiết lập tên người dùng.
+    - Chạy lệnh `git config --global user.email "Your Email"` để thiết lập email người dùng.
     - Kiểm tra cấu hình bằng lệnh 'git config --list'.
   ![img_1.png](Image/img_1.png)
   * Kiểm tra version và thiết lập ssh key
     - Kiểm tra version: `git --version`
     - Tạo SSH key: `ssh-keygen -t ed25519 -C "Your Email"`
-      + '"Enter file in which to save the key"' chọn vị trí lưu key (mặc định là ~/.ssh/id_ed25519) -> Enter
-      + '"Enter passphrase (empty for no passphrase)"' nhập passphrase (nếu muốn) -> Enter
+      + `"Enter file in which to save the key"` chọn vị trí lưu key (mặc định là ~/.ssh/id_ed25519) -> Enter
+      + `"Enter passphrase (empty for no passphrase)"` nhập passphrase (nếu muốn) -> Enter
     ![img_2.png](Image/img_2.png)
     - Lấy SSH key: `cat ~/.ssh/id_ed25519.pub`
     ![img_3.png](Image/img_3.png)
