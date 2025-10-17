@@ -65,8 +65,7 @@ diff --git "a/kiennt_b23dccn465_training_gd1/Tu\341\272\247n 1: Git v\303\240 Gi
 index 3ec1a9b..0da8cdc 100644
 ...
 ```
-    * Kết quả mã hash SHA-1 tính toán được là `9a371571e5c1fed307a47594c043335e92892c8b`, giống hệt mã hash của commit ban đầu.
-
+* Kết quả mã hash SHA-1 tính toán được là `9a371571e5c1fed307a47594c043335e92892c8b`, giống hệt mã hash của commit ban đầu.
 * Như vậy tôi đã tái tạo thành công commit ID dựa trên các thông tin commit. Điều này chứng tỏ rằng Git sử dụng thuật toán SHA-1 để tạo ra commit ID dựa trên nội dung commit, đảm bảo tính duy nhất và toàn vẹn của mỗi commit trong repository.
 * Tài liệu tham khảo: 
   - https://git-scm.com/book/en/v2/Git-Internals-Git-Objects#_sha_1
