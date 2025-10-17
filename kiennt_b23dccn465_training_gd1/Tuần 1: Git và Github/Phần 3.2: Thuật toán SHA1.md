@@ -2,12 +2,11 @@
 * SHA-1 hoạt động giống như một chiếc **"máy xay sinh tố" kỹ thuật số** 🌪️. Bạn đưa bất kỳ dữ liệu nào vào (dù là một chữ cái hay cả một bộ phim), nó sẽ "xay" dữ liệu đó qua một quy trình toán học phức tạp và cho ra một "ly sinh tố" có kích thước cố định, gọi là **hash** (hoặc dấu vân tay kỹ thuật số).
 Dấu vân tay này dài 160 bit, thường được biểu diễn dưới dạng 40 ký tự thập lục phân (hexadecimal).
 ---
-* Các đặc tính cốt lõi
-SHA-1 được thiết kế với những đặc tính quan trọng sau:
-- **Một chiều (One-way):** Từ dữ liệu gốc, bạn rất dễ dàng tạo ra hash. Nhưng từ hash, việc tìm lại dữ liệu gốc là gần như không thể. Giống như bạn không thể nào lấy lại hoa quả ban đầu từ một ly sinh tố đã xay nhuyễn.
-- **Kích thước cố định (Fixed-size):** Dù đầu vào của bạn lớn hay nhỏ, dấu vân tay SHA-1 tạo ra luôn có độ dài 160 bit.
-- **Cực kỳ nhạy cảm (Avalanche Effect):** Chỉ cần thay đổi một chi tiết cực nhỏ trong dữ liệu đầu vào (ví dụ, thay đổi một chữ cái), dấu vân tay SHA-1 tạo ra sẽ **hoàn toàn khác biệt**.
-- **Ít đụng độ (Collision Resistant):** Về lý thuyết, rất khó để tìm ra hai khối dữ liệu khác nhau mà lại tạo ra cùng một dấu vân tay SHA-1. *(Xem lưu ý quan trọng bên dưới)*.
+* SHA-1 được thiết kế với những đặc tính quan trọng sau:
+   - **Một chiều (One-way):** Từ dữ liệu gốc, bạn rất dễ dàng tạo ra hash. Nhưng từ hash, việc tìm lại dữ liệu gốc là gần như không thể. Giống như bạn không thể nào lấy lại hoa quả ban đầu từ một ly sinh tố đã xay nhuyễn.
+   - **Kích thước cố định (Fixed-size):** Dù đầu vào của bạn lớn hay nhỏ, dấu vân tay SHA-1 tạo ra luôn có độ dài 160 bit.
+   - **Cực kỳ nhạy cảm (Avalanche Effect):** Chỉ cần thay đổi một chi tiết cực nhỏ trong dữ liệu đầu vào (ví dụ, thay đổi một chữ cái), dấu vân tay SHA-1 tạo ra sẽ **hoàn toàn khác biệt**.
+   - **Ít đụng độ (Collision Resistant):** Về lý thuyết, rất khó để tìm ra hai khối dữ liệu khác nhau mà lại tạo ra cùng một dấu vân tay SHA-1. *(Xem lưu ý quan trọng bên dưới)*.
 ---
 ## Cách hoạt động (phiên bản đơn giản)
 Quá trình "xay" dữ liệu của SHA-1 trải qua các bước chính sau:
