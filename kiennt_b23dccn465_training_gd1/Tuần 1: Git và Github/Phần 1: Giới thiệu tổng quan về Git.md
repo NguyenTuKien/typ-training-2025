@@ -70,6 +70,6 @@
       + Nhấn "Add SSH key" để lưu
       ![img_5.png](Image/img_5.png)
       ![img_6.png](Image/img_6.png)
-    - Kiểm tra kết nối SSH với GitHub: `ssh -T git@github.com'
+    - Kiểm tra kết nối SSH với GitHub: `ssh -T git@github.com`
     ![img_7.png](Image/img_7.png)
     
