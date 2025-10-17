@@ -5,4 +5,3 @@
   ![img_21.png](Image/img_21.png)
    - `git log --oneline`: Hiển thị lịch sử commit dưới dạng một dòng cho mỗi commit, giúp dễ dàng xem tổng quan.
   ![img_22.png](Image/img_22.png)
-    - `git log --graph --decorate --all`: Hiển thị lịch sử commit dưới dạng đồ thị, giúp hình dung các nhánh và merge.
