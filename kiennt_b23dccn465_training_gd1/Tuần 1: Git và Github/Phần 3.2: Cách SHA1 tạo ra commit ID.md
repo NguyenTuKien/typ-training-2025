@@ -1,4 +1,4 @@
-##Phần 3+: Cách SHA1 tạo ra commit ID
+## Phần 3.2: Cách SHA1 tạo ra commit ID
 * Tôi đang ở trong thư mục dự án và sử dụng lệnh `git show` để hiển thị chi tiết commit gần nhất.
 ```shell 
 ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git show
