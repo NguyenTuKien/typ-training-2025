@@ -53,29 +53,29 @@
    - Tạo tệp `.gitignore` trong thư mục gốc của repository (nếu chưa có).
    - Mở tệp `.gitignore` bằng trình soạn thảo văn bản và thêm các mẫu (patterns) để chỉ định các tệp hoặc thư mục cần bỏ qua.
    - Ví dụ về nội dung của tệp `.gitignore`:
-     ```
-    # Bỏ qua các file log
-    *.log
-    npm-debug.log*
-    
-    # Bỏ qua các thư mục chứa các gói phụ thuộc và file build
-    node_modules/
-    dist/
-    build/
-    
-    # Bỏ qua các file hệ điều hành
-    .DS_Store
-    Thumbs.db
-    
-    # Bỏ qua các file chứa biến môi trường và thông tin nhạy cảm
-    .env
-    .env.local
-    .env.development.local
-    .env.test.local
-    .env.production.local
-    # Không bỏ qua tệp README.md
-    !README.md
-     ```
+```
+# Bỏ qua các file log
+*.log
+npm-debug.log*
+
+# Bỏ qua các thư mục chứa các gói phụ thuộc và file build
+node_modules/
+dist/
+build/
+
+# Bỏ qua các file hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Bỏ qua các file chứa biến môi trường và thông tin nhạy cảm
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+# Không bỏ qua tệp README.md
+!README.md
+```
    - Lưu ý rằng các mẫu trong `.gitignore` có thể sử dụng ký tự đại diện như `*` (đại diện cho bất kỳ chuỗi ký tự nào) và `/` (để chỉ định thư mục).
 * Các quy tắc quan trọng khi sử dụng `.gitignore`:
    - `.gitignore` chỉ ảnh hưởng đến các tệp chưa được theo dõi (untracked files). Nếu một tệp đã được theo dõi bởi Git, việc thêm nó vào `.gitignore` sẽ không loại bỏ nó khỏi repository.
@@ -90,7 +90,7 @@
    - Khi làm việc với dự án Node.js, bạn thường muốn bỏ qua thư mục `node_modules/` vì nó chứa các gói phụ thuộc được cài đặt và không cần thiết để theo dõi trong Git.
    - Bạn cũng có thể muốn bỏ qua các tệp log và tệp cấu hình môi trường như `.env`.
 * Ví dụ về nội dung `.gitignore`:
-```shell
+```
 # Bỏ qua các gói phụ thuộc
 /node_modules
 
