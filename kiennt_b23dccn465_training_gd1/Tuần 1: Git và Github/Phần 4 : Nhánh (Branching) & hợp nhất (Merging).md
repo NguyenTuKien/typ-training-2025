@@ -105,7 +105,7 @@ Fast-forward
       + Sau khi giải quyết xung đột, sử dụng lệnh `git add <tệp>` để đánh dấu các tệp đã được giải quyết.
       + Cuối cùng, sử dụng lệnh `git commit` để hoàn tất quá trình hợp nhất.
 * Ví dụ về xung đột:
-* Giả sử bạn đang hợp nhất nhánh `feature-report` vào `main`, và có xung đột trong tệp `report.md`.
+* Giả sử bạn đang hợp nhất nhánh `feature-report` vào `main`, và có xung đột trong tệp `kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md`.
 ```shell
 ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git switch main
 Switched to branch 'main'
@@ -115,9 +115,9 @@ Auto-merging kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: G
 CONFLICT (content): Merge conflict in kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md
 Automatic merge failed; fix conflicts and then commit the result.
 ```
-![img.png](Image/img_27.png)
 * Giải quyết xung đột:
    - Mở tệp `kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md`, tìm và chỉnh sửa các phần bị xung đột.
+  ![img.png](Image/img_27.png)
    - Sau khi chỉnh sửa, sử dụng lệnh `git add` để đánh dấu tệp đã được giải quyết.
    - Cuối cùng, sử dụng lệnh `git commit` để hoàn tất quá trình hợp nhất.
 ```shell
