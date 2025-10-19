@@ -105,4 +105,56 @@ Fast-forward
       + Sau khi giải quyết xung đột, sử dụng lệnh `git add <tệp>` để đánh dấu các tệp đã được giải quyết.
       + Cuối cùng, sử dụng lệnh `git commit` để hoàn tất quá trình hợp nhất.
 * Ví dụ về xung đột:
+* Giả sử bạn đang hợp nhất nhánh `feature-report` vào `main`, và có xung đột trong tệp `report.md`.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git switch main
+Switched to branch 'main'
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git pull origin main
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git merge feature-report
+Auto-merging kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md
+CONFLICT (content): Merge conflict in kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md
+Automatic merge failed; fix conflicts and then commit the result.
+```
+![img.png](Image/img_27.png)
+* Giải quyết xung đột:
+   - Mở tệp `kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md`, tìm và chỉnh sửa các phần bị xung đột.
+   - Sau khi chỉnh sửa, sử dụng lệnh `git add` để đánh dấu tệp đã được giải quyết.
+   - Cuối cùng, sử dụng lệnh `git commit` để hoàn tất quá trình hợp nhất.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git add "kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Phần 1: Giới thiệu tổng quan về Git.md"
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git commit -m "Resolved merge conflict between main and feature-report"
+[main d958a6b] Resolved merge conflict between main and feature-report
+```
+* Nếu không muốn hợp nhất nữa, bạn có thể hủy bỏ quá trình hợp nhất bằng lệnh `git merge --abort`.
+## 4. Chiến lược branching phổ biến
+* **Git Flow:**
+   - Git Flow là một chiến lược quản lý nhánh phổ biến, đặc biệt trong các dự án có quy trình phát triển phức tạp.
+   - Các nhánh chính trong Git Flow bao gồm:
+      + `main` (hoặc `master`): Chứa mã nguồn ổn định và sẵn sàng để phát hành.
+      + `develop`: Nhánh chính để phát triển, nơi các tính năng mới được tích hợp.
+      + `feature/*`: Nhánh để phát triển các tính năng mới.
+      + `release/*`: Nhánh để chuẩn bị phát hành.
+      + `hotfix/*`: Nhánh để sửa lỗi khẩn cấp trên nhánh `main`.
+   ![img.png](Image/img_28.png)     
+* Quy trình làm việc:
+  - Tạo nhánh `main` hoặc `master` để chứa mã nguồn ổn định.
+  - Tạo nhánh `develop` từ `main` để phát triển các tính năng mới.
+  - Tạo nhánh `feature/*` từ `develop` để phát triển từng tính năng riêng biệt. Ví dụ `feature/login`, `feature/signup`.
+  - Khi tính năng hoàn thành, hợp nhất nhánh `feature/*` vào `develop` và xóa nhánh `feature/*`.
+  - Khi chuẩn bị phát hành, tạo nhánh `release/*` từ `develop`, thực hiện các kiểm tra và sửa lỗi cần thiết, sau đó hợp nhất vào `main` và `develop`.
+  - Nếu có lỗi khẩn cấp trên `main`, tạo nhánh `hotfix/*` từ `main`. Nếu lỗi dễ, có thể sửa trực tiếp tại `hotfix` sau đó hợp nhất vào `main`. Nếu lỗi phức tạp, đưa xuống `develop` để xử lý. 
+* Các đặt tên nhánh:
+  - Trong Github, có mục `issue` là nơi để leader/manager tạo các công việc (task) cho các thành viên trong team. Mỗi issue sẽ có một mã số riêng (issue number).
+![img.png](Image/img_29.png)
+  - Khi tạo nhánh để làm việc trên một issue cụ thể, nên đặt tên nhánh theo định dạng sau để dễ dàng theo dõi:`feature/<mã số-issue>-<mô-tả-ngắn-về-tính-năng>`. Ví dụ : `feature/2-config-R2`.
+  - Sau khi hoàn thành công việc trên nhánh, chúng ta commit theo định dạng: `#<mã số-issue> <thông điệp-commit>`. Ví dụ: `#1 Config R2`.
+  - Sau đó, khi lên github, chúng ta sẽ thấy issue tự động được liên kết với commit và pull request, giúp dễ dàng theo dõi tiến độ công việc.
+  - Tiếp tục ví dụ trên, khi tạo pull request để hợp nhất nhánh `feature/1-config-R2` vào `main`, chúng ta cũng nên đặt tên pull request theo định dạng: `#<mã số-issue> <tiêu đề-pull-request>` để issue tự động cập nhật trạng thái. Ví dụ: `#1 Config R2`.
+  ![img.png](Image/img_30.png) 
+  - Khi pull request được chấp nhận và hợp nhất, issue sẽ tự động chuyển sang trạng thái "Closed", giúp quản lý công việc hiệu quả hơn.
+  - Lưu ý: Đặt tên nhánh, commit và pull request theo định dạng này giúp tạo sự liên kết chặt chẽ giữa mã nguồn và công việc quản lý trên GitHub, làm cho quá trình phát triển trở nên minh bạch và dễ dàng theo dõi.
+  - Tiếp tục từ nhánh `develop`, khi chuẩn bị phát hành, tạo nhánh `release/*` từ `develop`. Ví dụ: `release/v1.0.0`.
+  - Thực hiện các kiểm tra và sửa lỗi cần thiết trên nhánh `release/*`, gắn tag phiên bản (version tag) nếu cần rồi hợp nhất vào `main` và `develop`.
+  - Nếu đã xong, xóa nhánh `feature/*` và `release/*` mà đã hợp nhất.
+
 
