@@ -1,4 +1,4 @@
-# Phần 4 : Nhánh (Branching) & hợp nhất (Merging)
+# Phần 4: Nhánh (Branching) & hợp nhất (Merging)
 ## 1. Nhánh là gì và tại sao cần nhánh?
 * **Nhánh (Branch)** là một phiên bản độc lập của mã nguồn trong hệ thống quản lý phiên bản Git. Mỗi nhánh cho phép bạn phát triển các tính năng mới, sửa lỗi hoặc thử nghiệm mà **không ảnh hưởng** đến mã nguồn chính (thường là nhánh "main" hoặc "master").
 * Lý do cần sử dụng nhánh:

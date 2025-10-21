@@ -1,4 +1,4 @@
-# Phần 2 : Làm việc với repository
+# Phần 2: Làm việc với repository
 ## 1. **Repository là gì?**
  * Repository (repo) là một kho lưu trữ chứa mã nguồn, tài liệu và các tệp tin khác của một dự án phần mềm.
  * Repo có thể kiểm tra lịch sử thay đổi, theo dõi các phiên bản khác nhau và hỗ trợ làm việc nhóm.

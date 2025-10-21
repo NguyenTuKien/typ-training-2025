@@ -1,4 +1,4 @@
-# Phần 3 : Làm việc với lịch sử và phiên bản    
+# Phần 3: Làm việc với lịch sử và phiên bản    
 ## 1. **Cách xem lịch sử và phiên bản commit.**
 * Xem lịch sử commit:
    - `git log`: Hiển thị danh sách các commit trong repository, bao gồm mã hash, tác giả, ngày tháng và thông điệp commit.

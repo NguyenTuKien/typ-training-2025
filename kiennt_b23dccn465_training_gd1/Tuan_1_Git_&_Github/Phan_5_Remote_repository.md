@@ -1,4 +1,4 @@
-# Phần 5 : Remote repository (GitHub or GitLab)
+# Phần 5: Remote repository (GitHub or GitLab)
 ## 1. Giới thiệu về Remote repository
 * Remote repository là kho lưu trữ mã nguồn từ xa, cho phép nhiều người cùng làm việc trên cùng một dự án thông qua mạng internet.
 * Hai dịch vụ phổ biến để quản lý remote repository là GitHub và GitLab.
