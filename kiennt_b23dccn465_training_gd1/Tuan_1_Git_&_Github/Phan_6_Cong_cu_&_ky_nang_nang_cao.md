@@ -18,4 +18,9 @@
 - Các lệnh cơ bản với `stach`:
   + `git stach` : Cất tất cả các thay đổi của những file được theo dõi (Tracked File)
   + `git stach -u` : Cất tất cả thay dổi của những file mới (Untracked File)
-  + 
+  + `git stach list` : Xem tất cả các gói đã cất. Mỗi gói có 1 ID, ví dự : `stach{0}`, `stach{1}`
+  + `git stach pop` : Lấy gói mới nhất (`stach{0}`) ra khỏi danh sách và áp dụng các thay đổi trở lại Working Directory
+  + `git stach apply <stach_id>` : Áp dụng các thay đổi từ gói có ID cụ thể trở lại Working Directory mà không xóa gói khỏi danh sách. Nếu không có `stach_id`, lệnh sẽ áp dụng gói mới nhất.
+  + `git stach drop <stach_id>` : Xóa gói có ID cụ thể khỏi danh sách mà không áp dụng các thay đổi. Nếu không có `stach_id`, lệnh sẽ xóa gói mới nhất.
+  + `git stach clear` : Xóa tất cả các gói đã cất khỏi danh sách.
+- Lưu ý: Khi sử dụng `git stach pop` hoặc `git stach apply`, nếu có xung đột giữa các thay đổi trong gói stash và các thay đổi hiện tại trong Working Directory, bạn sẽ cần phải giải quyết xung đột đó giống như khi thực hiện merge.
