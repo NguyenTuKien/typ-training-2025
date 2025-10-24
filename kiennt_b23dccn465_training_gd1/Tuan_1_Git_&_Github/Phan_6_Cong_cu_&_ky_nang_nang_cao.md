@@ -50,21 +50,53 @@ v0.0.2-1-g5d76bd8 #Commit ID hiện tại là g5d76bd8, cách phiên bản gần
 ```
 ## 2. Git stash
 - Git stash là một tính năng trong Git cho phép bạn tạm thời lưu trữ các thay đổi chưa được commit trong Working Directory và Staging Area, để bạn có thể chuyển sang làm việc trên một nhánh khác mà không cần phải commit hoặc bỏ qua các thay đổi hiện tại.
-- Các lệnh cơ bản với `stach`:
-  + `git stach` : Cất tất cả các thay đổi của những file được theo dõi (Tracked File)
-  + `git stach -u` : Cất tất cả thay dổi của những file mới (Untracked File)
-  + `git stach list` : Xem tất cả các gói đã cất. Mỗi gói có 1 ID, ví dự : `stach{0}`, `stach{1}`
-  + `git stach pop` : Lấy gói mới nhất (`stach{0}`) ra khỏi danh sách và áp dụng các thay đổi trở lại Working Directory
-  + `git stach apply <stach_id>` : Áp dụng các thay đổi từ gói có ID cụ thể trở lại Working Directory mà không xóa gói khỏi danh sách. Nếu không có `stach_id`, lệnh sẽ áp dụng gói mới nhất.
-  + `git stach drop <stach_id>` : Xóa gói có ID cụ thể khỏi danh sách mà không áp dụng các thay đổi. Nếu không có `stach_id`, lệnh sẽ xóa gói mới nhất.
-  + `git stach clear` : Xóa tất cả các gói đã cất khỏi danh sách.
-- Lưu ý: Khi sử dụng `git stach pop` hoặc `git stach apply`, nếu có xung đột giữa các thay đổi trong gói stash và các thay đổi hiện tại trong Working Directory, bạn sẽ cần phải giải quyết xung đột đó giống như khi thực hiện merge.
+- Các lệnh cơ bản với `stash`:
+  + `git stash` : Cất tất cả các thay đổi của những file được theo dõi (Tracked File)
+  + `git stash -u` : Cất tất cả thay dổi của những file mới (Untracked File)
+  + `git stash list` : Xem tất cả các gói đã cất. Mỗi gói có 1 ID, ví dự : `stash{0}`, `stash{1}`
+  + `git stash pop` : Lấy gói mới nhất (`stash{0}`) ra khỏi danh sách và áp dụng các thay đổi trở lại Working Directory
+  + `git stash apply <stash_id>` : Áp dụng các thay đổi từ gói có ID cụ thể trở lại Working Directory mà không xóa gói khỏi danh sách. Nếu không có `stash_id`, lệnh sẽ áp dụng gói mới nhất.
+  + `git stash drop <stash_id>` : Xóa gói có ID cụ thể khỏi danh sách mà không áp dụng các thay đổi. Nếu không có `stash_id`, lệnh sẽ xóa gói mới nhất.
+  + `git stash clear` : Xóa tất cả các gói đã cất khỏi danh sách.
+- Lưu ý: Khi sử dụng `git stash pop` hoặc `git stash apply`, nếu có xung đột giữa các thay đổi trong gói stash và các thay đổi hiện tại trong Working Directory, bạn sẽ cần phải giải quyết xung đột đó giống như khi thực hiện merge.
+- Ví dụ:
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+    modified:   kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/Thuat_toan_SHA1.md
+    
+no changes added to commit (use "git add" and/or "git commit -a")
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git stash
+Saved working directory and index state WIP on main: 9911024 Save
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git switch dev
+Switched to branch 'dev'
+```
+    + Sau khi chuyển nhánh, bạn có thể làm việc trên nhánh `dev` mà không bị ảnh hưởng bởi các thay đổi chưa commit trên nhánh `main`.
+    + Bây giờ, nếu bạn muốn quay lại nhánh `main` và áp dụng các thay đổi đã stash, bạn có thể làm như sau:
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git switch main
+Switched to branch 'main'
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ git stash pop
+On branch main
+Your branch is up to date with 'origin/main'.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+    modified:   kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/Thuat_toan_SHA1.md
+    
+no changes added to commit (use "git add" and/or "git commit -a")
+```
 ## 3. Rebase và squash
 - Git rebase là một kỹ thuật trong Git được sử dụng để di chuyển hoặc kết hợp một chuỗi các commit từ một nhánh này sang một nhánh khác. Rebase giúp giữ cho lịch sử commit sạch sẽ và tuyến tính hơn so với việc sử dụng merge.
 - Cách sử dụng Git rebase:
     + `git checkout <nhánh-đích>`: Chuyển sang nhánh mà bạn muốn áp dụng các commit.
     + `git rebase <nhánh-nguồn>`: Áp dụng các commit từ nhánh nguồn lên nhánh đích.
 - Khi sử dụng rebase, Git sẽ "chơi lại" các commit từ nhánh nguồn trên đỉnh của nhánh đích, tạo ra một lịch sử commit mới.
+- Tuy nhiên, nếu có xung đột giữa các commit (thường là giữa commit cuối của nhánh rebase với commit đầu của nhánh được rebase), Git sẽ tạm dừng quá trình rebase và yêu cầu bạn giải quyết xung đột trước khi tiếp tục.
 - Squash là một kỹ thuật trong Git được sử dụng để kết hợp nhiều commit thành một commit duy nhất. Điều này thường được sử dụng để làm sạch lịch sử commit trước khi hợp nhất (merge) một nhánh vào nhánh chính.
 - Cách sử dụng Git squash:
     + Sử dụng lệnh `git rebase -i <commit-hash>` để bắt đầu một rebase tương tác, trong đó `<commit-hash>` là mã hash của commit trước commit đầu tiên mà bạn muốn squash.

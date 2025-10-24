@@ -49,7 +49,7 @@ Fast-forward
  ...Nh\303\241nh (Branching) & h\341\273\243p nh\341\272\245t (Merging).md" | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 ```
- - Nếu có thay đổi local chưa commit, `git pull` sẽ thất bại. Nếu cả local và remote cùng sửa 1 file, `git pull` sẽ đây **merge conflict**.
+ - Nếu có thay đổi local chưa commit, `git pull` sẽ thất bại. Khi đó ta cần `--no-rebase` hoặc `--rebase` để pull kiểu merge.
 ## 3. Mô hình làm việc nhóm (GitHub Flow)
 * GitHub Flow là một mô hình làm việc nhóm đơn giản và hiệu quả, bao gồm các bước chính sau: 
   - **Bước 1:** Sao chép repository gốc về tài khoản cá nhân (`fork`).
@@ -63,3 +63,4 @@ Fast-forward
   - **Bước 9:** Xóa nhánh đã hoàn thành để giữ repository sạch sẽ (`delete branch`).
 * Mô hình này giúp quản lý mã nguồn hiệu quả, giảm thiểu xung đột và tăng cường hợp tác trong nhóm phát triển.
 ## 4.Giải quyết xung đột (Merge Conflict)
+[Screencast from 2025-10-24 12-52-19.webm](../../../../../Videos/Screencasts/Screencast%20from%202025-10-24%2012-52-19.webm)
