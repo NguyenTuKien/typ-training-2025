@@ -63,4 +63,4 @@ Fast-forward
   - **Bước 9:** Xóa nhánh đã hoàn thành để giữ repository sạch sẽ (`delete branch`).
 * Mô hình này giúp quản lý mã nguồn hiệu quả, giảm thiểu xung đột và tăng cường hợp tác trong nhóm phát triển.
 ## 4.Giải quyết xung đột (Merge Conflict)
-[Screencast from 2025-10-24 12-52-19.webm](../../../../../Videos/Screencasts/Screencast%20from%202025-10-24%2012-52-19.webm)
+[vid_1.webm](Image/vid_1.webm)

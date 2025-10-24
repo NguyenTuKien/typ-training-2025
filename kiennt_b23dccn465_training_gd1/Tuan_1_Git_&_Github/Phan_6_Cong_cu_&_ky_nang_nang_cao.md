@@ -98,6 +98,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 - Khi sử dụng rebase, Git sẽ "chơi lại" các commit từ nhánh nguồn trên đỉnh của nhánh đích, tạo ra một lịch sử commit mới.
 - Tuy nhiên, nếu có xung đột giữa các commit (thường là giữa commit cuối của nhánh rebase với commit đầu của nhánh được rebase), Git sẽ tạm dừng quá trình rebase và yêu cầu bạn giải quyết xung đột trước khi tiếp tục.
 - Squash là một kỹ thuật trong Git được sử dụng để kết hợp nhiều commit thành một commit duy nhất. Điều này thường được sử dụng để làm sạch lịch sử commit trước khi hợp nhất (merge) một nhánh vào nhánh chính.
+- Ví dụ:[vid_2.webm](Image/vid_2.webm)
 - Cách sử dụng Git squash:
     + Sử dụng lệnh `git rebase -i <commit-hash>` để bắt đầu một rebase tương tác, trong đó `<commit-hash>` là mã hash của commit trước commit đầu tiên mà bạn muốn squash.
     + Trong trình soạn thảo rebase, thay đổi từ `pick` thành `squash` (hoặc `s`) cho các commit mà bạn muốn kết hợp vào commit trước đó.
