@@ -105,6 +105,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
     + Lưu và đóng trình soạn thảo. Git sẽ yêu cầu bạn chỉnh sửa thông điệp commit cho commit mới được tạo ra từ việc squash.
     + Lưu và đóng trình soạn thảo để hoàn tất quá trình squash.
 - Lưu ý: Khi sử dụng rebase và squash, đặc biệt là trên các nhánh đã được chia sẻ với người khác, hãy cẩn thận vì chúng có thể thay đổi lịch sử commit và gây ra xung đột nếu không được xử lý đúng cách.
+- Ví dụ :[vid_3.webm](Image/vid_3.webm)
 ## 4. Git alias & log formatting
 - Git alias là một cách để tạo các tên ngắn gọn hoặc tùy chỉnh cho các lệnh Git dài hoặc phức tạp, giúp tiết kiệm thời gian và công sức khi làm việc với Git.
 - Cách tạo Git alias:
