@@ -51,6 +51,9 @@ Fast-forward
 ```
  - Nếu có thay đổi local chưa commit, `git pull` sẽ thất bại. Khi đó ta cần `--no-rebase` hoặc `--rebase` để pull kiểu merge.
 ## 3. Mô hình làm việc nhóm (GitHub Flow)
+* `clone` : Tạo bản sao của repository từ remote về máy tính cá nhân.
+* `fork` : Tạo bản sao của repository từ remote về tài khoản cá nhân trên dịch vụ lưu trữ mã nguồn (GitHub, GitLab).
+* `pull request` : Yêu cầu hợp nhất các thay đổi từ nhánh của bạn vào nhánh chính của repository gốc.
 * GitHub Flow là một mô hình làm việc nhóm đơn giản và hiệu quả, bao gồm các bước chính sau: 
   - **Bước 1:** Sao chép repository gốc về tài khoản cá nhân (`fork`).
   - **Bước 2:** Tải repo vừa `fork` về máy tính cá nhân (`clone`).
@@ -62,5 +65,3 @@ Fast-forward
   - **Bước 8:** Cập nhật nhánh chính từ repository gốc để giữ cho nó luôn mới nhất (`pull`).
   - **Bước 9:** Xóa nhánh đã hoàn thành để giữ repository sạch sẽ (`delete branch`).
 * Mô hình này giúp quản lý mã nguồn hiệu quả, giảm thiểu xung đột và tăng cường hợp tác trong nhóm phát triển.
-## 4.Giải quyết xung đột (Merge Conflict)
-[vid_1.webm](Image/vid_1.webm)

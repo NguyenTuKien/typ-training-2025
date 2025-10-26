@@ -98,14 +98,12 @@ no changes added to commit (use "git add" and/or "git commit -a")
 - Khi sử dụng rebase, Git sẽ "chơi lại" các commit từ nhánh nguồn trên đỉnh của nhánh đích, tạo ra một lịch sử commit mới.
 - Tuy nhiên, nếu có xung đột giữa các commit (thường là giữa commit cuối của nhánh rebase với commit đầu của nhánh được rebase), Git sẽ tạm dừng quá trình rebase và yêu cầu bạn giải quyết xung đột trước khi tiếp tục.
 - Squash là một kỹ thuật trong Git được sử dụng để kết hợp nhiều commit thành một commit duy nhất. Điều này thường được sử dụng để làm sạch lịch sử commit trước khi hợp nhất (merge) một nhánh vào nhánh chính.
-- Ví dụ:[vid_2.webm](Image/vid_2.webm)
 - Cách sử dụng Git squash:
     + Sử dụng lệnh `git rebase -i <commit-hash>` để bắt đầu một rebase tương tác, trong đó `<commit-hash>` là mã hash của commit trước commit đầu tiên mà bạn muốn squash.
     + Trong trình soạn thảo rebase, thay đổi từ `pick` thành `squash` (hoặc `s`) cho các commit mà bạn muốn kết hợp vào commit trước đó.
     + Lưu và đóng trình soạn thảo. Git sẽ yêu cầu bạn chỉnh sửa thông điệp commit cho commit mới được tạo ra từ việc squash.
     + Lưu và đóng trình soạn thảo để hoàn tất quá trình squash.
 - Lưu ý: Khi sử dụng rebase và squash, đặc biệt là trên các nhánh đã được chia sẻ với người khác, hãy cẩn thận vì chúng có thể thay đổi lịch sử commit và gây ra xung đột nếu không được xử lý đúng cách.
-- Ví dụ :[vid_3.webm](Image/vid_3.webm)
 ## 4. Git alias & log formatting
 - Git alias là một cách để tạo các tên ngắn gọn hoặc tùy chỉnh cho các lệnh Git dài hoặc phức tạp, giúp tiết kiệm thời gian và công sức khi làm việc với Git.
 - Cách tạo Git alias:
