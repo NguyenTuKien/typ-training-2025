@@ -312,5 +312,19 @@ Cat
   * Cú pháp : `rmdir <tên_thư_mục>`
   * `rmdir -p <Thư_mục_cha>/<Thư_mục_con>` : Xóa thư mục con và nếu thư mục cha trở nên rỗng sau đó, nó cũng sẽ bị xóa.
   * Lưu ý : `rmdir` chỉ xóa được thư mục rỗng. Nếu thư mục có chứa tệp tin hoặc thư mục con, bạn cần dùng `rm -r` để xóa toàn bộ.
+## 2. Sao chép và nén file.
+* `tar` : Dùng để đóng gói nhiều file/dir lại thành 1 file duy nhất (archive).
+
+    | Tùy chọn | Viết đầy đủ | Chức năng                                                |
+    |--|-------------|----------------------------------------------------------|
+    | `-c` | `--create`  | Tạo file archive mới                                     |
+    | `-x` | `--extract` | Giải nén file archive                                    |
+    | `-v` | `--verbose` | Hiển thị chi tiết quá trình (liệt kê file đang xử lý)    |
+    | `-f` | `--file`    | Chỉ định tên file archive                                |
+    | `-t` | `--list`    | Liệt kê nội dung trong file tar mà không giải nén        |
+    | `-z` | `--gzip`    | Nén hoặc giải nén bằng gzip (`.tar.gz`, `.tgz`)          |
+    | `-r` | `--append`  | Thêm file vào archive đã có (không dùng cho nén gzip/xz) |
+    |  | `--help`    | Xem các option khác                                      |
+
 
 
