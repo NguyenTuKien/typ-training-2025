@@ -109,7 +109,208 @@ bin.usr-is-merged  cdrom  etc  lib   lib.usr-is-merged  media       opt  root  s
 * `/tmp` (Temporary): Chứa các **tệp tạm thời** được tạo bởi ứng dụng. Dữ liệu trong thư mục này thường bị **xóa sau mỗi lần khởi động lại**.
 * `/usr` (Unix System Resources): Một trong những thư mục **lớn nhất**, chứa các chương trình, thư viện, tài liệu... **không thiết yếu cho việc khởi động**. Hầu hết các phần mềm do người dùng cài đặt sẽ nằm ở đây.
 * `/var` (Variable): Chứa các tệp có **dữ liệu thay đổi liên tục khi hệ thống chạy**, quan trọng nhất là:
-  * Tệp nhật ký (**/var/log**)
-  * Bộ đệm (**/var/cache**)
+  * Tệp nhật ký (`/var/log`)
+  * Bộ đệm (`/var/cache`)
   * Hàng đợi email, v.v.
+# Phần 2 : Làm quen với Terminal và Shell
+## 1. Terminal & Shell là gì
+* **Terminal** (Giao diện dòng lệnh) là một ứng dụng đồ họa cung cấp cho bạn một cửa sổ với giao diện dòng lệnh (CLI).
+  * Nhiệm vụ: Đây là nơi bạn nhìn thấy và nhập các lệnh. Nó chịu trách nhiệm hiển thị văn bản, xử lý các phím bạn gõ, và hiển thị kết quả trả về.
+  * Ví dụ: GNOME Terminal (mặc định của Ubuntu), Terminator, iTerm2 (trên macOS), Windows Terminal.
+  * Terminal giống như ứng dụng nhắn tin (Viber, Zalo, Messenger) trên điện thoại của bạn. Nó cung cấp giao diện (ô nhập văn bản, màn hình chat) để bạn giao tiếp.
+  ![img.png](Image/terminal.png)
+* **Shell** (Bash, Zsh, Fish) là một chương trình chạy bên trong Terminal, chịu trách nhiệm **diễn giải và thực thi các lệnh** mà bạn nhập.
+  * Nhiệm vụ: Khi bạn nhập một lệnh trong Terminal, Shell sẽ phân tích cú pháp, tìm chương trình tương ứng trên hệ thống, và chạy nó. Sau đó, nó sẽ hiển thị kết quả trả về trong Terminal.
+  * Ví dụ: Bash (Bourne Again SHell) là shell mặc định trên hầu hết các hệ thống Linux, bao gồm cả Ubuntu. Ngoài ra còn có Zsh, Fish, v.v.
+  * Shell giống như người phiên dịch trong cuộc trò chuyện. Khi bạn nói một câu, người phiên dịch sẽ hiểu ý bạn và truyền đạt nó đến người nghe.
+## 2. Các lệnh cơ bản
+* `pwd` : Hiển thị thư mục hiện tại mà bạn đang đứng.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ pwd
+/home/ngtukien/Documents/TYP/typ-training-2025
+```
+* `ls` : Liệt kê các tệp (files) và thư mục (directories) bên trong thư mục hiện tại.
+    * `ls`: Liệt kê cơ bản.
+    * `ls -l`: Liệt kê dạng "long" (dài), hiển thị chi tiết (quyền, chủ sở hữu, kích thước, ngày giờ).
+    * `ls -a`: Liệt kê "all" (tất cả), bao gồm cả các tệp/thư mục bị ẩn (bắt đầu bằng dấu `.`).
+    * `ls -la`: Kết hợp cả hai, hiển thị tất cả tệp/thư mục một cách chi tiết.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP$ ls -la
+total 20
+drwxrwxr-x 5 ngtukien ngtukien 4096 Oct 27 13:55 .
+drwxr-xr-x 9 ngtukien ngtukien 4096 Oct 24 08:27 ..
+drwxrwxr-x 2 ngtukien ngtukien 4096 Oct 27 13:56 .idea
+drwxrwxr-x 5 ngtukien ngtukien 4096 Oct 27 16:15 lab_github
+drwxrwxr-x 5 ngtukien ngtukien 4096 Oct 28 06:59 typ-training-2025
+```
+* `cd` (Change Directory) : Di chuyển đến một thư mục khác.
+    * `cd /usr/bin`: Di chuyển đến thư mục `/usr/bin` (đường dẫn tuyệt đối).
+    * `cd Documents`: Di chuyển vào thư mục `Documents` (nằm bên trong thư mục hiện tại).
+    * `cd ..`: Di chuyển lùi lại 1 cấp (ra thư mục cha).
+    * `cd ~` hoặc chỉ gõ `cd`: Quay về thư mục `home` của bạn (ví dụ: `/home/ngtukien`).
+    * `cd -`: Quay lại thư mục bạn vừa rời khỏi (rất hữu ích).
+* `clear` : Xóa sạch màn hình Terminal, đưa dấu nhắc lệnh lên trên cùng cho gọn gàng.
+  * Bạn cũng có thể dùng `Ctrl + L` để có tác dụng tương tự.
+* `history` : Hiển thị danh sách các lệnh bạn đã gõ trước đó.
+    * `history`: Xem toàn bộ lịch sử.
+    * `!50`: Thực thi lại lệnh số 50 trong danh sách.
+    * `!!`: Thực thi lại lệnh ngay trước đó (rất hay dùng).
+* `Tab` (Tự động hoàn thành)
+    * Gõ một phần của tên lệnh hoặc tên tệp/thư mục, sau đó nhấn `Tab`.
+    * **Nếu chỉ có 1 kết quả:** Shell sẽ tự động điền nốt phần còn lại cho bạn.
+        * `cd Docu` + `Tab` ➔ `cd Documents/`
+    * **Nếu có nhiều kết quả:** Nhấn `Tab` 2 lần, Shell sẽ liệt kê tất cả các lựa chọn bắt đầu bằng cụm từ đó.
+```shell
+ngtukien@NgTuKien:~$ ls Do
+Documents/ Downloads/ 
+ngtukien@NgTuKien:~$ ls Do
+```
+* `Ctrl + C` (Hủy bỏ) : Gửi tín hiệu "Interrupt" (Ngắt) để **dừng ngay lập tức** một chương trình hoặc lệnh đang chạy trong Terminal.
+* `Ctrl + D` (Kết thúc đầu vào) : Gửi tín hiệu "End of File" (Kết thúc tệp), "End of Input" (Kết thúc nhập) hoặc thoát Terminal.
+    * **Thoát Shell:** Nếu bạn đang ở dấu nhắc lệnh trống, nhấn `Ctrl + D` sẽ tương đương với lệnh `exit` (thoát khỏi Terminal).
+    * **Kết thúc nhập liệu:** Khi đang chạy một chương trình cho phép bạn nhập nhiều dòng (như `cat`), nhấn `Ctrl + D` để báo "Tôi đã nhập xong".
+## 3. Cấu trúc đường dẫn
+* **Đường dẫn tuyệt đối :**
+  * Là đường dẫn đầy đủ bắt đầu từ thư mục gốc (`/`).
+  * Đường dẫn tuyệt đối luôn chỏ đến một vị trí cụ thể trên hệ thống tệp, bất kể bạn đang ở đâu trong cây thư mục.
+  * Ví dụ : `/home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md`
+* **Đường dẫn tương đối :**
+  * Là đường dẫn bắt đầu từ vị trí hiện tại của bạn trong hệ thống tệp.
+  * Đường dẫn tương đối thay đổi tùy thuộc vào thư mục hiện tại mà bạn đang đứng.
+  * Ví dụ :
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ pwd
+/home/ngtukien/Documents/TYP/typ-training-2025
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ cat kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md 
+# Phần 1 : Giới thiệu tổng quan về Linux
+## 1. Linux là gì?
+* Linux là nhân (kernel) của một hệ điều hành mã nguồn mở, được phát triển lần đầu bởi Linus Torvalds vào năm 1991 bằng ngôn ngữ lập trình C. 
+* Nhân là thành phần cốt lõi, hoạt động như cầu nối trung gian giữa phần cứng và phần mềm.
+* Tuy nhiên, khi nói về "Linux" trong ngữ cảnh phổ biến, chúng ta thường đề cập đến các hệ điều hành dựa trên nhân Linux, được gọi là các bản phân phối Linux (Linux distributions).
+## 2. Lịch sử phát triển của Linux
+* Người khởi xướng: Linus Torvalds, một sinh viên khoa học máy tính người Phần Lan.
+* Thời điểm: Bắt đầu vào năm 1991.
+...
+```
+* Ký hiệu đặc biệt trong đường dẫn:
+  * `.` (dấu chấm đơn): Đại diện cho **thư mục hiện tại**.
+  * `..` (hai dấu chấm): Đại diện cho **thư mục cha** (thư mục chứa thư mục hiện tại).
+  * `~` (dấu ngã): Đại diện cho **thư mục home của người dùng hiện tại** (ví dụ: `/home/ngtukien`).
+# Phần 3 : Làm việc với file và thư mục
+## 1. Tạo, xem, xóa và di chuyển file
+* `touch` : Tạo tập tin trống mới hoặc cập nhật dấu thời gian của tập tin đã tồn tại.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls -la
+total 40
+drwxrwxr-x 3 ngtukien ngtukien  4096 Oct 29 10:32 .
+drwxrwxr-x 4 ngtukien ngtukien  4096 Oct 28 07:29 ..
+drwxrwxr-x 2 ngtukien ngtukien  4096 Oct 28 11:29 Image
+-rw-rw-r-- 1 ngtukien ngtukien    25 Oct 29 10:29 note.md
+-rw-rw-r-- 1 ngtukien ngtukien 24461 Oct 29 10:32 README.md
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ touch touch.md
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ touch README.md 
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls -la
+total 40
+drwxrwxr-x 3 ngtukien ngtukien  4096 Oct 29 10:33 .
+drwxrwxr-x 4 ngtukien ngtukien  4096 Oct 28 07:29 ..
+drwxrwxr-x 2 ngtukien ngtukien  4096 Oct 28 11:29 Image
+-rw-rw-r-- 1 ngtukien ngtukien    25 Oct 29 10:29 note.md
+-rw-rw-r-- 1 ngtukien ngtukien 24461 Oct 29 10:33 README.md
+-rw-rw-r-- 1 ngtukien ngtukien     0 Oct 29 10:33 touch.md
+```
+* `cat` : Đọc in ra toàn bộ nội dung của 1 hoặc nhiều tệp tin.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ echo "Cat" >> touch.md
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cat touch.md 
+Cat
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cat touch.md README.md 
+Cat
+# Phần 1 : Giới thiệu tổng quan về Linux
+## 1. Linux là gì?
+* Linux là nhân (kernel) của một hệ điều hành mã nguồn mở, được phát triển lần đầu bởi Linus Torvalds vào năm 1991 bằng ngôn ngữ lập trình C. 
+* Nhân là thành phần cốt lõi, hoạt động như cầu nối trung gian giữa phần cứng và phần mềm.
+* Tuy nhiên, khi nói về "Linux" trong ngữ cảnh phổ biến, chúng ta thường đề cập đến các hệ điều hành dựa trên nhân Linux, được gọi là các bản phân phối Linux (Linux distributions).
+## 2. Lịch sử phát triển của Linux
+* Người khởi xướng: Linus Torvalds, một sinh viên khoa học máy tính người Phần Lan.
+...
+```
+* `less` : Dùng để xem nội dung theo từng trang. Nó cho phép bạn cuộn lên/xuống để đọc nội dung dài.
+    * Sử dụng phím `Space` để chuyển sang trang tiếp theo.
+    * Sử dụng phím `b` để quay lại trang trước.
+    * Nhấn `q` để thoát khỏi chế độ xem.
+    * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cat README.md | less
+    ```
+    ![img.png](Image/less.png)
+* `head` & `tail`: Xem số lượng dòng nhất định của đầu (`head`) hoặc cuối (`tail`) 1 file, mặc định là 10
+  * Cú pháp : `cat <file> | head<hoặc tail> -n <số_dòng>` hoặc `cat <file> | head<hoặc tail> -<số_dòng>` hoặc `head <hoặc tail> -n <số dòng> <file>`.
+  * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cat README.md | head
+    # Phần 1 : Giới thiệu tổng quan về Linux
+    ## 1. Linux là gì?
+    * Linux là nhân (kernel) của một hệ điều hành mã nguồn mở, được phát triển lần đầu bởi Linus Torvalds vào năm 1991 bằng ngôn ngữ lập trình C. 
+    * Nhân là thành phần cốt lõi, hoạt động như cầu nối trung gian giữa phần cứng và phần mềm.
+    * Tuy nhiên, khi nói về "Linux" trong ngữ cảnh phổ biến, chúng ta thường đề cập đến các hệ điều hành dựa trên nhân Linux, được gọi là các bản phân phối Linux (Linux distributions).
+    ## 2. Lịch sử phát triển của Linux
+    * Người khởi xướng: Linus Torvalds, một sinh viên khoa học máy tính người Phần Lan.
+    * Thời điểm: Bắt đầu vào năm 1991.
+    * Động lực: Linus muốn tạo ra một nhân hệ điều hành miễn phí, giống UNIX, có thể chạy trên máy tính cá nhân (PC) của mình.
+    * Phát triển ban đầu: Ban đầu, nó chỉ là một dự án "sở thích" cá nhân, không có ý định trở nên lớn mạnh hay chuyên nghiệp.
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cat README.md | tail -5
+    ![img.png](Image/less.png)
+    * `head` : Xem số lượng dòng nhất định của đầu 1 file, mặc định là 10
+    * `tail` : Xem số lượng dòng nhất định của cuối 1 file, mặc định là 10
+    * Cú pháp : `cat <file> | head<hoặc tail> -n <số_dòng>` hoặc `cat <file> | head<hoặc tail> -<số_dòng>` hoặc `head <hoặc tail> -n <số dòng> <file>`.
+    
+    ```
+* `cp` : Sao chép 1 hoặc nhiều tệp tin từ nơi này sang nơi khác. 
+    * Cú pháp : `cp <nguồn> <đích>`.
+    * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cp ../Tuan_1_Git_\&_Github/ssh_key.md ../Tuan_1_Git_\&_Github/Thuat_toan_SHA1.md .
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls ../Tuan_1_Git_\&_Github/
+    Cach_SHA1_tao_ra_commitID.md  Image  README.md  ssh_key.md  Thuat_toan_SHA1.md
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  note.md  README.md  ssh_key.md  Thuat_toan_SHA1.md  touch.md
+    ```
+    * `cp -r <nguồn> <đích>` : Sao chép thư mục và toàn bộ nội dung bên trong nó (đệ quy).
+    * `cp -a <nguồn> <đích>` : Sao chép toàn bộ (gồm cả quyền sở hữu, dấu thời gian, ...) (backup)
+* `mv` : Di chuyển (hoặc đổi tên) 1 hoặc nhiều tệp tin từ nơi này sang nơi khác.
+  * Cú pháp : `mv <nguồn> <đích>`.
+  * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  note.md  README.md  ssh_key.md  Thuat_toan_SHA1.md  touch.md
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ mv ssh_key.md Thuat_toan_SHA1.md ../Tuan_1_Git_\&_Github/
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ mkdir Test
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cp Test/ ../Tuan_1_Git_\&_Github/
+    cp: -r not specified; omitting directory 'Test/'
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ mv Test/ ../Tuan_1_Git_\&_Github/Tuan_2
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls ../Tuan_1_Git_\&_Github/
+    Cach_SHA1_tao_ra_commitID.md  Image  README.md  ssh_key.md  Thuat_toan_SHA1.md  Tuan_2
+    ```
+* `rm` : Xóa 1 hoặc nhiều tệp tin.
+    * Cú pháp : `rm <tệp1> <tệp2> ...`.
+    * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls 
+    Image  note.md  README.md  rename.md
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ rm rename.md 
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls 
+    Image  note.md  README.md
+    ```
+  * `rm -r <thư_mục>` : Xóa thư mục và toàn bộ nội dung bên trong nó (đệ quy).
+  * `rm -i <tệp>` : Hỏi xác nhận trước khi xóa từng tệp (interactive).
+  * `rm -f <tệp>` : Ép buộc xóa mà không hỏi lại (force).
+  * `rm -rf <thư_mục>` : Kết hợp cả hai, xóa thư mục và toàn bộ nội dung bên trong nó mà không hỏi lại.
+* `mkdir` : Tạo 1 hoặc nhiều thư mục rỗng
+  * Cú pháp : `mkdir <tên_thư_mục>`
+  * `mkdir -p <Thư_mục_cha>/<Thư_mục_con>` : Tạo thư mục con bên trong thư mục cha. Nếu thư mục cha chưa tồn tại, nó sẽ được tạo tự động.
+* `rmdir` : Xóa thư mục rỗng
+  * Cú pháp : `rmdir <tên_thư_mục>`
+  * `rmdir -p <Thư_mục_cha>/<Thư_mục_con>` : Xóa thư mục con và nếu thư mục cha trở nên rỗng sau đó, nó cũng sẽ bị xóa.
+  * Lưu ý : `rmdir` chỉ xóa được thư mục rỗng. Nếu thư mục có chứa tệp tin hoặc thư mục con, bạn cần dùng `rm -r` để xóa toàn bộ.
+
 
