@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="31ade757-12f5-4a19-9515-8dcdfa54f16a" name="Changes" comment="Finish">
+      <change beforePath="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image/less.png" beforeDir="false" afterPath="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image/less.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image/terminal.png" beforeDir="false" afterPath="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image/terminal.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature-report" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;NguyenTuKien&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/NguyenTuKien/typ-training-2025.git&quot;,
+    &quot;accountId&quot;: &quot;4abd134d-94d8-46c9-8dee-21d86439cdf9&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="348eAu89G259KZPHANswriLFYg2" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.tabs&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image" />
+      <recent name="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_1_Git_&amp;_Github/Image" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image" />
+      <recent name="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1" />
+      <recent name="$PROJECT_DIR$/kiennt_b23dccn465_training_gd1/Tuần 1: Git và Github/Image" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="typ-training-2025" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="typ-training-2025" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.27397.103" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="31ade757-12f5-4a19-9515-8dcdfa54f16a" name="Changes" comment="" />
+      <created>1760599485597</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1760599485597</updated>
+      <workItem from="1760599486888" duration="3817000" />
+      <workItem from="1760660338535" duration="181000" />
+      <workItem from="1760680675557" duration="2815000" />
+      <workItem from="1760683661974" duration="6786000" />
+      <workItem from="1760703933249" duration="6270000" />
+      <workItem from="1760743861643" duration="6000" />
+      <workItem from="1760859706437" duration="3523000" />
+      <workItem from="1760875768239" duration="6757000" />
+      <workItem from="1761035845687" duration="1312000" />
+      <workItem from="1761090292846" duration="8000" />
+      <workItem from="1761285338013" duration="6370000" />
+      <workItem from="1761439568066" duration="566000" />
+      <workItem from="1761445719658" duration="2000" />
+      <workItem from="1761445752165" duration="1000" />
+      <workItem from="1761607653475" duration="8455000" />
+      <workItem from="1761625045773" duration="1780000" />
+      <workItem from="1761635873155" duration="9000" />
+      <workItem from="1761706999196" duration="6109000" />
+      <workItem from="1761717547971" duration="34000" />
+      <workItem from="1761719977534" duration="2388000" />
+      <workItem from="1761722753190" duration="4003000" />
+      <workItem from="1761740023483" duration="174000" />
+      <workItem from="1761781168846" duration="11027000" />
+    </task>
+    <task id="LOCAL-00001" summary="Hoàn thành Phần">
+      <option name="closed" value="true" />
+      <created>1760710194783</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760710194783</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Hoàn thành Phần 3">
+      <option name="closed" value="true" />
+      <created>1760710404267</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1760710404267</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Finish">
+      <option name="closed" value="true" />
+      <created>1761439692565</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1761439692565</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Merge branch 'main' of https://github.com/NguyenTuKien/typ-training-2025" />
+    <MESSAGE value="Hoàn thành Phần" />
+    <MESSAGE value="Hoàn thành Phần 3" />
+    <MESSAGE value="Finish" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finish" />
+  </component>
+</project>

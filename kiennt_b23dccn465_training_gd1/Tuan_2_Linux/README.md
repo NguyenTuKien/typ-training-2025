@@ -118,7 +118,7 @@ bin.usr-is-merged  cdrom  etc  lib   lib.usr-is-merged  media       opt  root  s
   * Nhiệm vụ: Đây là nơi bạn nhìn thấy và nhập các lệnh. Nó chịu trách nhiệm hiển thị văn bản, xử lý các phím bạn gõ, và hiển thị kết quả trả về.
   * Ví dụ: GNOME Terminal (mặc định của Ubuntu), Terminator, iTerm2 (trên macOS), Windows Terminal.
   * Terminal giống như ứng dụng nhắn tin (Viber, Zalo, Messenger) trên điện thoại của bạn. Nó cung cấp giao diện (ô nhập văn bản, màn hình chat) để bạn giao tiếp.
-  ![img.png](Image/terminal.png)
+    ![terminal.png](Image/terminal.png)
 * **Shell** (Bash, Zsh, Fish) là một chương trình chạy bên trong Terminal, chịu trách nhiệm **diễn giải và thực thi các lệnh** mà bạn nhập.
   * Nhiệm vụ: Khi bạn nhập một lệnh trong Terminal, Shell sẽ phân tích cú pháp, tìm chương trình tương ứng trên hệ thống, và chạy nó. Sau đó, nó sẽ hiển thị kết quả trả về trong Terminal.
   * Ví dụ: Bash (Bourne Again SHell) là shell mặc định trên hầu hết các hệ thống Linux, bao gồm cả Ubuntu. Ngoài ra còn có Zsh, Fish, v.v.
@@ -242,7 +242,7 @@ Cat
     ```shell
     ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ cat README.md | less
     ```
-    ![img.png](Image/less.png)
+  ![less.png](Image/less.png)
 * `head` & `tail`: Xem số lượng dòng nhất định của đầu (`head`) hoặc cuối (`tail`) 1 file, mặc định là 10
   * Cú pháp : `cat <file> | head<hoặc tail> -n <số_dòng>` hoặc `cat <file> | head<hoặc tail> -<số_dòng>` hoặc `head <hoặc tail> -n <số dòng> <file>`.
   * Ví dụ :
@@ -325,6 +325,495 @@ Cat
     | `-z` | `--gzip`    | Nén hoặc giải nén bằng gzip (`.tar.gz`, `.tgz`)          |
     | `-r` | `--append`  | Thêm file vào archive đã có (không dùng cho nén gzip/xz) |
     |  | `--help`    | Xem các option khác                                      |
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ tar -czvf image.tar.gz Image/
+    Image/
+    Image/less.png
+    Image/terminal.png
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  image.tar.gz  note.md  README.md
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ tar -tzvf image.tar.gz 
+    drwxrwxr-x ngtukien/ngtukien 0 2025-10-29 10:43 Image/
+    -rw-rw-r-- ngtukien/ngtukien 57166 2025-10-29 10:41 Image/less.png
+    -rw-rw-r-- ngtukien/ngtukien 35307 2025-10-28 11:29 Image/terminal.png
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ tar -xzvf image.tar.gz
+    Image/
+    Image/less.png
+    Image/terminal.png
+    ```
+* `gzip` : Dùng để nép 1 tệp tin duy nhất. Sau khi nén, tệp tin sẽ bị xóa.
+    * Ví dụ : 
+    ```shell 
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ gzip note.md 
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  image.tar.gz  note.md.gz  README.md  
+    ```
+    * `gzip -k <tệp tin>` : Nén và giữ lại tệp tin
+    * `gzip -d <tệp tin.gz>` hoặc `gunzip <tệp tin.gz>` : Giải nén tệp tin `.gz`
+    ```shell 
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ gzip -d note.md.gz 
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ gzip -k note.md
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  image.tar.gz  note.md  note.md.gz  README.md  
+    ```
+* `zip` : Dùng để nén 1 hoặc nhiều tệp tin/thư mục thành 1 tệp tin `.zip`.
+  * Khác với `tar`, `zip` sẽ nén từng tệp tin riêng lẻ bên trong tệp tin `.zip`.
+  * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ zip readme.zip README.md note.md 
+    adding: README.md (deflated 72%)
+    adding: note.md (deflated 20%)
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  image.tar.gz  note.md  note.md.gz  README.md  readme.zip
+    ```
+  * Để nén 1 thư mục, nếu chỉ dùng `zip <tên_file_zip> <tên_thư_mục>`, `zip` sẽ chỉ nén thư mục rỗng, còn các tập tin và thư mục con sẽ không được nén.
+    * Cần dùng thêm tùy chọn `-r` (recursive) để nén thư mục.
+    * Ví dụ : 
+      ```shell
+      ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ zip image.zip Image/
+      adding: Image/ (stored 0%)
+      ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+      Image  image.zip  note.md  README.md
+      ```
+  * Phần trong ngoặc khi nén là cho biết số phần trăm dung lương được nén lại so với dung lượng gốc. Ví dụ :
+    * `adding: Image/ (stored 0%)` tức thư mục `Image/` được giữ nguyên dung lượng vì nó chỉ là cái vỏ rỗng.
+    * `adding: Image/less.png (deflated 6%)` tức file `Image/less.png` đã nén 6%, còn lại 94% dung lượng gốc.
+* `unzip` : Giải nén tệp tin `.zip`.
+* Ví dụ : 
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ unzip image.zip
+    Archive:  image.zip
+    replace Image/less.png? [y]es, [n]o, [A]ll, [N]one, [r]ename: y
+    inflating: Image/less.png          
+    replace Image/terminal.png? [y]es, [n]o, [A]ll, [N]one, [r]ename: y
+    inflating: Image/terminal.png
+    ```
+  * `unzip -j <file_zip>` : giải nén file ngay tại thư mục hiện tại (không tạo thêm thư mục con).
+  * `unzip -l <file_zip>` : liệt kê nội dung bên trong.
+  * `unzip -t <file_zip>` : kiểm tra các file trong zip xem có bị hỏng hay không mà không giải nén.
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ unzip -t image.zip 
+    Archive:  image.zip
+    testing: Image/                   OK
+    testing: Image/less.png           OK
+    testing: Image/terminal.png       OK
+    No errors detected in compressed data of image.zip.
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ unzip -l image.zip
+    Archive:  image.zip
+    Length      Date    Time    Name
+    ---------  ---------- -----   ----
+        0  2025-10-29 14:37   Image/
+    62397  2025-10-29 10:40   Image/less.png
+    39340  2025-10-28 11:28   Image/terminal.png
+    ---------                     -------
+    101737                     3 files
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ unzip -j image.zip
+    Archive:  image.zip
+    inflating: less.png                
+    inflating: terminal.png            
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ ls
+    Image  image.zip  less.png  note.md  README.md  terminal.png
+    ```
+* `scp` (Secure copy) : Sao chép hoặc tải 1 tệp tin 1 cách an toàn từ máy này sang máy khác trên cùng 1 mạng.
+  * Nó an toàn là vì sử dụng giao thức SSH để mã hóa dữ liệu trong quá trình truyền.
+  * Cú pháp : `scp <tùy_chọn> <nguồn> <đích>`
+  * `-r` : Sao chép toàn bộ thư mục.
+  * `-P` : Dùng để chỉ định cổng (mặc định là cổng 22).
+  * `-i` : Dùng để xác lập ssh-key thay vì dùng mật khẩu.
+## 3. Giải thích khái niệm stream
+"Stream" (luồng) là một khái niệm cơ bản trong Linux và các hệ thống giống Unix. Đây là các **kênh giao tiếp dữ liệu** (Input/Output) tiêu chuẩn mà mọi chương trình dòng lệnh đều tự động có khi nó khởi chạy.
 
+Hãy tưởng tượng mỗi chương trình là một cỗ máy:
 
+* **`stdin`** là cái phễu/khay **đầu vào** để bạn đưa nguyên liệu vào.
+* **`stdout`** là băng chuyền cho **thành phẩm** (kết quả bình thường).
+* **`stderr`** là một băng chuyền riêng cho **phế phẩm/lỗi** (thông báo lỗi).
+
+Mặc định, cả ba luồng này đều được kết nối với terminal (cửa sổ dòng lệnh) của bạn.
+
+-----
+### a. stdin (Standard Input - Luồng vào chuẩn)
+
+* **Mô tả:** Đây là luồng *nhận* dữ liệu mặc định của chương trình.
+* **Nguồn mặc định:** **Bàn phím** của bạn.
+* **Ví dụ:** Khi bạn chạy lệnh `cat` mà không có tham số, nó sẽ chờ dữ liệu từ `stdin`. Bất cứ thứ gì bạn gõ vào bàn phím sẽ được gửi qua `stdin` cho `cat`.
+* **File Descriptor (Số mô tả tệp):** `0`
+
+-----
+
+### b. stdout (Standard Output - Luồng ra chuẩn)
+
+* **Mô tả:** Đây là luồng *gửi ra* dữ liệu mặc định cho các kết quả **thành công** hoặc **bình thường** của chương trình.
+* **Đích mặc định:** **Màn hình terminal**.
+* **Ví dụ:** Khi bạn chạy `ls -l`, danh sách tệp tin nó in ra chính là `stdout`.
+* **File Descriptor:** `1`
+
+-----
+
+### c. stderr (Standard Error - Luồng lỗi chuẩn)
+
+* **Mô tả:** Đây là một luồng *gửi ra* dữ liệu thứ hai, được dành riêng cho các **thông báo lỗi**, **cảnh báo**, hoặc thông tin gỡ rối (diagnostic).
+* **Đích mặc định:** **Màn hình terminal**.
+* **Ví dụ:** Nếu bạn chạy `ls /folder-khong-ton-tai`, thông báo lỗi "No such file or directory" sẽ được gửi đến `stderr`.
+* **File Descriptor:** `2`
+
+-----
+
+### 💡 Tại sao phải tách biệt stdout và stderr?
+
+Đây chính là điểm "thiên tài" của thiết kế này. Mặc dù cả `stdout` và `stderr` đều in ra màn hình, việc chúng là hai luồng riêng biệt cho phép chúng ta **Điều Hướng (Redirection)** chúng một cách độc lập.
+
+Điều này cực kỳ quan trọng trong scripting và tự động hóa.
+
+**Tình huống 1: Chỉ lấy kết quả thành công, bỏ qua lỗi.**
+Bạn muốn lưu danh sách tệp vào file, nhưng không muốn lưu các thông báo lỗi (ví dụ: "Permission denied").
+
+```bash
+# '>' là viết tắt của '1>' (điều hướng stdout - luồng 1)
+# Kết quả 'ls' (stdout) sẽ vào file 'file_list.txt'
+# Lỗi 'ls' (stderr) vẫn sẽ in ra màn hình
+ls -l /etc /root > file_list.txt 
+```
+
+Trong ví dụ trên, `file_list.txt` sẽ chứa danh sách tệp của `/etc`, nhưng lỗi "Permission denied" khi truy cập `/root` sẽ vẫn hiển thị trên terminal của bạn, không bị lẫn vào file kết quả.
+
+**Tình huống 2: Chỉ lấy lỗi, bỏ qua kết quả thành công.**
+Bạn chạy một trình biên dịch và chỉ quan tâm đến lỗi (nếu có).
+
+```bash
+# '2>' (điều hướng stderr - luồng 2)
+# Lỗi biên dịch (stderr) sẽ vào file 'compile_errors.log'
+# Kết quả thành công (stdout - ví dụ: "Build successful") sẽ in ra màn hình
+javac MyProgram.java 2> compile_errors.log
+```
+
+**Tình huống 3: Nối các lệnh với nhau (Piping).**
+Dấu "ống" (`|`) là một cơ chế đặc biệt: nó lấy `stdout` (luồng 1) của lệnh bên trái và *nối* nó vào `stdin` (luồng 0) của lệnh bên phải.
+
+```bash
+# stdout của 'ls -l' trở thành stdin của 'grep'
+ls -l | grep ".txt"
+```
+
+Quan trọng: Nếu `ls -l` tạo ra lỗi (ví dụ: "Permission denied"), lỗi đó (trên `stderr`) sẽ *không* bị `|` bắt. Nó vẫn sẽ in thẳng ra màn hình, trong khi `grep` chỉ nhận được danh sách tệp hợp lệ.
+
+**Tình huống 4: Lưu tất cả mọi thứ vào một file log.**
+
+```bash
+# '2>&1' có nghĩa là: "Điều hướng luồng 2 (stderr) đến bất cứ nơi nào luồng 1 (stdout) đang trỏ tới"
+sudo apt update > update_log.txt 2>&1
+```
+
+* `> update_log.txt`: Hướng `stdout` (luồng 1) vào `update_log.txt`.
+* `2>&1`: Hướng `stderr` (luồng 2) vào cùng nơi với luồng 1 (tức là file `update_log.txt`).
+
+Kết quả là cả output bình thường và output lỗi đều được ghi chung vào một file log.
+
+## 4. Tìm kiếm file
+* `find` (Tìm kiếm thời gian thực) : tìm kiếm trên cây thư mục bạn chỉ định và kiểm tra từng tệp/thư mục xem có khớp với các tiêu chí bạn đưa ra không.
+  * **Cú pháp:** `find [nơi_bắt_đầu] [biểu_thức_tìm_kiếm]`
+  * **Điểm mạnh:** Cực kỳ linh hoạt. Bạn có thể tìm theo:
+      * Tên (`-name` hoặc `-iname` (không phân biệt hoa thường))
+      * Loại (tệp, thư mục, link: `-type f`, `-type d`)
+      * Kích thước (`-size`)
+      * Ngày sửa đổi (`-mtime`)
+      * Quyền (`-perm`)
+  * **Điểm yếu:** Có thể chậm nếu tìm trong một thư mục lớn (như `/`) vì nó phải kiểm tra ổ cứng *ngay lập"*.
+  * Ví dụ : 
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ find kiennt_b23dccn465_training_gd1/ -type f -name "*.md"
+    kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md
+    kiennt_b23dccn465_training_gd1/Tuan_2_Linux/note.md
+    kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/README.md
+    kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/ssh_key.md
+    kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/Cach_SHA1_tao_ra_commitID.md
+    kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/Thuat_toan_SHA1.md
+    ```
+* `locate` (Tìm kiếm qua Database) : tìm kiếm trong một cơ sở dữ liệu (database) tên là `mlocate.db`. Database này được tự động cập nhật (thường là mỗi ngày một lần) bởi một tiến trình gọi là `updatedb`.
+  * **Cú pháp:** `locate [tên_tệp]`
+  * **Điểm mạnh:** **Nhanh như chớp**. Bạn có thể tìm toàn bộ hệ thống trong chưa đầy một giây.
+  * **Điểm yếu:** **Không phải thời gian thực**. Nếu bạn vừa tạo một tệp 5 phút trước, `locate` sẽ không tìm thấy nó cho đến khi database được cập nhật. (Bạn có thể chạy `sudo updatedb` để buộc nó cập nhật).
+  * Ví dụ : 
+  ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ locate /kiennt_b23dccn465_training_gd1 README.md
+    /home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_1_Git_&_Github/README.md
+    /home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md
+    ```
+* `grep` (Tìm kiếm BÊN TRONG tệp) : **không** dùng để tìm *tệp tin*. Nó dùng để tìm *văn bản bên trong tệp tin*.
+  * **Cú pháp:** `grep [tùy_chọn] [mẫu_văn_bản] [tệp_cần_tìm_trong_đó]`
+  * **Cách sử dụng chính:** Nó đọc một tệp (hoặc `stdin`) và in ra mọi dòng có chứa mẫu văn bản bạn tìm.
+  *  Ví dụ : 
+    ```shell
+    ngtukien@NgTuKien:~$ find -name "*.png" | grep -i "LESS"
+    ./Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux/Image/less.png
+    find: ‘./.local/share/Trash/expunged/412668199/Database’: Permission denied
+    ./.local/lib/python3.10/site-packages/werkzeug/debug/shared/less.png
+    ```
+# Phần 4 : Quyền truy cập và người dùng
+## 1. Người dùng và nhóm (User & Group)
+### a. Kiểm tra danh tính 
+* `whoami` (Who am i) : Hiển tên người dùng (username) hiện tại.
+```shell
+ngtukien@NgTuKien:~$ whoami
+ngtukien
+```
+* `id` : Hiển thị thông tin chi tiết về người dùng hiện tại, bao gồm:
+  * UID (User ID): Mã số định danh người dùng.
+  * GID (Group ID): Mã số định danh nhóm chính của người dùng.
+  * Các nhóm phụ mà người dùng thuộc về.
+```shell
+ngtukien@NgTuKien:~$ id 
+uid=1000(ngtukien) gid=1000(ngtukien) groups=1000(ngtukien),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),100(users),114(lpadmin),984(docker)
+```
+### b. Lệnh quản lý người dùng
+* `adduser` : Thêm người dùng mới. Chỉ `root` mới được quyền dùng.
+    * Cú pháp : `sudo adduser <tên_người_dùng_mới>`
+    * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~$ sudo adduser testuser
+    info: Adding user `testuser' ...
+    info: Selecting UID/GID from range 1000 to 59999 ...
+    info: Adding new group `testuser' (1001) ...
+    info: Adding new user `testuser' (1001) with group `testuser (1001)' ...
+    info: Creating home directory `/home/testuser' ...
+    info: Copying files from `/etc/skel' ...
+    New password:
+    BAD PASSWORD: The password is shorter than 8 characters
+    Retype new password:
+    passwd: password updated successfully
+    Changing the user information for testuser
+    Enter the new value, or press ENTER for the default
+    Full Name []: Nguyen Tu Kien
+    Room Number []:         
+    Work Phone []:
+    Home Phone []:
+    Other []:
+    Is the information correct? [Y/n] Y
+    info: Adding new user `testuser' to supplemental / extra groups `users' ...
+    info: Adding user `testuser' to group `users' ...
+    ```
+* `deluser` : Xóa người dùng. Chỉ `root` mới được quyền dùng.
+  * Cú pháp : `sudo deluser <tên_người_dùng>`
+  * Ví dụ : 
+    ```shell
+    ngtukien@NgTuKien:~$ sudo deluser testuser
+    info: Removing crontab ...
+    info: Removing user `testuser' ...
+    ```
+### c. Lệnh thay đổi quyền hạn
+* `su` (Substitute user) : Chuyển đổi người dùng hiện tại sang người dùng khác trong phiên làm việc hiện tại.
+  * Cú pháp : `su <tên_người_dùng>`
+  * Ví dụ :
+    ```shell
+    ngtukien@NgTuKien:~$ su newuser
+    Password:
+    newuser@NgTuKien:/home/ngtukien$
+    ```
+* `sudo` (Superuser do) : Thực thi lệnh với quyền của người dùng `root` hoặc người dùng khác.
+    * Cú pháp : `sudo <lệnh_cần_thực_hiện>`
+    * Ví dụ : 
+    ```shell
+    ngtukien@NgTuKien:~$ sudo deluser testuser
+    [sudo] password for ngtukien:
+    info: Removing crontab ...
+    info: Removing user `testuser' ...
+    ```
+### d. Tệp tin cấu hình
+* `/etc` : Thư mục chứa các thông tin nhạy cảm về người dùng và nhóm trên hệ thống.
+* `/etc/passwd` : Chứa thông tin về tất cả người dùng trên hệ thống. Mỗi dòng đại diện cho một người dùng và bao gồm các trường như tên người dùng, UID, GID, thư mục home, shell mặc định, v.v.
+```shell
+ngtukien@NgTuKien:~$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:998:998:systemd Network Management:/:/usr/sbin/nologin
+systemd-timesync:x:996:996:systemd Time Synchronization:/:/usr/sbin/nologin
+dhcpcd:x:100:65534:DHCP Client Daemon,,,:/usr/lib/dhcpcd:/bin/false
+messagebus:x:101:101::/nonexistent:/usr/sbin/nologin
+syslog:x:102:102::/nonexistent:/usr/sbin/nologin
+systemd-resolve:x:991:991:systemd Resolver:/:/usr/sbin/nologin
+uuidd:x:103:103::/run/uuidd:/usr/sbin/nologin
+usbmux:x:104:46:usbmux daemon,,,:/var/lib/usbmux:/usr/sbin/nologin
+tss:x:105:105:TPM software stack,,,:/var/lib/tpm:/bin/false
+systemd-oom:x:990:990:systemd Userspace OOM Killer:/:/usr/sbin/nologin
+kernoops:x:106:65534:Kernel Oops Tracking Daemon,,,:/:/usr/sbin/nologin
+whoopsie:x:107:109::/nonexistent:/bin/false
+dnsmasq:x:999:65534:dnsmasq:/var/lib/misc:/usr/sbin/nologin
+avahi:x:108:111:Avahi mDNS daemon,,,:/run/avahi-daemon:/usr/sbin/nologin
+tcpdump:x:109:112::/nonexistent:/usr/sbin/nologin
+sssd:x:110:113:SSSD system user,,,:/var/lib/sss:/usr/sbin/nologin
+speech-dispatcher:x:111:29:Speech Dispatcher,,,:/run/speech-dispatcher:/bin/false
+cups-pk-helper:x:112:114:user for cups-pk-helper service,,,:/nonexistent:/usr/sbin/nologin
+fwupd-refresh:x:989:989:Firmware update daemon:/var/lib/fwupd:/usr/sbin/nologin
+saned:x:113:116::/var/lib/saned:/usr/sbin/nologin
+geoclue:x:114:117::/var/lib/geoclue:/usr/sbin/nologin
+cups-browsed:x:115:114::/nonexistent:/usr/sbin/nologin
+hplip:x:116:7:HPLIP system user,,,:/run/hplip:/bin/false
+gnome-remote-desktop:x:988:988:GNOME Remote Desktop:/var/lib/gnome-remote-desktop:/usr/sbin/nologin
+polkitd:x:987:987:User for polkitd:/:/usr/sbin/nologin
+rtkit:x:117:119:RealtimeKit,,,:/proc:/usr/sbin/nologin
+colord:x:118:120:colord colour management daemon,,,:/var/lib/colord:/usr/sbin/nologin
+gnome-initial-setup:x:119:65534::/run/gnome-initial-setup/:/bin/false
+gdm:x:120:121:Gnome Display Manager:/var/lib/gdm3:/bin/false
+nm-openvpn:x:121:122:NetworkManager OpenVPN,,,:/var/lib/openvpn/chroot:/usr/sbin/nologin
+strongswan:x:122:65534::/var/lib/strongswan:/usr/sbin/nologin
+ngtukien:x:1000:1000:Nguyen Tu Kien:/home/ngtukien:/bin/bash
+mysql:x:123:124:MySQL Server,,,:/nonexistent:/bin/false
+newuser:x:1001:1001:,,,:/home/newuser:/bin/bash
+```
+* Mỗi dòng là một người dùng, các trường được phân tách bằng dấu hai chấm `:`. 
+* Ví dụ : `ngtukien:x:1000:1000:Nguyen Tu Kien:/home/ngtukien:/bin/bash`
+  * `ngtukien` : Tên đăng nhập
+  * `x` : Mật khẩu. Chữ `x` có nghĩa là mật khẩu thực tế được mã hóa và lưu trữ trong tệp `/etc/shadow` (để bảo mật hơn).
+  * `1000` : User ID (UID).
+  * `1000` : Group ID (GID) (Nhóm chính).
+  * `Nguyen Tu Kien` : Tên đầy đủ và thông tin (Gọi là GEGOS).
+  * `/home/ngtukien` : Thư mục home.
+  * `/bin/dash` : Shell mặc định (chương trình dòng lệnh sẽ chạy khi đăng nhập).
+## 2. Phân quyền file
+### a. 🔍 Cách Đọc Quyền (`ls -l` và `rwx`)
+* Cú pháp : `ls -l`
+* Ví dụ : 
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ls -l
+total 4
+drwxrwxr-x 4 ngtukien ngtukien 4096 Oct 28 07:29 kiennt_b23dccn465_training_gd1
+```
+Chuỗi này được chia thành 4 phần:
+
+| Phần | Ký Tự (Ví dụ) | Ý Nghĩa |
+| :--- |:--------------| :--- |
+| **1** | `d`           | **Loại (Type):** `d` là thư mục (directory), `-` là tệp tin (file). |
+| **2** | `rwx`         | **Chủ sở hữu (User/Owner):** Quyền của người dùng sở hữu tệp này. |
+| **3** | `rwx`         | **Nhóm (Group):** Quyền của các thành viên trong nhóm sở hữu tệp này. |
+| **4** | `r-x`         | **Những người khác (Others):** Quyền của tất cả những người dùng còn lại. |
+* Ý nghĩa của `r`, `w`, `x` : **khác nhau** tùy thuộc nó là Tệp tin hay Thư mục
+
+| Quyền | Đối với Tệp Tin (File) | Đối với Thư Mục (Directory) |
+| :--- | :--- | :--- |
+| **`r` (Read)** | Được phép **đọc** nội dung tệp (ví dụ: `cat file.txt`). | Được phép **liệt kê** nội dung bên trong thư mục (ví dụ: `ls folder`). |
+| **`w` (Write)** | Được phép **thay đổi** hoặc xóa nội dung tệp. | Được phép **tạo tệp mới** hoặc **xóa tệp** bên trong thư mục. |
+| **`x` (Execute)** | Được phép **chạy** tệp đó như một chương trình (ví dụ: `./script.sh`). | Được phép **đi vào** (truy cập) thư mục (ví dụ: `cd folder`). |
+> **Lưu ý quan trọng:** Để `cd` vào một thư mục, bạn cần quyền `x`. Để `ls` xem thư mục đó, bạn cần quyền `r`. Đây là lý do tại sao các thư mục thường có quyền `r-x` (cho phép vào xem).
+
+### b. ⚙️ Cách Thay Đổi Quyền (`chmod`) 
+Lệnh `chmod` (**ch**ange **mod**e) dùng để thay đổi quyền `rwx` cho tệp tin/thư mục. Có hai cách dùng chính:
+#### Cách 1: Bằng Ký Hiệu (Symbolic) - Dễ nhớ
+Bạn sử dụng các chữ cái để chỉ định ai, làm gì, và quyền gì.
+* **Ai:** `u` (user), `g` (group), `o` (others), `a` (all - tất cả).
+* **Làm gì:** `+` (thêm quyền), `-` (bớt quyền), `=` (gán quyền chính xác).
+* **Quyền gì:** `r`, `w`, `x`.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ls -l kiennt_b23dccn465_training_gd1/Tuan_2_Linux/
+total 68
+drwxrwxr-x 2 ngtukien ngtukien  4096 Oct 29 15:27 Image
+-rw-rw-r-- 1 ngtukien ngtukien    25 Oct 29 10:29 note.md
+-rw-rw-r-- 1 ngtukien ngtukien 59418 Oct 30 09:37 README.md
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ chmod u=rwx,go=rwx kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md 
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ls -l kiennt_b23dccn465_training_gd1/Tuan_2_Linux/
+total 68
+drwxrwxr-x 2 ngtukien ngtukien  4096 Oct 29 15:27 Image
+-rw-rw-r-- 1 ngtukien ngtukien    25 Oct 29 10:29 note.md
+-rwxrwxrwx 1 ngtukien ngtukien 59406 Oct 30 09:41 README.md
+```
+#### Cách 2: Bằng Số (Octal) - Phổ biến nhất
+Bạn dùng 3 con số để đại diện cho quyền của User, Group, và Others. Mỗi con số là tổng của các quyền:
+* `r` (read) = **4** (100)
+* `w` (write) = **2** (010)
+* `x` (execute) = **1** (001)
+
+**Các tổ hợp phổ biến:**
+* `7` = 4 + 2 + 1 = `rwx` (Toàn quyền)
+* `6` = 4 + 2 + 0 = `rw-` (Đọc và ghi)
+* `5` = 4 + 0 + 1 = `r-x` (Đọc và thực thi/truy cập)
+* `4` = 4 + 0 + 0 = `r--` (Chỉ đọc)
+* `0` = 0 + 0 + 0 = `---` (Không có quyền)
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ls -l kiennt_b23dccn465_training_gd1/Tuan_2_Linux/
+total 68
+drwxrwxr-x 2 ngtukien ngtukien  4096 Oct 29 15:27 Image
+-rw-rw-r-- 1 ngtukien ngtukien    25 Oct 29 10:29 note.md
+-rwxrwxrwx 1 ngtukien ngtukien 59406 Oct 30 09:41 README.md
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ chmod 777 kiennt_b23dccn465_training_gd1/Tuan_2_Linux/note.md 
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ls -l kiennt_b23dccn465_training_gd1/Tuan_2_Linux/
+total 68
+drwxrwxr-x 2 ngtukien ngtukien  4096 Oct 29 15:27 Image
+-rwxrwxrwx 1 ngtukien ngtukien    25 Oct 29 10:29 note.md
+-rwxrwxrwx 1 ngtukien ngtukien 59787 Oct 30 09:43 README.md
+```
+> **Mẹo:** Để thay đổi quyền cho tất cả các tệp/thư mục con bên trong, hãy dùng cờ `-R` (Recursive):
+> `chmod -R 755 my_project_folder/`
+### c. 👤 Cách Thay Đổi Chủ Sở Hữu (`chown`, `chgrp`)
+Đôi khi, bạn cần thay đổi ai là người sở hữu tệp tin. Các lệnh này thường yêu cầu `sudo`.
+* **`chown`** (**Ch**ange **Own**er)
+  Lệnh này dùng để thay đổi **người dùng** sở hữu tệp tin.
+    ```bash
+    sudo chown ngtukien kiennt_b23dccn465_training_gd1/
+    ```
+  > **Mẹo hay nhất:** `chown` cũng có thể thay đổi **cả người dùng và nhóm** cùng một lúc bằng dấu hai chấm (`:`). Đây là cách dùng được khuyên.
+
+  ```bash
+  # Chuyển quyền sở hữu 'file.txt' cho người dùng 'newuser' VÀ nhóm 'newgroup'
+  sudo chown ngtukien:Linux kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md
+  ```
+* **`chgrp`** (**Ch**ange **Gr**ou**p**)
+  Lệnh này chỉ dùng để thay đổi **nhóm** sở hữu tệp tin. (Lệnh này ít được dùng hơn vì `chown` ở trên đã làm được việc này).
+  ```bash
+  sudo chgrp Linux ngtukien:Linux kiennt_b23dccn465_training_gd1/Tuan_2_Linux/README.md
+  ```
+## 3. Quyền root và an toàn
+### a. 🛑 Tại Sao Không Nên Chạy Mọi Thứ Bằng Root
+Chạy mọi thứ với tư cách `root` (siêu quản trị) cũng giống như bạn lái xe trong thành phố mà không bao giờ dùng dây an toàn, đèn tín hiệu hay phanh. `root` là tài khoản "thần thánh", nó **bỏ qua mọi rào cản bảo vệ** của hệ thống.
+Lý do chính là:
+
+**1. Sai lầm của con người (Human Error)  destructive hơn**
+
+Quyền lực của `root` không có "undo".
+
+* **Tình huống (Người dùng bình thường):** Bạn gõ nhầm lệnh `rm -rf *` trong thư mục `~/Documents`. Bạn sẽ chỉ xóa các tệp tài liệu của mình. Rất tệ, nhưng máy tính vẫn chạy.
+* **Tình huống (Người dùng `root`):** Bạn gõ nhầm lệnh `rm -rf *` trong thư mục `/etc` (hoặc tệ hơn là `/`). Bạn sẽ **xóa toàn bộ hệ điều hành**. Máy tính sẽ "chết" ngay lập tức và bạn phải cài đặt lại từ đầu.
+
+**2. Lỗ hổng bảo mật (Security Risks)**
+Đây là rủi ro lớn nhất.
+
+* **Tình huống:** Bạn chạy một chương trình (ví dụ: trình duyệt web, một script tải từ mạng,...) với tư cách `root`. Nếu chương trình đó có một lỗ hổng bảo mật, kẻ tấn công (hacker) có thể lợi dụng nó.
+* **Kết quả:** Vì bạn chạy chương trình bằng `root`, kẻ tấn công ngay lập tức **chiếm được toàn bộ quyền `root`** của máy bạn. Chúng có thể cài đặt virus, đánh cắp mật khẩu, xóa dữ liệu, hoặc biến máy của bạn thành máy đào tiền ảo.
+* **Nếu bạn chạy bằng người dùng thường (`ngtukien`):** Kẻ tấn công sẽ chỉ chiếm được quyền của `ngtukien`. Chúng chỉ có thể phá các tệp trong `/home/ngtukien` và không thể làm hỏng hệ điều hành hoặc xem trộm tệp của người dùng khác.
+
+> **Nguyên tắc vàng:** Luôn luôn sử dụng **Nguyên Tắc Đặc Quyền Tối Thiểu (Principle of Least Privilege)**. Nghĩa là: Chỉ sử dụng quyền hạn tối thiểu cần thiết để hoàn thành công việc. (99% công việc hàng ngày như lập trình, duyệt web, văn bản... đều không cần `root`).
+
+---
+
+### b. 🔑 Phân Biệt `sudo` và `su`
+Cả hai đều dùng để nâng quyền, nhưng triết lý hoạt động hoàn toàn khác nhau.
+
+**`su` (Substitute User - Thay thế Người dùng)**
+* **Là gì:** Đây là lệnh để **chuyển đổi hoàn toàn** (đăng nhập) sang một tài khoản khác. Nếu không chỉ định, nó sẽ mặc định chuyển sang `root`.
+* **Cách dùng:** Gõ `su -` (hoặc chỉ `su`).
+* **Hỏi mật khẩu:** Nó hỏi mật khẩu của **`root`**.
+* **Kết quả:** Shell của bạn biến thành shell của `root`. Dấu nhắc `$ ` chuyển thành `# `. Bạn *trở thành* `root` và mọi lệnh bạn gõ sau đó đều là lệnh của `root`, cho đến khi bạn gõ `exit`.
+* **Nhược điểm:** Bạn phải biết và chia sẻ mật khẩu `root` (rất mất an toàn). Hệ thống chỉ ghi lại "ngtukien đã trở thành root" chứ không ghi lại chi tiết các lệnh bạn đã chạy sau đó.
+
+**`sudo` (Superuser Do - Làm với quyền Siêu quản trị)**
+* **Là gì:** Đây là lệnh để **chỉ chạy một lệnh duy nhất** *với tư cách* (as) `root`.
+* **Cách dùng:** Gõ `sudo [lệnh_bạn_muốn_chạy]` (ví dụ: `sudo apt update`).
+* **Hỏi mật khẩu:** Nó hỏi mật khẩu của **bạn** (`ngtukien`).
+* **Kết quả:** Chỉ lệnh `apt update` đó được chạy với quyền `root`. Ngay khi lệnh đó kết thúc, bạn ngay lập tức quay lại là người dùng `ngtukien` bình thường.
+* **Ưu điểm:** Cực kỳ an toàn. Bạn không cần biết mật khẩu `root`. Hệ thống ghi log (nhật ký) lại chính xác *từng lệnh* mà bạn đã chạy với `sudo`. Đây là cách làm được khuyên dùng.
+# Phần 5 : Quản lý tiến trình và hệ thống
 
