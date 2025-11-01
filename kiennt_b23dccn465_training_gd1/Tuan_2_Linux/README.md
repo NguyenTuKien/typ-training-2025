@@ -2019,3 +2019,52 @@ find: ‘/home/ngtukien/.local/share/Trash/expunged/412668199/Database’: Permi
 * `-exec du -h {} +`: Với mỗi tệp tìm được, thực thi lệnh `du -h` để hiển thị kích thước của tệp đó ở định dạng dễ đọc (human-readable).
 * `| sort -rh`: Sắp xếp kết quả theo kích thước giảm dần (`-r`), với `-h` để hiểu định dạng kích thước con người.
 * `| head -5`: Lấy 5 dòng đầu tiên từ kết quả đã sắp xếp, tức là 5 tệp lớn nhất.
+## 5. Cấu hình SSH và kiểm tra kết nối.
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ssh -i ~/Downloads/stemhub.pem ubuntu@13.212.157.223
+The authenticity of host '13.212.157.223 (13.212.157.223)' can't be established.
+ED25519 key fingerprint is SHA256:p1biI5LphvndYdputMdEW07kbVu2pdnmxVuaN+ppYn8.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '13.212.157.223' (ED25519) to the list of known hosts.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0664 for '/home/ngtukien/Downloads/stemhub.pem' are too open.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "/home/ngtukien/Downloads/stemhub.pem": bad permissions
+ubuntu@13.212.157.223: Permission denied (publickey).
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ sudo chmod 400 ~/Downloads/stemhub.pem 
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ssh -i ~/Downloads/stemhub.pem ubuntu@13.212.157.223
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.14.0-1015-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sat Nov  1 03:18:19 UTC 2025
+
+  System load:  0.48              Temperature:           -273.1 C
+  Usage of /:   26.5% of 6.71GB   Processes:             114
+  Memory usage: 23%               Users logged in:       0
+  Swap usage:   0%                IPv4 address for ens5: 172.31.10.74
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+Last login: Sat Nov  1 02:53:53 2025 from 3.0.5.37
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-10-74:~$ 
+```
