@@ -1080,7 +1080,7 @@ ngtukien    8075  0.0  0.0   9144  2212 pts/0    S+   13:46   0:00 grep --color=
     * **Bộ nhớ đệm L3:** 12 MiB (Đây là bộ nhớ cache lớn nhất, dùng chung cho cả 6 lõi để tăng tốc độ xử lý).
 ## 3. Dịch vụ và tiến trình nền (daemon)
 Một **daemon** là một tiến trình chạy ngầm (background) để thực hiện các tác vụ hệ thống (ví dụ: máy chủ web `httpd`, máy chủ cơ sở dữ liệu `mysqld`).
-a. `systemctl`: Lệnh quản lý dịch vụ chính
+### a. `systemctl`: Lệnh quản lý dịch vụ chính
 `systemctl` là công cụ chính và hiện đại nhất để điều khiển `systemd`, hệ thống quản lý dịch vụ mặc định trên hầu hết các bản Linux mới (như Ubuntu 16.04+, CentOS 7+, v.v.).
 * **`systemctl start <tên-dịch-vụ>`** : Khởi động một dịch vụ.
   ```shell
@@ -1154,9 +1154,62 @@ a. `systemctl`: Lệnh quản lý dịch vụ chính
     * **`journalctl -u <tên-dịch-vụ>`**: Chỉ xem log của một dịch vụ (unit) cụ thể. 
     * **`journalctl -u docker -f`**: Xem log của Docker và **theo dõi trực tiếp** (live, giống `tail -f`).
     * **`journalctl -b`**: Xem tất cả log kể từ lần khởi động máy (`boot`) gần nhất.
+```shell
+ngtukien@NgTuKien:~$ journalctl -u docker
+Oct 25 11:55:24 NgTuKien systemd[1]: Starting docker.service - Docker Applicati>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.037460042+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.038998878+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.039748865+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.039764288+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.039837759+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.087735625+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.109722460+07:>
+Oct 25 11:55:25 NgTuKien dockerd[1509]: time="2025-10-25T11:55:25.320435656+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.026581933+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.026611116+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.026622206+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.126581262+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.126581259+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.140396265+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.140631130+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.152272339+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.152543458+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.287873646+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.291195269+07:>
+Oct 25 11:55:26 NgTuKien dockerd[1509]: time="2025-10-25T11:55:26.291246265+07:>
+Oct 25 11:55:26 NgTuKien systemd[1]: Started docker.service - Docker Applicatio>
+Oct 25 11:55:40 NgTuKien systemd[1]: Stopping docker.service - Docker Applicati>
+lines 1-23
+```
 ### c. `service`: Lệnh cũ (Legacy)
 * Đây là lệnh quản lý dịch vụ cũ (từ hệ thống `SysVinit`).
 * **Cách dùng:** `sudo service <tên-dịch-vụ> <hành-động>`
+```shell
+ngtukien@NgTuKien:~$ service docker status
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: e>
+     Active: active (running) since Sun 2025-11-02 09:24:20 +07; 58min ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 1532 (dockerd)
+      Tasks: 19
+     Memory: 125.8M (peak: 130.5M)
+        CPU: 925ms
+     CGroup: /system.slice/docker.service
+             └─1532 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/cont>
+
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.123661331+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.140769967+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.339608065+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.782447317+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.793051609+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.793203901+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.945009139+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.947340859+07:>
+Nov 02 09:24:20 NgTuKien dockerd[1532]: time="2025-11-02T09:24:20.947366867+07:>
+Nov 02 09:24:20 NgTuKien systemd[1]: Started docker.service - Docker Applicatio>
+lines 1-22/22 (END)
+````
 >**Lưu ý:** Trên các hệ thống dùng `systemd`, lệnh `service` thực chất chỉ là một "lớp vỏ" (wrapper) và khi bạn chạy, nó sẽ tự động **gọi lệnh `systemctl` tương ứng** ở bên dưới. Bạn nên tập dùng `systemctl` vì nó là tiêu chuẩn mới.
 # Phần 6: Quản lý gói phần mềm
 ## 1. Trình quản lý gói (Package Manager)
