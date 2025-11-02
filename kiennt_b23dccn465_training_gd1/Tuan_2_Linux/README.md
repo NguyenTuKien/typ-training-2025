@@ -1625,10 +1625,67 @@ Content-Language: en-US
 Date: Fri, 31 Oct 2025 11:53:53 GMT
 ```
 ## 2. Kết nối SSH và truyền file
+**SSH** là viết tắt của **Secure Shell** (Vỏ Bảo Mật).
+
+Đây là một **giao thức mạng** (một bộ quy tắc) cho phép bạn **kết nối và điều khiển một máy tính khác từ xa** (ví dụ như một máy chủ) một cách **an toàn tuyệt đối**.
+
+### Mục đích chính
+
+* **Đăng nhập từ xa (Remote Login):** Đây là công dụng phổ biến nhất. Bạn dùng lệnh `ssh user@ip` để mở một cửa sổ dòng lệnh (terminal) trên máy chủ. Từ đó, bạn có thể gõ lệnh và quản trị máy chủ y như đang ngồi trực tiếp trước nó.
+* **Truyền file an toàn (Secure File Transfer):** SSH là nền tảng cho các công cụ như `scp` và `rsync`, cho phép bạn sao chép file giữa máy của mình và máy chủ một cách an toàn.
+* **Thay thế các giao thức cũ, không an toàn:** SSH ra đời để thay thế `telnet`, một giao thức cũ gửi mật khẩu và dữ liệu dưới dạng **văn bản thuần** (không mã hóa), rất dễ bị đánh cắp.
 ### a. Kết nối và Truyền File (Các lệnh chính)
 * **`ssh user@ip`** (Secure Shell) 
     * **Công dụng:** Đây là lệnh cơ bản nhất để **đăng nhập** và **điều khiển** một máy chủ từ xa một cách an toàn (mã hóa).
     * **Giống như:** Mở một cửa sổ Terminal trực tiếp trên máy chủ đó.
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ssh -i ~/Downloads/stemhub.pem ubuntu@13.212.157.223
+    The authenticity of host '13.212.157.223 (13.212.157.223)' can't be established.
+    ED25519 key fingerprint is SHA256:p1biI5LphvndYdputMdEW07kbVu2pdnmxVuaN+ppYn8.
+    This key is not known by any other names.
+    Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+    Warning: Permanently added '13.212.157.223' (ED25519) to the list of known hosts.
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    @         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+    Permissions 0664 for '/home/ngtukien/Downloads/stemhub.pem' are too open.
+    It is required that your private key files are NOT accessible by others.
+    This private key will be ignored.
+    Load key "/home/ngtukien/Downloads/stemhub.pem": bad permissions
+    ubuntu@13.212.157.223: Permission denied (publickey).
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ sudo chmod 400 ~/Downloads/stemhub.pem
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ssh -i ~/Downloads/stemhub.pem ubuntu@13.212.157.223
+    Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.14.0-1015-aws x86_64)
+    
+    * Documentation:  https://help.ubuntu.com
+    * Management:     https://landscape.canonical.com
+    * Support:        https://ubuntu.com/pro
+    
+    System information as of Sat Nov  1 03:18:19 UTC 2025
+    
+    System load:  0.48              Temperature:           -273.1 C
+    Usage of /:   26.5% of 6.71GB   Processes:             114
+    Memory usage: 23%               Users logged in:       0
+    Swap usage:   0%                IPv4 address for ens5: 172.31.10.74
+    
+    
+    Expanded Security Maintenance for Applications is not enabled.
+    
+    0 updates can be applied immediately.
+    
+    Enable ESM Apps to receive additional future security updates.
+    See https://ubuntu.com/esm or run: sudo pro status
+    
+    
+    The list of available updates is more than a week old.
+    To check for new updates run: sudo apt update
+    
+    Last login: Sat Nov  1 02:53:53 2025 from 3.0.5.37
+    To run a command as administrator (user "root"), use "sudo <command>".
+    See "man sudo_root" for details.
+    
+    ubuntu@ip-172-31-10-74:~$
+    ```
 * **`scp`** (Secure Copy) 
     * **Công dụng:** Dùng để **sao chép file/thư mục** giữa máy của bạn và máy chủ qua SSH.
     * **Giống như:** Lệnh `cp` (copy) nhưng hoạt động qua mạng.
@@ -1637,7 +1694,7 @@ Date: Fri, 31 Oct 2025 11:53:53 GMT
     * **Công dụng:** Dùng để **đồng bộ hóa** file và thư mục.
     * **Điểm mạnh:** Nó "thông minh" hơn `scp`. Nó chỉ truyền những phần (delta) của file đã bị thay đổi, chứ không chép đè toàn bộ file.
     * **Kết quả:** **Nhanh hơn `scp` rất nhiều** khi bạn cập nhật file thường xuyên (ví dụ: backup, deploy code).
-### c. Thiết lập Đăng nhập không Mật khẩu (SSH Keys)
+### b. Thiết lập Đăng nhập không Mật khẩu (SSH Keys)
 Mục đích là để đăng nhập vào máy chủ mà không cần gõ mật khẩu, vừa tiện lợi vừa an toàn hơn nhiều.
 * **`ssh-keygen`** 
     * **Công dụng:** **Tạo ra một cặp "chìa khóa"** (key pair) trên máy của bạn (máy client).
@@ -1655,10 +1712,23 @@ Mục đích là để đăng nhập vào máy chủ mà không cần gõ mật 
     * Đây là công cụ firewall **truyền thống, cốt lõi** và cực kỳ mạnh mẽ của Linux, hoạt động ở cấp độ kernel.
     * **Nhược điểm:** Nó rất phức tạp và khó sử dụng, cú pháp dài dòng.
     * **Giống như:** Bảng điều khiển điện chính của cả tòa nhà.
+    * Câu lệnh phổ biến :
+      * **`sudo iptables -L -n -v`**: **Xem trạng lthái** (Lệnh quan trọng nhất).
+      * **`sudo iptables -A INPUT ... -j ACCEPT`**: **Thêm** quy tắc CHẤP NHẬN.
+      * **`sudo iptables -A INPUT ... -j DROP`**: **Thêm** quy tắc CHẶN (thả gói tin).
+      * **`sudo iptables -D INPUT [số]`**: **Xóa** quy tắc theo số dòng (xem số bằng `iptables -L --line-numbers`).
+      * **`sudo iptables -F`**: **(Flush)** Xóa sạch *tất cả* quy tắc (Cẩn thận!).
 * **`ufw` (Uncomplicated Firewall)** 
     * Đây là một giao diện **thân thiện, đơn giản hóa** để quản lý `iptables`.
     * **Ưu điểm:** Dễ học và dễ dùng cho các tác vụ phổ biến (ví dụ: `ufw allow 22`, `ufw status`).
     * **Giống như:** Cái công tắc đèn trong phòng. Nó điều khiển `iptables` một cách dễ dàng. Đây là công cụ được khuyên dùng trên Ubuntu.
+    * 1 số câu lệnh thường dùng : 
+      * **`sudo ufw status numbered`**: **Xem trạng thái** (và lấy số thứ tự để xóa).
+      * **`sudo ufw enable`**: **Bật** tường lửa (Nhớ chạy `sudo ufw allow 22` trước nếu đang SSH!).
+      * **`sudo ufw disable`**: **Tắt** tường lửa.
+      * **`sudo ufw allow [cổng]`**: **Cho phép** một cổng (ví dụ: `sudo ufw allow 22`).
+      * **`sudo ufw deny [cổng]`**: **Chặn** một cổng.
+      * **`sudo ufw delete [số]`**: **Xóa** một quy tắc theo số thứ tự.
 ### b. Công cụ Kiểm tra Cổng (Port)
 Công cụ này dùng để **xem** những cổng nào đang "mở" và "lắng nghe" kết nối trên máy của bạn.
 * **`ss -tuln`** 
@@ -1927,238 +1997,4 @@ CRON RUN: 2025-10-31_21-20-01
 **Ví dụ 4: Chạy script 15 phút một lần (vào các phút 0, 15, 30, 45 của mỗi giờ)**
 ```bash
 */15 * * * * /home/ngtukien/scripts/backup.sh
-```
-# Phần 9: Thực hành tổng hợp
-## 1. Tạo user mới, cấp quyền hạn chế
-```shell
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ sudo adduser guest
-[sudo] password for ngtukien: 
-info: Adding user `guest' ...
-info: Selecting UID/GID from range 1000 to 59999 ...
-info: Adding new group `guest' (1001) ...
-info: Adding new user `guest' (1001) with group `guest (1001)' ...
-info: Creating home directory `/home/guest' ...
-info: Copying files from `/etc/skel' ...
-New password: 
-BAD PASSWORD: The password is shorter than 8 characters
-Retype new password: 
-passwd: password updated successfully
-Changing the user information for guest
-Enter the new value, or press ENTER for the default
-        Full Name []: 
-        Room Number []: 
-        Work Phone []: 
-        Home Phone []: 
-        Other []: 
-Is the information correct? [Y/n] Y
-info: Adding new user `guest' to supplemental / extra groups `users' ...
-info: Adding user `guest' to group `users' ...
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ su guest
-Password: 
-guest@NgTuKien:/home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ sudo apt update
-[sudo] password for guest: 
-guest is not in the sudoers file.
-guest@NgTuKien:/home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ su ngtukien 
-Password: 
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ sudo deluser guest
-info: Removing crontab ...
-info: Removing user `guest' ...
-userdel: user guest is currently used by process 27051
-fatal: `/usr/sbin/userdel guest' returned error code 8. Exiting.
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ sudo kill 27051
-```
-## 2. Tạo và nén backup thư mục.
-```shell
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ cp -r Tuan_1_Git_\&_Github/ Tuan_2_Linux/ Backup/
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ ls Backup/
-'Tuan_1_Git_&_Github'   Tuan_2_Linux
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ tar -cvzf backup.tar.gz Backup/
-Backup/
-Backup/Tuan_2_Linux/
-Backup/Tuan_2_Linux/README.md
-Backup/Tuan_2_Linux/Image/
-Backup/Tuan_2_Linux/Image/htop.png
-Backup/Tuan_2_Linux/Image/less.png
-Backup/Tuan_2_Linux/Image/terminal.png
-Backup/Tuan_2_Linux/note.md
-Backup/Tuan_1_Git_&_Github/
-Backup/Tuan_1_Git_&_Github/README.md
-Backup/Tuan_1_Git_&_Github/Image/
-Backup/Tuan_1_Git_&_Github/Image/img_10.png
-Backup/Tuan_1_Git_&_Github/Image/img_14.png
-Backup/Tuan_1_Git_&_Github/Image/img.png
-Backup/Tuan_1_Git_&_Github/Image/img_19.png
-Backup/Tuan_1_Git_&_Github/Image/img_29.png
-Backup/Tuan_1_Git_&_Github/Image/img_7.png
-Backup/Tuan_1_Git_&_Github/Image/img_2.png
-Backup/Tuan_1_Git_&_Github/Image/vid_3.webm
-Backup/Tuan_1_Git_&_Github/Image/img_11.png
-Backup/Tuan_1_Git_&_Github/Image/img_22.png
-Backup/Tuan_1_Git_&_Github/Image/img_1.png
-Backup/Tuan_1_Git_&_Github/Image/img_30.png
-Backup/Tuan_1_Git_&_Github/Image/img_3.png
-Backup/Tuan_1_Git_&_Github/Image/img_28.png
-Backup/Tuan_1_Git_&_Github/Image/img_20.png
-Backup/Tuan_1_Git_&_Github/Image/img_23.png
-Backup/Tuan_1_Git_&_Github/Image/img_15.png
-Backup/Tuan_1_Git_&_Github/Image/img_21.png
-Backup/Tuan_1_Git_&_Github/Image/img_24.png
-Backup/Tuan_1_Git_&_Github/Image/img_16.png
-Backup/Tuan_1_Git_&_Github/Image/img_17.png
-Backup/Tuan_1_Git_&_Github/Image/img_6.png
-Backup/Tuan_1_Git_&_Github/Image/img_12.png
-Backup/Tuan_1_Git_&_Github/Image/img_27.png
-Backup/Tuan_1_Git_&_Github/Image/vid_1.webm
-Backup/Tuan_1_Git_&_Github/Image/img_4.png
-Backup/Tuan_1_Git_&_Github/Image/img_9.png
-Backup/Tuan_1_Git_&_Github/Image/img_8.png
-Backup/Tuan_1_Git_&_Github/Image/img_5.png
-Backup/Tuan_1_Git_&_Github/Image/img_26.png
-Backup/Tuan_1_Git_&_Github/Image/img_13.png
-Backup/Tuan_1_Git_&_Github/Image/img_18.png
-Backup/Tuan_1_Git_&_Github/Image/vid_2.webm
-Backup/Tuan_1_Git_&_Github/ssh_key.md
-Backup/Tuan_1_Git_&_Github/Cach_SHA1_tao_ra_commitID.md
-Backup/Tuan_1_Git_&_Github/Tuan_2/
-Backup/Tuan_1_Git_&_Github/Thuat_toan_SHA1.md
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ tar -tf backup.tar.gz 
-Backup/
-Backup/Tuan_2_Linux/
-Backup/Tuan_2_Linux/README.md
-Backup/Tuan_2_Linux/Image/
-Backup/Tuan_2_Linux/Image/htop.png
-Backup/Tuan_2_Linux/Image/less.png
-Backup/Tuan_2_Linux/Image/terminal.png
-Backup/Tuan_2_Linux/note.md
-Backup/Tuan_1_Git_&_Github/
-Backup/Tuan_1_Git_&_Github/README.md
-Backup/Tuan_1_Git_&_Github/Image/
-Backup/Tuan_1_Git_&_Github/Image/img_10.png
-Backup/Tuan_1_Git_&_Github/Image/img_14.png
-Backup/Tuan_1_Git_&_Github/Image/img.png
-Backup/Tuan_1_Git_&_Github/Image/img_19.png
-Backup/Tuan_1_Git_&_Github/Image/img_29.png
-Backup/Tuan_1_Git_&_Github/Image/img_7.png
-Backup/Tuan_1_Git_&_Github/Image/img_2.png
-Backup/Tuan_1_Git_&_Github/Image/vid_3.webm
-Backup/Tuan_1_Git_&_Github/Image/img_11.png
-Backup/Tuan_1_Git_&_Github/Image/img_22.png
-Backup/Tuan_1_Git_&_Github/Image/img_1.png
-Backup/Tuan_1_Git_&_Github/Image/img_30.png
-Backup/Tuan_1_Git_&_Github/Image/img_3.png
-Backup/Tuan_1_Git_&_Github/Image/img_28.png
-Backup/Tuan_1_Git_&_Github/Image/img_20.png
-Backup/Tuan_1_Git_&_Github/Image/img_23.png
-Backup/Tuan_1_Git_&_Github/Image/img_15.png
-Backup/Tuan_1_Git_&_Github/Image/img_21.png
-Backup/Tuan_1_Git_&_Github/Image/img_24.png
-Backup/Tuan_1_Git_&_Github/Image/img_16.png
-Backup/Tuan_1_Git_&_Github/Image/img_17.png
-Backup/Tuan_1_Git_&_Github/Image/img_6.png
-Backup/Tuan_1_Git_&_Github/Image/img_12.png
-Backup/Tuan_1_Git_&_Github/Image/img_27.png
-Backup/Tuan_1_Git_&_Github/Image/vid_1.webm
-Backup/Tuan_1_Git_&_Github/Image/img_4.png
-Backup/Tuan_1_Git_&_Github/Image/img_9.png
-Backup/Tuan_1_Git_&_Github/Image/img_8.png
-Backup/Tuan_1_Git_&_Github/Image/img_5.png
-Backup/Tuan_1_Git_&_Github/Image/img_26.png
-Backup/Tuan_1_Git_&_Github/Image/img_13.png
-Backup/Tuan_1_Git_&_Github/Image/img_18.png
-Backup/Tuan_1_Git_&_Github/Image/vid_2.webm
-Backup/Tuan_1_Git_&_Github/ssh_key.md
-Backup/Tuan_1_Git_&_Github/Cach_SHA1_tao_ra_commitID.md
-Backup/Tuan_1_Git_&_Github/Tuan_2/
-Backup/Tuan_1_Git_&_Github/Thuat_toan_SHA1.md
-```
-## 3. Viết script tự động sao lưu log hệ thống hàng ngày.
-```shell
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ cat script.sh 
-#!/bin/bash
-DATE=$(date "+%Y-%m-%d")
-DIR="/home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1"
-mkdir -p "$DIR/Backup"
-if tar -czf "$DIR/Backup/backup_$DATE.tar.gz" "$DIR/Tuan_1_Git_&_Github" "$DIR/Tuan_2_Linux"; then
-  echo "Backup created successfully at $DIR/Backup/backup_$DATE.tar.gz" >> "$DIR/Backup/backup_log.txt"
-else
-  echo "$DATE : Error creating backup" >> "$DIR/Backup/backup_log.txt"
-fi
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ chmod +x /home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/script.sh
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ ls -la
-total 20
-drwxrwxr-x 4 ngtukien ngtukien 4096 Oct 31 23:15  .
-drwxrwxr-x 5 ngtukien ngtukien 4096 Oct 31 22:36  ..
--rwxrwxr-x 1 ngtukien ngtukien  432 Oct 31 23:09  script.sh
-drwxrwxr-x 3 ngtukien ngtukien 4096 Oct 31 23:04 'Tuan_1_Git_&_Github'
-drwxrwxr-x 3 ngtukien ngtukien 4096 Oct 31 23:19  Tuan_2_Linux
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ crontab -e
-```
-![crontab.png](Image/crontab.png)
-```shell
-crontab: installing new crontab
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ head Backup/backup_log.txt 
-Backup created successfully at /home/ngtukien/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Backup/backup_2025-10-31.tar.gz
-```
-## 4. Dò tìm file lớn nhất trong thư mục home.
-```shell
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1$ find ~ -type f -exec du -h {} + | sort -rh | head -5
-find: ‘/home/ngtukien/.local/share/Trash/expunged/412668199/Database’: Permission denied
-1.7G    /home/ngtukien/Downloads/ideaIU-2025.2.4.tar.gz
-274M    /home/ngtukien/.local/share/Trash/files/DataGrip-2025.2.4/lib/app.jar
-254M    /home/ngtukien/.cache/JetBrains/IntelliJIdea2025.2/plugins/github-copilot-intellij.zip
-236M    /home/ngtukien/.cache/vscode-cpptools/ipch/fd69d03327f1e392/PhapSu.ipch
-236M    /home/ngtukien/.cache/vscode-cpptools/ipch/d60ebe88be4e5cd9/C.ipch
-```
-* `find ~ -type f`: Tìm tất cả các tệp (`-type f`) trong thư mục home (`~`).
-* `-exec du -h {} +`: Với mỗi tệp tìm được, thực thi lệnh `du -h` để hiển thị kích thước của tệp đó ở định dạng dễ đọc (human-readable).
-* `| sort -rh`: Sắp xếp kết quả theo kích thước giảm dần (`-r`), với `-h` để hiểu định dạng kích thước con người.
-* `| head -5`: Lấy 5 dòng đầu tiên từ kết quả đã sắp xếp, tức là 5 tệp lớn nhất.
-## 5. Cấu hình SSH và kiểm tra kết nối.
-```shell
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ssh -i ~/Downloads/stemhub.pem ubuntu@13.212.157.223
-The authenticity of host '13.212.157.223 (13.212.157.223)' can't be established.
-ED25519 key fingerprint is SHA256:p1biI5LphvndYdputMdEW07kbVu2pdnmxVuaN+ppYn8.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added '13.212.157.223' (ED25519) to the list of known hosts.
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-Permissions 0664 for '/home/ngtukien/Downloads/stemhub.pem' are too open.
-It is required that your private key files are NOT accessible by others.
-This private key will be ignored.
-Load key "/home/ngtukien/Downloads/stemhub.pem": bad permissions
-ubuntu@13.212.157.223: Permission denied (publickey).
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ sudo chmod 400 ~/Downloads/stemhub.pem 
-ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ssh -i ~/Downloads/stemhub.pem ubuntu@13.212.157.223
-Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.14.0-1015-aws x86_64)
-
- * Documentation:  https://help.ubuntu.com
- * Management:     https://landscape.canonical.com
- * Support:        https://ubuntu.com/pro
-
- System information as of Sat Nov  1 03:18:19 UTC 2025
-
-  System load:  0.48              Temperature:           -273.1 C
-  Usage of /:   26.5% of 6.71GB   Processes:             114
-  Memory usage: 23%               Users logged in:       0
-  Swap usage:   0%                IPv4 address for ens5: 172.31.10.74
-
-
-Expanded Security Maintenance for Applications is not enabled.
-
-0 updates can be applied immediately.
-
-Enable ESM Apps to receive additional future security updates.
-See https://ubuntu.com/esm or run: sudo pro status
-
-
-The list of available updates is more than a week old.
-To check for new updates run: sudo apt update
-
-Last login: Sat Nov  1 02:53:53 2025 from 3.0.5.37
-To run a command as administrator (user "root"), use "sudo <command>".
-See "man sudo_root" for details.
-
-ubuntu@ip-172-31-10-74:~$ 
 ```
