@@ -1624,6 +1624,52 @@ Content-Type: text/html;charset=UTF-8
 Content-Language: en-US
 Date: Fri, 31 Oct 2025 11:53:53 GMT
 ```
+## 2. Kết nối SSH và truyền file
+### a. Kết nối và Truyền File (Các lệnh chính)
+* **`ssh user@ip`** (Secure Shell) 🖥️
+    * **Công dụng:** Đây là lệnh cơ bản nhất để **đăng nhập** và **điều khiển** một máy chủ từ xa một cách an toàn (mã hóa).
+    * **Giống như:** Mở một cửa sổ Terminal trực tiếp trên máy chủ đó.
+* **`scp`** (Secure Copy) 📄
+    * **Công dụng:** Dùng để **sao chép file/thư mục** giữa máy của bạn và máy chủ qua SSH.
+    * **Giống như:** Lệnh `cp` (copy) nhưng hoạt động qua mạng.
+    * *Ví dụ: `scp file.txt user@ip:/home/user/` (đẩy file lên) hoặc `scp user@ip:/home/user/file.txt .` (kéo file về).*
+* **`rsync`** (Remote Sync) 🔄
+    * **Công dụng:** Dùng để **đồng bộ hóa** file và thư mục.
+    * **Điểm mạnh:** Nó "thông minh" hơn `scp`. Nó chỉ truyền những phần (delta) của file đã bị thay đổi, chứ không chép đè toàn bộ file.
+    * **Kết quả:** **Nhanh hơn `scp` rất nhiều** khi bạn cập nhật file thường xuyên (ví dụ: backup, deploy code).
+### c. Thiết lập Đăng nhập không Mật khẩu (SSH Keys)
+Mục đích là để đăng nhập vào máy chủ mà không cần gõ mật khẩu, vừa tiện lợi vừa an toàn hơn nhiều.
+* **`ssh-keygen`** 🔑
+    * **Công dụng:** **Tạo ra một cặp "chìa khóa"** (key pair) trên máy của bạn (máy client).
+    * **Kết quả:** Tạo ra 2 file:
+        * `~/.ssh/id_rsa`: **Private Key (Chìa khóa riêng)**. Phải giữ bí mật tuyệt đối trên máy bạn.
+        * `~/.ssh/id_rsa.pub`: **Public Key (Chìa khóa công khai)**. Đây là "ổ khóa" bạn sẽ gửi cho các máy chủ.
+* **`ssh-copy-id user@ip`** 🔒
+    * **Công dụng:** **Cài đặt "ổ khóa"** (public key) của bạn lên máy chủ một cách tự động và an toàn.
+    * **Cách hoạt động:** Nó đăng nhập vào máy chủ (lần cuối cùng dùng mật khẩu), tìm đến file `~/.ssh/authorized_keys` và dán public key của bạn vào đó.
+**Kết quả cuối cùng:** Sau khi chạy `ssh-copy-id`, lần tiếp theo bạn gõ `ssh user@ip`, máy chủ sẽ nhận ra "ổ khóa" khớp với "chìa khóa riêng" bạn đang giữ và cho bạn vào thẳng mà không hỏi mật khẩu.
+## 3. Kiểm tra cổng và filewall
+### a. Công cụ Quản lý Firewall (Tường lửa)
+Đây là các công cụ dùng để **cấu hình, bật, tắt, và kiểm tra các quy tắc (rules)** của tường lửa.
+* **`iptables`** 🔥
+    * Đây là công cụ firewall **truyền thống, cốt lõi** và cực kỳ mạnh mẽ của Linux, hoạt động ở cấp độ kernel.
+    * **Nhược điểm:** Nó rất phức tạp và khó sử dụng, cú pháp dài dòng.
+    * **Giống như:** Bảng điều khiển điện chính của cả tòa nhà.
+* **`ufw` (Uncomplicated Firewall)** 🛡️
+    * Đây là một giao diện **thân thiện, đơn giản hóa** để quản lý `iptables`.
+    * **Ưu điểm:** Dễ học và dễ dùng cho các tác vụ phổ biến (ví dụ: `ufw allow 22`, `ufw status`).
+    * **Giống như:** Cái công tắc đèn trong phòng. Nó điều khiển `iptables` một cách dễ dàng. Đây là công cụ được khuyên dùng trên Ubuntu.
+### b. Công cụ Kiểm tra Cổng (Port)
+Công cụ này dùng để **xem** những cổng nào đang "mở" và "lắng nghe" kết nối trên máy của bạn.
+* **`ss -tuln`** 
+    * **Công dụng:** Liệt kê tất cả các "ổ cắm" (sockets) đang lắng nghe. Nó **không** cấu hình firewall, nó chỉ **hiển thị trạng thái**.
+    * **Giải thích lệnh:**
+        * `s` (socket): Hiển thị thông tin về socket.
+        * `t`: Hiển thị cổng **T**CP.
+        * `u`: Hiển thị cổng **U**DP.
+        * `l`: Chỉ hiển thị các cổng đang **L**istening (lắng nghe).
+        * `n`: Hiển thị dạng số (**n**umeric), không dịch sang tên (vídụ: 80 thay vì http) để chạy nhanh hơn.
+> Để một người bên ngoài kết nối được với bạn, dịch vụ phải đang chạy (kiểm tra bằng `ss`) VÀ firewall phải cho phép (kiểm tra bằng `ufw`).
 # Phần 8: Script & Automation cơ bản
 ## 1. Shell Script là gì
 **Shell Script** là một tệp văn bản chứa một loạt các lệnh (commands) dành cho Unix shell (như Bash, Zsh). Thay vì gõ từng lệnh một cách thủ công vào terminal, bạn viết chúng vào một tệp để thực thi tuần tự.
