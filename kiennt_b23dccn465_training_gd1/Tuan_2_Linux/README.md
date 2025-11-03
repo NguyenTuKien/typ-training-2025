@@ -1353,8 +1353,9 @@ Quan trọng nhất, nó tự động xử lý các **phụ thuộc (dependencie
 * Đôi khi, các lệnh quản lý gói khá dài dòng (ví dụ: `sudo apt update && sudo apt upgrade -y`). Để tiết kiệm thời gian, bạn có thể tạo các **alias** (bí danh) trong file `~/.bashrc` hoặc `~/.zshrc`.
 * Ví dụ, bạn có thể thêm dòng sau vào `~/.bashrc`:
     ```shell
-    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ echo "alias ll='ls -alF'" >> ~/bashrc
-    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ cat ~/bashrc | grep "alias ll='ls -alF'"
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ echo "alias ll='ls -alF'" >> ~/.bashrc
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ source ~/.bashrc
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ cat ~/.bashrc | grep "alias ll='ls -alF'"
     alias ll='ls -alF'
     ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ ll .
     total 24
