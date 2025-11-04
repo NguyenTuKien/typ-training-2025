@@ -175,3 +175,272 @@ Công nghệ phổ biến: **Docker**, **Kubernetes**, **Podman**, **LXC**
 | **Trường hợp dùng**  | Triển khai ứng dụng nhanh, CI/CD, microservices | Chạy nhiều OS khác nhau, môi trường phức tạp |
 | **Công cụ phổ biến** | Docker, Kubernetes                              | VMware, VirtualBox, Hyper-V                  |
 ![img.png](Image/container.png)
+## 2. Docker
+### 2.1 Tổng quan & Cài đặt Docker
+**Docker** là nền tảng mã nguồn mở giúp **tạo, triển khai và quản lý container** một cách dễ dàng.
+
+**Các thành phần chính của Docker :**
+    
+| Thành phần | Vai trò (Nó là gì?)                                | Mục đích (Nó làm gì?) |
+| :--- |:---------------------------------------------------| :--- |
+| **Docker Engine (Động cơ)** | "Trái tim" của Docker, bao gồm Daemon, CLI và API. | Quản lý, xây dựng và chạy các container. |
+| **Docker Daemon (Trình nền)** | "Bộ não" chạy nền, lắng nghe lệnh.                 | Thực thi các lệnh như tạo Image, chạy Container. |
+| **Docker CLI (Dòng lệnh)** | "Người giao tiếp" (ví dụ: `docker run`).           | Cung cấp giao diện để người dùng ra lệnh cho Docker Daemon. |
+| **Dockerfile (Tệp Docker)** | "Bản thiết kế" hoặc "Công thức".                   | Chứa các hướng dẫn từng bước để **xây dựng** một Image. |
+| **Docker Image (Hình ảnh)** | "Khuôn mẫu" hoặc "Gói" chỉ đọc.                    | Một gói độc lập chứa mọi thứ (mã, thư viện) cần thiết để chạy ứng dụng. |
+| **Docker Container (Vùng chứa)** | "Một phiên bản đang chạy" của Image.               | Môi trường bị cô lập nơi ứng dụng của bạn thực sự hoạt động. |
+| **Docker Registry (Kho chứa)** | "Thư viện" hoặc "Nhà kho" (như Docker Hub).        | Dùng để **lưu trữ và chia sẻ** các Docker Image. |
+| **Docker Compose** | "Nhạc trưởng" của dàn nhạc.                      | Một công cụ để **định nghĩa và chạy** các ứng dụng gồm nhiều container. |
+![img.png](Image/docker.png)
+#### 2.1.1. Overview về docker container.
+**Docker Container** là một **phiên bản đang chạy (running instance)** của một **Docker Image**.
+
+Nếu **Image** (Hình ảnh) là một **"Class"** (lớp) trong lập trình hướng đối tượng—một bản thiết kế chỉ đọc, chứa mọi thứ bạn cần—thì **Container** chính là một **"Object"** (đối tượng), một thực thể sống động được tạo ra từ bản thiết kế đó. Bạn có thể tạo, chạy, dừng, và xóa Container.
+
+Một container đóng gói ứng dụng của bạn cùng với tất cả các phụ thuộc của nó (thư viện, tệp cấu hình, runtime) vào một môi trường bị cô lập hoàn toàn.
+
+---
+**Các đặc tính quan trọng nhất :**
+##### a. Tính cô lập (Isolation)
+Một container chạy trong một "cái hộp"(sandbox) hoàn toàn tách biệt với các container khác và với máy chủ (host).
+* **Cô lập hệ thống tệp:** Container có hệ thống tệp riêng của nó (được tạo từ Image). Nó không thể thấy các tệp trên máy chủ hoặc trong các container khác (trừ khi bạn cố tình chia sẻ).
+* **Cô lập tiến trình (Process):** Container chỉ thấy các tiến trình đang chạy *bên trong* nó. Tiến trình gốc (PID 1) bên trong container là ứng dụng của bạn. Nó không thể thấy các tiến trình của máy chủ.
+* **Cô lập mạng:** Mỗi container có địa chỉ IP và cổng (port) riêng.
+##### b. Tính nhẹ (Lightweight)
+Đây là điểm khác biệt lớn nhất so với **Máy ảo (VM)**.
+* **VM (Máy ảo):** Ảo hóa toàn bộ phần cứng và chạy một hệ điều hành khách (Guest OS) hoàn chỉnh bên trên hệ điều hành chủ (Host OS). Điều này rất nặng nề, tốn nhiều tài nguyên (RAM, CPU) và khởi động mất vài phút.
+* **Container:** Không chạy hệ điều hành khách. Thay vào đó, nó **chia sẻ nhân (kernel) của hệ điều hành chủ (Host OS)**. Tất cả các container trên một máy chủ đều dùng chung một kernel. Chúng chỉ ảo hóa ở cấp độ tiến trình và thư viện.
+Vì vậy, container khởi động chỉ trong **vài giây** (hoặc nhanh hơn) và tốn ít tài nguyên hơn rất nhiều.
+##### c. Tính di động (Portability)
+Container giải quyết triệt để vấn đề kinh điển: "Ủa, trên máy tớ chạy được mà!"
+Bởi vì container đóng gói *mọi thứ* (mã, runtime, thư viện), bạn có thể "Build" nó một lần và chạy nó ở bất cứ đâu có Docker Engine: trên máy tính cá nhân (Windows, macOS, Linux), trên máy chủ nội bộ, hay trên mọi đám mây (AWS, Google Cloud, Azure). Nó sẽ chạy **giống hệt nhau** ở mọi nơi.
+##### d. Tính tạm thời (Ephemeral)
+Đây là một khái niệm quan trọng cần nắm: Container được thiết kế để **dễ dàng vứt bỏ và thay thế**.
+* Mọi dữ liệu bạn ghi vào hệ thống tệp *bên trong* container sẽ **mất vĩnh viễn** khi container đó bị xóa.
+* **Giải pháp:** Để lưu trữ dữ liệu vĩnh viễn (như cơ sở dữ liệu), bạn phải sử dụng **Docker Volumes**. Volumes là một cơ chế cho phép dữ liệu tồn tại bên ngoài vòng đời của container, được lưu trữ an toàn trên máy chủ.
+#### 2.1.2. Cài đặt docker
+##### a. Yêu cầu trước khi cài đặt Docker Engine trên Ubuntu
+**1\. Cảnh báo quan trọng về Tường lửa (Firewall)**
+
+Đây là điểm rất quan trọng cần lưu ý:
+* **Bỏ qua (Bypass) UFW / Firewalld:** Nếu bạn sử dụng `ufw` (phổ biến trên Ubuntu) hoặc `firewalld` để quản lý tường lửa, hãy cẩn thận. Khi Docker mở (expose) một cổng cho container, cổng đó sẽ **bỏ qua các quy tắc tường lửa** của bạn.
+* **Không tương thích với `nft`:** Docker **chỉ** tương thích với `iptables-nft` và `iptables-legacy`. Nó **không** hỗ trợ các quy tắc tường lửa được tạo bằng `nft`. Bạn phải đảm bảo các quy tắc được tạo bằng `iptables` hoặc `ip6tables`.
+
+**2\. Yêu cầu Hệ điều hành (OS)**
+* Bạn cần phiên bản **64-bit** của một trong các bản Ubuntu sau:
+    * Ubuntu 25.10 (Questing)
+    * Ubuntu 25.04 (Plucky)
+    * Ubuntu 24.04 (Noble LTS)
+    * Ubuntu 22.04 (Jammy LTS)
+* **Không hỗ trợ chính thức:** Các bản phái sinh từ Ubuntu (như Linux Mint) không được hỗ trợ chính thức, mặc dù chúng có thể hoạt động.
+
+**3\. Gỡ cài đặt các phiên bản cũ (Bắt buộc)**
+
+Trước khi cài đặt phiên bản Docker Engine chính thức, bạn **phải** gỡ cài đặt bất kỳ gói nào có khả năng xung đột.
+
+* **Tại sao phải gỡ?**
+  * Bản phân phối Linux của bạn có thể cung cấp các gói Docker "không chính thức" (như `docker.io`) và chúng sẽ xung đột với gói chính thức của Docker.
+* **Các gói cần gỡ:**
+    * `docker.io`
+    * `docker-compose`
+    * `docker-compose-v2`
+    * `docker-doc`
+    * `podman-docker`
+* **Gỡ cả các phụ thuộc:** Docker Engine mới đã bao gồm `containerd` và `runc`. Nếu bạn đã cài đặt chúng theo cách thủ công trước đó, bạn cũng nên gỡ bỏ (`containerd`, `runc`) để tránh xung đột phiên bản.
+
+**Lệnh gỡ cài đặt tất cả:**
+```bash
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+**Lưu ý quan trọng về dữ liệu cũ:**
+* Việc chạy lệnh `remove` ở trên **KHÔNG** tự động xóa dữ liệu Docker cũ của bạn (như images, containers, volumes).
+* Tất cả dữ liệu này vẫn được lưu trữ tại `/var/lib/docker/`.
+* Nếu bạn muốn bắt đầu cài đặt "sạch" hoàn toàn và muốn xóa tất cả dữ liệu cũ, bạn cần phải tự xóa thư mục đó.
+##### b. Các cách cài đặt Docker
+Có 4 cách khác nhau để cài đặt Docker Engine, tùy thuộc vào nhu cầu của bạn:
+* Dùng Docker Desktop.
+* Dùng quản lý gói `apt`.
+* Tự tải về và cài đặt các gói.
+* Sử dụng một kịch bản (script) cài đặt tự động.
+
+Tuy nhiên ở đây tôi chỉ trình bày cách cài đặt Docker Engine bằng kho lưu trữ `apt`.
+
+Các cách còn lại bạn có thể tham khảo tại trang chính thức của [Docker](https://docs.docker.com/engine/install/ubuntu/)
+##### c. Cài đặt Docker Engine bằng `apt`
+**Bước 1: Thiết lập kho lưu trữ `apt` của Docker**
+
+(Bạn chỉ cần làm điều này một lần trên mỗi máy chủ mới)
+1.  **Thêm GPG key chính thức của Docker:**
+    Điều này để đảm bảo rằng các gói bạn tải về là xác thực.
+    ```bash
+    # Cập nhật danh sách gói và cài các gói cần thiết
+    sudo apt-get update
+    sudo apt-get upgrade
+    sudo apt-get install ca-certificates curl
+
+    # Tạo thư mục cho keyrings
+    sudo install -m 0755 -d /etc/apt/keyrings
+
+    # Tải về GPG key của Docker
+    sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+
+    # Cấp quyền đọc cho key
+    sudo chmod a+r /etc/apt/keyrings/docker.asc
+    ```
+2.  **Thêm kho lưu trữ (repository) vào nguồn Apt:**
+    Lệnh này thêm kho lưu trữ Docker chính thức vào danh sách các nguồn mà `apt` sẽ kiểm tra khi tìm kiếm phần mềm.
+    ```bash
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+      sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+    # Cập nhật lại danh sách gói để nhận diện kho lưu trữ Docker mới
+    sudo apt-get update
+    ```
+**Bước 2: Cài đặt các gói Docker**
+1.  **Chạy lệnh cài đặt:**
+    Lệnh này sẽ cài đặt phiên bản mới nhất của Docker Engine, CLI, containerd, và các plugin `buildx` và `compose`.
+    ```bash
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    ```
+2.  **Xác minh cài đặt:**
+    * Dịch vụ Docker sẽ tự động khởi động sau khi cài đặt. Bạn có thể kiểm tra trạng thái bằng lệnh:
+      ```bash
+      sudo systemctl status docker
+      ```
+    * Chạy image `hello-world` để xác nhận Docker đang hoạt động chính xác. Lệnh này sẽ tải một image thử nghiệm, chạy nó trong container, in ra thông báo xác nhận và thoát.
+      ```bash
+      sudo docker run hello-world
+      ```
+> Theo mặc định, bạn phải dùng `sudo` khi chạy các lệnh Docker. Điều này là do nhóm người dùng `docker` đã được tạo nhưng không có người dùng nào trong đó. Bạn cần thực hiện các bước [Linux postinstall](https://docs.docker.com/engine/install/linux-postinstall) (bên dưới) để cho phép người dùng không phải root chạy Docker mà không cần `sudo`.
+
+**Chạy Docker với tư cách người dùng không phải root**
+1.  **Tạo nhóm (group) `docker`:**
+    *(Nhóm này có thể đã tồn tại sau khi cài đặt)*
+    ```bash
+    sudo groupadd docker
+    ```
+2.  **Thêm người dùng của bạn vào nhóm `docker`:**
+    ```bash
+    sudo usermod -aG docker $USER
+    ```
+3.  **Kích hoạt các thay đổi:**
+    Bạn cần **đăng xuất và đăng nhập lại** để máy tính nhận diện tư cách thành viên nhóm mới của bạn.
+
+    * *Lưu ý:* Nếu bạn dùng máy ảo Linux, bạn có thể cần **khởi động lại máy ảo**.
+    * *Cách thay thế (áp dụng ngay lập...*): Bạn có thể chạy lệnh sau để kích hoạt ngay thay đổi trong cửa sổ terminal hiện tại:
+      ```bash
+      newgrp docker
+      ```
+4.  **Xác minh:**
+    Kiểm tra xem bạn có thể chạy Docker mà không cần `sudo` hay không:
+    ```bash
+    docker run hello-world
+    ```
+**Xử lý lỗi "Permission Denied" (Từ chối quyền)**
+
+Nếu bạn đã từng chạy lệnh `sudo docker` *trước khi* thực hiện các bước trên, bạn có thể gặp lỗi liên quan đến tệp `.../.docker/config.json`.
+* **Nguyên nhân:** Thư mục `~/.docker/` đã được tạo và thuộc sở hữu của `root` (do bạn dùng `sudo`).
+* **Cách khắc phục (Chọn 1):**
+    * **Cách 1 (Xóa):** Xóa thư mục `~/.docker/`. Docker sẽ tự động tạo lại nó với quyền sở hữu chính xác.
+      *(Mọi cài đặt tùy chỉnh trong đó sẽ bị mất)*
+    * **Cách 2 (Sửa quyền):** Thay đổi chủ sở hữu và quyền của thư mục:
+      ```bash
+      sudo chown "$USER":"$USER" /home/"$USER"/.docker -R
+      sudo chmod g+rwx "$HOME/.docker" -R
+      ```
+> **Nâng cấp Docker Engine:**
+  Để nâng cấp, bạn chỉ cần **chạy lại lệnh ở Bước 2** (`sudo apt-get install ...`). `apt` sẽ tự động tìm và cài đặt phiên bản mới nhất từ kho lưu trữ bạn đã thiết lập.
+#### 2.1.3. Cấu hình proxy cho docker
+![img.png](Image/proxy.png)
+##### a. Proxy là gì?
+Một **Proxy** (hay **Proxy Server**) hiểu đơn giản là một **"người gác cổng"** hoặc một **"người trung gian"** đứng giữa máy tính của bạn và Internet.
+
+Ví dụ:
+* **Khi không có Proxy:** Máy tính của bạn (Client) gửi yêu cầu trực tiếp đến một trang web (ví dụ: `google.com`) và trang web đó gửi dữ liệu trực tiếp về cho bạn.
+* **Khi có Proxy:** Máy tính của bạn gửi yêu cầu đến **máy chủ Proxy** trước. Máy chủ Proxy sau đó *thay mặt bạn* gửi yêu cầu đó đến `google.com`, nhận dữ liệu về, và *sau đó* mới chuyển dữ liệu đó cho bạn.
+
+Các tổ chức (như công ty, trường học) thường sử dụng Proxy vì 3 lý do chính:
+1.  **Bảo mật & Kiểm soát (Quan trọng nhất):** Proxy hoạt động như một bức tường lửa. Nó kiểm tra mọi yêu cầu đi ra ngoài. Nếu bạn cố gắng truy cập một trang web bị cấm (như mạng xã hội, web đen), proxy sẽ chặn bạn lại.
+2.  **Ẩn danh tính:** Đối với trang web bên ngoài, họ chỉ thấy địa chỉ IP của máy chủ Proxy, không phải địa chỉ IP thật của bạn.
+3.  **Tăng tốc (Caching):** Nếu 100 người trong công ty cùng truy cập một trang tin tức, proxy chỉ cần tải trang đó về 1 lần và lưu vào bộ nhớ đệm (cache), sau đó phân phát cho 99 người còn lại, giúp tiết kiệm băng thông.
+##### b. Tại sao Docker cần cấu hình Proxy?
+Lý do là: **Docker tạo ra các môi trường bị cô lập, và các môi trường này không tự động biết "người gác cổng" (Proxy) của bạn là ai.**
+
+Khi máy tính của bạn (laptop, máy chủ) nằm trong mạng công ty, 100% kết nối ra Internet *đều phải* đi qua Proxy. Docker không phải là ngoại lệ.
+
+Bạn cần cấu hình proxy cho Docker ở **hai nơi** hoàn toàn khác nhau, vì chúng giải quyết hai vấn đề khác nhau:
+
+**Vấn đề A: Cấu hình Proxy cho DAEMON (Dịch vụ Docker)**
+
+* **Ai cần:** Dịch vụ Docker (`dockerd`) chạy nền trên máy của bạn.
+* **Làm gì:** Để thực thi các lệnh như `docker pull ubuntu` hoặc `docker push ...`
+* **Tại sao:** Khi bạn gõ `docker pull ubuntu`, chính **dịch vụ Docker** cần phải kết nối đến **Docker Hub** (trên Internet) để tải image về. Nếu dịch vụ này không biết địa chỉ proxy, nó sẽ cố gắng kết nối trực tiếp, và sẽ bị "người gác cổng" của công ty chặn lại.
+* **Hậu quả nếu thiếu:** Mọi lệnh `docker pull` hoặc `docker push` sẽ bị lỗi (thường là "Connection timed out").
+
+**Vấn đề B: Cấu hình Proxy cho CLIENT (Các Container)**
+
+* **Ai cần:** Các container khi bạn `docker build` hoặc `docker run`.
+* **Làm gì:** Để thực thi các lệnh *bên trong* `Dockerfile`, ví dụ: `RUN apt-get update` hoặc `RUN pip install ...`
+* **Tại sao:** Container là một "máy tính mini" bị cô lập. Nó có hệ thống mạng riêng và **không** thừa hưởng cài đặt proxy của Daemon. Khi bạn `build` một image, lệnh `RUN apt-get update` bên trong container sẽ cố gắng kết nối ra Internet. Giống như trên, nó không biết proxy là ai, nên nó kết nối trực tiếp và bị chặn.
+* **Hậu quả nếu thiếu:** Lệnh `docker build` sẽ bị lỗi (thường là "Failed to fetch..." hoặc "Connection timed out") ngay tại các bước cần tải tài nguyên từ mạng.
+
+#### 2.1.3.1. Cấu hình proxy cho docker client
+Mục đích là để các **container** của bạn (khi `build` hoặc `run`) có thể sử dụng proxy để truy cập Internet (ví dụ: để chạy `apt-get install` hoặc `curl`).
+
+Có hai cách chính để thực hiện cấu hình proxy cho docker client :
+* Cấu hình qua file `config.json`
+* Cấu hình thủ công qua CLI (dùng `--build-arg` hoặc `--env`)
+
+**a\. Cấu hình Docker Client thông qua file `config.json`**
+* **Cách làm:** Tạo hoặc chỉnh sửa tệp `~/.docker/config.json` (nằm trong thư mục `home` của người dùng).
+* **Nội dung:** Thêm một khối JSON `"proxies"`:
+  ```json
+  {
+    "proxies": {
+      "default": {
+        "httpProxy": "http://proxy.example.com:3128",
+        "httpsProxy": "https://proxy.example.com:3129",
+        "noProxy": "*.test.example.com,.example.org,127.0.0.0/8"
+      },
+      "tcp://docker-daemon1.example.com": {
+        "noProxy": "*.internal.example.net"
+      }
+    }
+  }
+  ```
+  * **`"proxies"`**: Đây là "khối" chính chứa tất cả các cấu hình proxy.
+  * **`"default"`**: Khóa này có nghĩa là các cài đặt bên trong nó sẽ được áp dụng **mặc định** cho mọi hoạt động `build` và `run` của bạn.
+    * Để cấu hình proxy cho từng daemon riêng lẻ, hãy sử dụng địa chỉ của daemon đó thay vì khóa default.
+  * **`"httpProxy": "..."`**: Chỉ định địa chỉ của máy chủ proxy cho các kết nối **HTTP**. Khi một container chạy (ví dụ `apt-get`), nó sẽ tự động được "tiêm" biến môi trường `HTTP_PROXY` với giá trị này.
+  * **`"httpsProxy": "..."`**: Chỉ định địa chỉ của máy chủ proxy cho các kết nối **HTTPS**. Tương tự, nó sẽ tự động thiết lập biến `HTTPS_PROXY` bên trong container.
+  * **`"noProxy": "..."`**: Đây là tham số **rất quan trọng**. Nó liệt kê các địa chỉ, tên miền, hoặc dải IP mà container nên kết nối **trực tiếp**, *không* đi qua proxy.
+    * Trong ví dụ: `*.test.example.com` (mọi trang con của `test.example.com`), `.example.org` (mọi trang con của `example.org`), và `127.0.0.0/8` (toàn bộ dải `localhost`) sẽ không dùng proxy.
+* **Cách hoạt động:**
+    * Docker sẽ tự động đọc tệp này và "tiêm" các biến môi trường tương ứng (ví dụ: `HTTP_PROXY`, `HTTPS_PROXY`, `no_proxy`) vào mọi container **mới** được bạn `run` hoặc `build`.
+    * Cấu hình này có hiệu lực **ngay lập tức** sau khi lưu tệp, không cần khởi động lại Docker.
+
+> **Cảnh báo bảo mật:**
+> * Cài đặt proxy (đặc biệt nếu chứa thông tin xác thực/mật khẩu) là **thông tin nhạy cảm**.
+> * Chúng được lưu dưới dạng **văn bản thuần túy (plain text)** trong cấu hình của container và có thể bị lộ nếu bạn dùng lệnh `docker commit`.
+
+**b\. Thiết lập Proxy qua CLI (Thủ công)**
+* **Khi xây dựng Image (với `docker build`):**
+    * Sử dụng cờ `--build-arg`. Docker sẽ tự động nhận diện các `ARG` này.
+  ```bash
+  docker build --build-arg HTTP_PROXY="http://proxy.example.com:3128" .
+  ```
+* **Khi chạy Container (với `docker run`):**
+    * Sử dụng cờ `--env` (hoặc `-e`).
+  ```bash
+  docker run --env HTTP_PROXY="http://proxy.example.com:3128" redis
+  ```
+> **Cảnh báo quan trọng nhất: KHÔNG Dùng `ENV` trong Dockerfile**
+> * Tuyệt đối **không** sử dụng lệnh `ENV` (ví dụ: `ENV HTTP_PROXY=...`) bên trong `Dockerfile` để cài đặt proxy.
+>> * **Lý do:**
+>>  * **Rủi ro bảo mật:** Làm như vậy sẽ **nhúng (embed)** cài đặt proxy (có thể chứa mật khẩu) thẳng vào image cuối cùng, làm **lộ thông tin nhạy cảm** cho bất kỳ ai có image của bạn.
+>>  * **Mất tính di động:** Image đó sẽ bị hỏng hoặc không chạy được trên một môi trường khác không có quyền truy cập vào proxy đó.
+> * **Giải pháp:** Luôn luôn sử dụng `ARG` (`--build-arg`) cho các cài đặt proxy trong lúc build.
+
+
