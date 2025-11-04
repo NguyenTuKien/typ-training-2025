@@ -191,6 +191,7 @@ Công nghệ phổ biến: **Docker**, **Kubernetes**, **Podman**, **LXC**
 | **Docker Container (Vùng chứa)** | "Một phiên bản đang chạy" của Image.               | Môi trường bị cô lập nơi ứng dụng của bạn thực sự hoạt động. |
 | **Docker Registry (Kho chứa)** | "Thư viện" hoặc "Nhà kho" (như Docker Hub).        | Dùng để **lưu trữ và chia sẻ** các Docker Image. |
 | **Docker Compose** | "Nhạc trưởng" của dàn nhạc.                      | Một công cụ để **định nghĩa và chạy** các ứng dụng gồm nhiều container. |
+
 ![img.png](Image/docker.png)
 #### 2.1.1. Overview về docker container.
 **Docker Container** là một **phiên bản đang chạy (running instance)** của một **Docker Image**.
