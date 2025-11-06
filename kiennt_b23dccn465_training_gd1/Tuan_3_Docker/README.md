@@ -58,7 +58,7 @@ Nói cách khác, ảo hoá giúp **một máy vật lý hoạt động như nhi
     * Hệ thống quản lý sẽ tạo và cung cấp desktop ảo cho người dùng.
 ### d. Ảo hóa hệ thống máy chủ (Server Virtualization)
 * Là công nghệ cho phép **chạy nhiều máy ảo (VM)** trên **một máy chủ vật lý**, giúp:
-* **Mục đích :** 
+* **Mục đích :**
   * Tăng **tính linh động**, dễ thiết lập và quản lý.
   * **Tiết kiệm tài nguyên**, chia sẻ tốt hơn giữa các ứng dụng.
   * **Tăng hiệu suất** và khả năng tận dụng phần cứng.
@@ -70,18 +70,18 @@ Nói cách khác, ảo hoá giúp **một máy vật lý hoạt động như nhi
 | **Hypervisor-based** (hay Bare-metal Hypervisor) | - Hypervisor chạy **trực tiếp trên phần cứng** của máy chủ (không qua hệ điều hành).<br> - **Hiệu năng cao hơn**, thường dùng trong **doanh nghiệp và trung tâm dữ liệu**.<br> - Quản lý tài nguyên và VM hiệu quả hơn. | Oracle VM, VMware ESX/ESXi, Microsoft Hyper-V, Citrix XenServer, IBM Power Hypervisor |
 ### e. Các công nghệ ảo hóa đã từng dùng
 #### **VMware – Ảo hóa máy chủ (Server Virtualization)**
-* **Loại ảo hóa:** *Ảo hóa hệ thống máy chủ (Hypervisor-based hoặc Host-based)*
-* **Công nghệ:** VMware Workstation, VMware ESXi
-* **Nguyên lý:** Cho phép chạy **nhiều máy ảo** (mỗi VM có hệ điều hành riêng) **trên một máy thật**.
-* **Mục đích sử dụng:**
+* **_Loại ảo hóa:_** *Ảo hóa hệ thống máy chủ (Hypervisor-based hoặc Host-based)*
+* **_Công nghệ:_** VMware Workstation, VMware ESXi
+* **_Nguyên lý:_** Cho phép chạy **nhiều máy ảo** (mỗi VM có hệ điều hành riêng) **trên một máy thật**.
+* **_Mục đích sử dụng:_**
     * Tạo môi trường test hoặc dev độc lập.
     * Cài đặt nhiều OS để thử nghiệm phần mềm.
 * **Ví dụ:**
     * Cài VMware Workstation trên Windows → chạy Ubuntu VM bên trong.
 #### **Docker – Ảo hóa cấp ứng dụng (Application / OS-level Virtualization)**
-* **Loại ảo hóa:** *Ảo hóa hệ điều hành (OS-level / Container-based Virtualization)*
-* **Công nghệ:** Docker Engine, Kubernetes
-* **Nguyên lý:**
+* **_Loại ảo hóa:_** *Ảo hóa hệ điều hành (OS-level / Container-based Virtualization)*
+* **_Công nghệ:*_* Docker Engine, Kubernetes
+* **_Nguyên lý:_**
     * Không tạo máy ảo riêng biệt.
     * Thay vào đó, **chia sẻ kernel** của hệ điều hành, tạo các **container cô lập** chạy ứng dụng riêng.
 * **Mục đích sử dụng:**
@@ -153,6 +153,8 @@ Nói cách khác, ảo hoá giúp **một máy vật lý hoạt động như nhi
   
 ---
 # Phần 2: Container
+
+---
 ## 1. Container là gì?
 **Container** là công nghệ ảo hóa **ở mức hệ điều hành (OS-level virtualization)**.
 Nó cho phép **nhiều ứng dụng** chạy độc lập trên cùng **một hệ điều hành** nhưng **tách biệt về môi trường** (file system, network, process,…).
@@ -177,12 +179,13 @@ Công nghệ phổ biến: **Docker**, **Kubernetes**, **Podman**, **LXC**
 | **Công cụ phổ biến** | Docker, Kubernetes                              | VMware, VirtualBox, Hyper-V                  |
 
 ![img.png](Image/container.png)
+
+---
 ## 2. Docker
-### 2.1 Tổng quan & Cài đặt Docker
 **Docker** là nền tảng mã nguồn mở giúp **tạo, triển khai và quản lý container** một cách dễ dàng.
 
 **Các thành phần chính của Docker :**
-    
+
 | Thành phần | Vai trò (Nó là gì?)                                | Mục đích (Nó làm gì?) |
 | :--- |:---------------------------------------------------| :--- |
 | **Docker Engine (Động cơ)** | "Trái tim" của Docker, bao gồm Daemon, CLI và API. | Quản lý, xây dựng và chạy các container. |
@@ -195,7 +198,11 @@ Công nghệ phổ biến: **Docker**, **Kubernetes**, **Podman**, **LXC**
 | **Docker Compose** | "Nhạc trưởng" của dàn nhạc.                      | Một công cụ để **định nghĩa và chạy** các ứng dụng gồm nhiều container. |
 
 ![img.png](Image/docker.png)
-#### 2.1.1. Overview về docker container.
+
+---
+## 2.1. Cài đặt Docker
+
+### 2.1.1. Overview về docker container.
 **Docker Container** là một **phiên bản đang chạy (running instance)** của một **Docker Image**.
 
 Nếu **Image** (Hình ảnh) là một **"Class"** (lớp) trong lập trình hướng đối tượng—một bản thiết kế chỉ đọc, chứa mọi thứ bạn cần—thì **Container** chính là một **"Object"** (đối tượng), một thực thể sống động được tạo ra từ bản thiết kế đó. Bạn có thể tạo, chạy, dừng, và xóa Container.
@@ -229,7 +236,7 @@ Bởi vì container đóng gói *mọi thứ* (mã, runtime, thư viện), bạn
 Đây là một khái niệm quan trọng cần nắm: Container được thiết kế để **dễ dàng vứt bỏ và thay thế**.
 * Mọi dữ liệu bạn ghi vào hệ thống tệp *bên trong* container sẽ **mất vĩnh viễn** khi container đó bị xóa.
 * **Giải pháp:** Để lưu trữ dữ liệu vĩnh viễn (như cơ sở dữ liệu), bạn phải sử dụng **Docker Volumes**. Volumes là một cơ chế cho phép dữ liệu tồn tại bên ngoài vòng đời của container, được lưu trữ an toàn trên máy chủ.
-#### 2.1.2. Cài đặt docker
+### 2.1.2. Cài đặt docker
 **_a. Yêu cầu trước khi cài đặt Docker Engine trên Ubuntu_**
 
 **1\. Cảnh báo quan trọng về Tường lửa (Firewall)**
@@ -368,7 +375,7 @@ Nếu bạn đã từng chạy lệnh `sudo docker` *trước khi* thực hiện
       ```
 > **Nâng cấp Docker Engine:**
   Để nâng cấp, bạn chỉ cần **chạy lại lệnh ở Bước 2** (`sudo apt-get install ...`). `apt` sẽ tự động tìm và cài đặt phiên bản mới nhất từ kho lưu trữ bạn đã thiết lập.
-#### 2.1.3. Cấu hình proxy cho docker
+### 2.1.3. Cấu hình proxy cho docker
 ![img.png](Image/proxy.png)
 _a. Proxy là gì?_
 Một **Proxy** (hay **Proxy Server**) hiểu đơn giản là một **"người gác cổng"** hoặc một **"người trung gian"** đứng giữa máy tính của bạn và Internet.
@@ -460,5 +467,389 @@ Có hai cách chính để thực hiện cấu hình proxy cho docker client :
 >>  * **Rủi ro bảo mật:** Làm như vậy sẽ **nhúng (embed)** cài đặt proxy (có thể chứa mật khẩu) thẳng vào image cuối cùng, làm **lộ thông tin nhạy cảm** cho bất kỳ ai có image của bạn.
 >>  * **Mất tính di động:** Image đó sẽ bị hỏng hoặc không chạy được trên một môi trường khác không có quyền truy cập vào proxy đó.
 > * **Giải pháp:** Luôn luôn sử dụng `ARG` (`--build-arg`) cho các cài đặt proxy trong lúc build.
+#### 2.1.3.2. Cấu hình proxy cho docker daemon
+Mục đích
+* Tải (pull) image từ Docker Hub hoặc các registry bên ngoài.
+* Kết nối với các node khác trong Docker swarm.
 
+Có hai cách chính để cấu hình, và **cấu hình trực tiếp (`daemon.json`) sẽ ưu tiên hơn** biến môi trường.
+
+**_1\. Phương pháp `daemon.json` (Khuyến nghị)_**
+
+Đây là cách được khuyên dùng. Bạn chỉnh sửa (hoặc tạo) tệp `/etc/docker/daemon.json` và thêm khóa `"proxies"`:
+
+```json
+{
+  "proxies": {
+    "http-proxy": "http://proxy.example.com:3128",
+    "https-proxy": "https://proxy.example.com:3129",
+    "no-proxy": "localhost,127.0.0.1,registry-noi-bo.com"
+  }
+}
+```
+* **`http-proxy`**: Dành cho kết nối HTTP.
+* **`https-proxy`**: Dành cho kết nối HTTPS.
+* **`no-proxy`**: Danh sách các địa chỉ (phân cách bằng dấu phẩy) sẽ *không* đi qua proxy (ví dụ: các registry nội bộ).
+
+Sau khi lưu tệp, bạn phải **khởi động lại Docker**:
+```bash
+sudo systemctl restart docker
+```
+
+**_2\. Phương pháp Biến Môi trường (Dùng systemd)_**
+
+Phương pháp này thường được sử dụng nếu bạn chạy Docker như một dịch vụ `systemd`. Docker daemon sẽ tự động đọc các biến môi trường như `HTTP_PROXY`, `HTTPS_PROXY`, và `NO_PROXY` khi nó khởi động.
+
+**Cách thực hiện:**
+
+1.  Tạo một thư mục "drop-in" cho dịch vụ Docker:
+    ```bash
+    sudo mkdir -p /etc/systemd/system/docker.service.d
+    ```
+2.  Tạo một tệp cấu hình mới, ví dụ `http-proxy.conf`, trong thư mục đó:
+    ```bash
+    sudo nano /etc/systemd/system/docker.service.d/http-proxy.conf
+    ```
+3.  Thêm nội dung sau vào tệp:
+    ```ini
+    [Service]
+    Environment="HTTP_PROXY=http://proxy.example.com:3128"
+    Environment="HTTPS_PROXY=https://proxy.example.com:3129"
+    Environment="NO_PROXY=localhost,127.0.0.1,registry-noi-bo.com"
+    ```
+    > **Lưu ý:** Nếu giá trị proxy (ví dụ: mật khẩu) có ký tự đặc biệt như `#`, `\`, `!`, bạn phải **thoát kép (double escape)** chúng bằng `%%` (ví dụ: `complex%%23pass`).
+4.  **Tải lại và Khởi động lại:**
+    Sau khi lưu tệp, bạn phải thông báo cho systemd về thay đổi, sau đó khởi động lại Docker:
+    ```bash
+    sudo systemctl daemon-reload
+    sudo systemctl restart docker
+    ```
+5.  **(Tùy chọn) Kiểm tra:**
+    Bạn có thể xác minh xem các biến môi trường đã được nạp chưa:
+    ```bash
+    sudo systemctl show --property=Environment docker
+    ```
+### 2.1.4. Cấu hình trusted registry trong daemon.json tham khảo Local Repos
+**_a\. Tại sao cần "Trusted Registry"? (`insecure-registries`)_**
+
+Lý do chính là vì **bảo mật**.
+
+Theo mặc định, Docker daemon được thiết kế để chỉ giao tiếp với các registry (kho chứa image) một cách an toàn. Điều này có nghĩa là Docker *bắt buộc* registry phải:
+* Sử dụng **HTTPS** (kết nối mã hóa). 
+* Có một **chứng chỉ SSL/TLS hợp lệ** được cấp bởi một Tổ chức Chứng thực (CA) mà hệ điều hành của máy chủ tin tưởng.
+
+Tuy nhiên, trong các môi trường nội bộ, môi trường phát triển (dev) hoặc thử nghiệm (test), các "Local Repo" (registry nội bộ) thường không đáp ứng được 2 yêu cầu này. Chúng thường rơi vào một trong hai trường hợp:
+
+* **Trường hợp 1: Chạy bằng HTTP** (không mã hóa).
+* **Trường hợp 2: Chạy bằng HTTPS nhưng dùng Chứng chỉ tự ký** (self-signed certificate) mà hệ thống không tự động tin tưởng.
+
+Khi Docker daemon cố gắng `pull` hoặc `push` tới một registry như vậy, nó sẽ thất bại và báo lỗi (ví dụ: "http: server gave HTTP response to HTTPS client" hoặc "certificate signed by unknown authority").
+
+Bằng cách thêm registry vào danh sách `insecure-registries`, bạn đang nói rõ với Docker daemon rằng:
+
+> "Tôi biết registry này (ví dụ: `my-local-repo.com:5000`) không an toàn theo tiêu chuẩn (dùng HTTP hoặc chứng chỉ tự ký), nhưng tôi hoàn toàn tin tưởng nó. Vui lòng bỏ qua kiểm tra bảo mật và cho phép kết nối."
+
+**_2\. "Local Repos" (Registry Nội bộ) của Docker là gì?_**
+
+"Local Repo" (hay là **Local Registry** hoặc **Registry Nội bộ/Riêng tư**) là một máy chủ lưu trữ image Docker mà **bạn tự quản lý và vận hành** trong mạng nội bộ của mình, thay vì sử dụng các dịch vụ công cộng như Docker Hub.
+
+Nó giống như bạn có một "Docker Hub thu nhỏ" của riêng mình.
+
+**Lợi ích của việc dùng Registry Nội bộ:**
+
+* **Tốc độ:** Tải (pull) và đẩy (push) image qua mạng LAN/nội bộ nhanh hơn rất nhiều so với qua Internet.
+* **Bảo mật & Quyền riêng tư:** Bạn có thể lưu trữ các image chứa mã nguồn hoặc dữ liệu nhạy cảm của công ty mà không bị lộ ra bên ngoài.
+* **Kiểm soát:** Bạn toàn quyền quản lý truy cập, ai được push/pull image nào.
+* **Hoạt động ngoại tuyến (Offline):** Hệ thống CI/CD và các máy chủ khác vẫn có thể hoạt động ngay cả khi mất kết nối Internet.
+
+**Ví dụ phổ biến:**
+* Chạy image `registry:2` chính thức của Docker.
+* Sử dụng các giải pháp như Harbor, Sonatype Nexus, hoặc JFrog Artifactory.
+
+**_3\. Làm sao để cấu hình `insecure-registries`?_**
+
+**Bước 1:** Mở tệp `daemon.json`. Tệp này thường nằm ở `/etc/docker/daemon.json`.
+```bash
+sudo nano /etc/docker/daemon.json
+```
+**Bước 2:** Thêm khóa `insecure-registries`. Đây là một **mảng (array)** chứa các địa chỉ (`domain:port`) của các registry bạn muốn tin tưởng.
+
+* **Nếu tệp rỗng hoặc chưa có:**
+  ```json
+  {
+    "insecure-registries": ["my-local-repo.com:5000", "192.168.1.100:8080"]
+  }
+  ```
+* **Quan trọng: Nếu tệp đã có nội dung** (ví dụ: đã có cấu hình proxy từ trước), bạn phải thêm khóa này vào, đảm bảo cú pháp JSON hợp lệ (thêm dấu phẩy `,`):
+  ```json
+  {
+    "proxies": {
+      "http-proxy": "http://proxy.example.com:3128"
+    },
+    "insecure-registries": ["my-local-repo.com:5000"]
+  }
+  ```
+**Bước 3:** Lưu tệp và **khởi động lại Docker daemon** để áp dụng thay đổi.
+```bash
+sudo systemctl restart docker
+```
+#### 2.1.5. Hello world với Docker
+```shell
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_3_Docker$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_3_Docker$ docker run -it ubuntu bash
+Unable to find image 'ubuntu:latest' locally
+latest: Pulling from library/ubuntu
+4b3ffd8ccb52: Pull complete 
+Digest: sha256:66460d557b25769b102175144d538d88219c077c678a49af4afca6fbfc1b5252
+Status: Downloaded newer image for ubuntu:latest
+root@72162535cc15:/# ls -la
+total 56
+drwxr-xr-x   1 root root 4096 Nov  5 05:55 .
+drwxr-xr-x   1 root root 4096 Nov  5 05:55 ..
+-rwxr-xr-x   1 root root    0 Nov  5 05:55 .dockerenv
+lrwxrwxrwx   1 root root    7 Apr 22  2024 bin -> usr/bin
+drwxr-xr-x   2 root root 4096 Apr 22  2024 boot
+drwxr-xr-x   5 root root  360 Nov  5 05:55 dev
+drwxr-xr-x   1 root root 4096 Nov  5 05:55 etc
+drwxr-xr-x   3 root root 4096 Oct  1 02:10 home
+lrwxrwxrwx   1 root root    7 Apr 22  2024 lib -> usr/lib
+lrwxrwxrwx   1 root root    9 Apr 22  2024 lib64 -> usr/lib64
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 media
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 mnt
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 opt
+dr-xr-xr-x 423 root root    0 Nov  5 05:55 proc
+drwx------   2 root root 4096 Oct  1 02:09 root
+drwxr-xr-x   4 root root 4096 Oct  1 02:10 run
+lrwxrwxrwx   1 root root    8 Apr 22  2024 sbin -> usr/sbin
+drwxr-xr-x   2 root root 4096 Oct  1 02:03 srv
+dr-xr-xr-x  13 root root    0 Nov  5 05:55 sys
+drwxrwxrwt   2 root root 4096 Oct  1 02:09 tmp
+drwxr-xr-x  12 root root 4096 Oct  1 02:03 usr
+drwxr-xr-x  11 root root 4096 Oct  1 02:09 var
+root@72162535cc15:/#     
+```
+___
+## 2.2. Các câu lệnh cơ bản
+### 2.2.1. Docker pull
+* Cú pháp: `docker pull [OPTIONS] <image_name>[:<tag>]`
+  * `<image_name>`: Tên của image bạn muốn tải (ví dụ: `ubuntu`, `nginx`, `redis`).
+  * `[:<tag>]` (Tùy chọn): Chỉ định phiên bản (version) của image _(mặc địch là `latest`)_
+* Mục đích : Nó dùng để tải (download) một image từ một remote registry (kho chứa image) về máy tính local của bạn. Nơi tải phổ biến nhất chính là Docker Hub.
+* Ví dụ : 
+```shell 
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ docker pull mcr.microsoft.com/mssql/server:2022-latest
+2022-latest: Pulling from mssql/server
+8766c39c3679: Already exists 
+dde0fd524f40: Already exists 
+41c97bdb589f: Already exists 
+Digest: sha256:b1395aa51b4ec39981883560f1379ea9eba2a1c0719bf8e6477902769316bb79
+Status: Downloaded newer image for mcr.microsoft.com/mssql/server:2022-latest
+mcr.microsoft.com/mssql/server:2022-latest
+ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ docker image ls
+REPOSITORY                       TAG           IMAGE ID       CREATED        SIZE
+mcr.microsoft.com/mssql/server   2022-latest   3c94bf005911   2 months ago   1.61GB
+```
+* Một số `option` thường dùng : 
+  * `--platform <platform>` : Buộc Docker pull image cho một kiến trúc (architecture) CPU cụ thể, ngay cả khi nó không phải là kiến trúc máy của bạn.
+    * Ví dụ : Bạn đang dùng Mac M1 _(kiến trúc `linux/arm64`)_ nhưng muốn chạy một image cũ chỉ có bản cho Intel _(kiến trúc `linux/amd64`)_.
+        ```shell
+        docker pull --platform linux/amd64 mysql:8.0
+        ```
+### 2.2.2. Docker run
+* **Cú pháp :** `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`
+  * `COMMAND`: Đây là lệnh (instruction) mà bạn muốn thực thi bên trong container thay thế cho `CMD` hoặc `ENTRYPOINT` đã định nghĩa trong `Dockerfile`.
+  * `ARG...`: Các đối số (arguments) bổ sung cho lệnh `COMMAND`.
+* **Mục đích :** Lệnh `docker run` được dùng để **tạo và khởi chạy một container mới** từ một image đã có.
+    * Nó sẽ lấy một image (ví dụ: `nginx:latest` mà bạn đã `pull` về), tạo ra một "thực thể" (instance) chạy được từ image đó, gọi là container.
+    * Khi chạy, nó sẽ tạo một lớp (layer) có thể ghi (writable) trên cùng các lớp chỉ đọc (read-only) của image.
+    * Nó sẽ khởi động tiến trình chính được định nghĩa trong `Dockerfile` (bằng `CMD` hoặc `ENTRYPOINT`), hoặc chạy `[COMMAND]` mà bạn chỉ định ngay trên lệnh `run`.
+* Ví dụ : 
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=TestAcc@1234" -p "1433:1433" --name sqlserver -d mcr.microsoft.com/mssql/server:2022-latest
+    570a5e9233518a6a01344125bfc83f952df092b947bc2beb4febbf02d037201c
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ docker ps
+    CONTAINER ID   IMAGE                                        COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+    570a5e923351   mcr.microsoft.com/mssql/server:2022-latest   "/opt/mssql/bin/laun…"   37 seconds ago   Up 36 seconds   0.0.0.0:1433->1433/tcp, [::]:1433->1433/tcp   sqlserver
+    ```
+* **Một số `option` phổ biến :**
+    * `-d` (hoặc `--detach`): Chạy container ở chế độ **ngầm** (detached mode). Thay vì chiếm giữ terminal của bạn, nó sẽ chạy ở background và chỉ in ra ID của container.
+    * `-p` (hoặc `--publish`): **Ánh xạ cổng** (port) từ máy host vào cổng của container.
+        * Cú pháp: `hostPort:containerPort`.
+        * Ví dụ: `-p 8080:80` (Truy cập `localhost:8080` trên máy bạn sẽ trỏ vào cổng `80` của container).
+    * `--name <tên>`: Đặt một **tên cụ thể** cho container để dễ quản lý, thay vì để Docker tự tạo một tên ngẫu nhiên (ví dụ: `goofy_einstein`).
+    * `-v` (hoặc `--volume`): **Gắn (mount) một volume** (ổ đĩa) từ máy host vào container để lưu trữ dữ liệu bền bỉ. Dữ liệu trong volume sẽ không bị mất kể cả khi container bị xóa.
+        * Ví dụ: `-v /my/data:/app/data` (Gắn thư mục `/my/data` của host vào `/app/data` trong container).
+    * `-e` (hoặc `--env`): Dùng để **truyền các biến môi trường** (environment variables) vào bên trong container.
+        * Ví dụ: `-e "MYSQL_ROOT_PASSWORD=matkhau"`
+    * `--rm`: Tự động **xóa container** ngay sau khi nó dừng (exited). Rất hữu ích cho các tác vụ chạy một lần hoặc để test, giúp giữ hệ thống sạch sẽ.
+    * `-it` (kết hợp của `-i` và `-t`): Chạy container ở chế độ **tương tác** (interactive).
+        * `-i` (`--interactive`): Giữ STDIN (đầu vào chuẩn) mở, cho phép bạn gõ lệnh.
+        * `-t` (`--tty`): Cấp cho container một pseudo-TTY (terminal ảo).
+        * Ví dụ: `docker run -it ubuntu bash` (Chạy container `ubuntu` và mở ngay một `bash` shell để bạn tương tác).
+    * `--network <tên_mạng>`: Kết nối container vào một mạng Docker (network) cụ thể.
+    * `--restart <policy>`: Thiết lập chính sách **tự động khởi động lại** container khi nó bị dừng.
+        * Ví dụ: `--restart unless-stopped` (Luôn khởi động lại, trừ khi bạn chủ động `stop` nó).
+### 2.2.3. Docker build
+* Cú pháp : `docker build [OPTIONS] PATH`
+* Mục đích : Lệnh `docker build` được sử dụng để **xây dựng một Docker image** (một "khuôn mẫu" ứng dụng) từ các chỉ dẫn (instructions) chứa trong một tệp `Dockerfile` và một "context" (ngữ cảnh).
+  * **Dockerfile:** Là một tệp văn bản (`Dockerfile`) chứa các hướng dẫn từng bước để tạo ra image (ví dụ: `FROM` image nền nào, `COPY` tệp nào vào, `RUN` lệnh gì, `CMD` chạy gì khi khởi động).
+  * **Context:** Là tập hợp các tệp và thư mục tại đường dẫn (PATH) bạn chỉ định. Docker sẽ đóng gói "context" này (thường là thư mục dự án của bạn, ký hiệu là `.`) và gửi nó đến Docker daemon để thực hiện build.
+* Ví dụ : 
+```shell
+ngtukien@NgTuKien:~/Documents/Team7/StemHub$ docker build --tag stemhub:1.0 .
+[+] Building 43.8s (13/15)                                                                                                                                                  docker:default
+[+] Building 44.0s (13/15)                                                                                                                                                  docker:default
+ => => sha256:1efb71aa46e6fc6589b7af5382eceb462d8a2544336a0c294d3715ef0ead06d7 53.14MB / 53.14MB                                                                                      5.2s 
+...                                                                                           0.0s 
+ => [internal] load build context                                                                                                                                                     0.0s 
+ => => transferring context: 122.79kB                                                                                                                                                 0.0s 
+ => [stage-1 2/3] WORKDIR /app                                                                                                                                                        0.3s 
+ => [build 2/5] WORKDIR /app                                                                                                                                                          0.3s 
+ => [build 3/5] COPY pom.xml .                                                                                                                                                        0.0s 
+ => [build 4/5] COPY src ./src                                                                                                                                                        0.1s 
+ => [build 5/5] RUN mvn clean package -DskipTests                                                                                                                                    68.0s 
+ => [stage-1 3/3] COPY --from=build /app/target/*.jar ./app.jar                                                                                                                       0.2s 
+ => exporting to image                                                                                                                                                                0.3s 
+ => => exporting layers                                                                                                                                                               0.3s 
+ => => writing image sha256:06fe73a9a64ee81f8fff8e1c04dc0f3fdd8bac1bcdb80ee8fda2d27b4bf2a185                                                                                          0.0s 
+ => => naming to docker.io/library/stemhub:1.0  
+ ngtukien@NgTuKien:~/Documents/Team7/StemHub$ docker image ls 
+REPOSITORY                       TAG           IMAGE ID       CREATED              SIZE
+stemhub                          1.0           06fe73a9a64e   About a minute ago   390MB
+mcr.microsoft.com/mssql/server   2022-latest   3c94bf005911   2 months ago         1.61GB
+mcr.microsoft.com/mssql/server   latest        3c94bf005911   2 months ago         1.61GB
+```
+* Một số `option` phổ biến : 
+  * `-t` (hoặc `--tag`): Dùng để **đặt tên (repository) và nhãn (tag)** cho image của bạn theo định dạng `name:tag`. Nếu không dùng cờ này, image build xong sẽ không có tên (chỉ có ID), rất khó quản lý.
+  * `-f` (hoặc `--file`): Chỉ định vị trí hoặc tên của `Dockerfile` nếu nó không tên là `Dockerfile` hoặc không nằm ở thư mục gốc của context.
+  * `--no-cache` : Buộc Docker build lại từ đầu, **không sử dụng cache** (bộ nhớ đệm) của các layer (lớp) trước đó.
+  * `--build-arg <key>=<value>`: Truyền các **biến môi trường lúc build** (build-time variables) vào bên trong `Dockerfile`.
+### 2.2.4. Docker tag
+Lệnh `docker tag` dùng để **tạo một "biệt danh" (alias) mới** cho một image đã tồn tại.
+
+Nó **không sao chép** image. Nó chỉ là một thao tác gán tên siêu nhẹ, giống như tạo một file shortcut (phím tắt) trên desktop trỏ đến một file gốc.
+* Cú pháp : `docker tag <tên_gốc>:<tag_gốc> <tên_mới>:<tag_mới>`
+* Mục đích : chia làm 2 trường hợp chính:
+  * Đánh dấu image ở local
+  * Chuẩn bị cho `push`
+#### _a\. Tagging Local (Đánh dấu image ở local)_
+* **Mục đích:** Để tổ chức, quản lý phiên bản trên máy của bạn. Ví dụ phổ biến nhất là gán nhãn `latest` cho một phiên bản cụ thể.
+* **Ví dụ:**
+    ```shell
+    ngtukien@NgTuKien:~/Documents/Team7/StemHub$   docker tag stemhub:1.0 stemhub:latest
+    ngtukien@NgTuKien:~/Documents/Team7/StemHub$ docker image ls
+    REPOSITORY                       TAG           IMAGE ID       CREATED          SIZE
+    stemhub                          1.0           06fe73a9a64e   29 minutes ago   390MB
+    stemhub                          latest        06fe73a9a64e   29 minutes ago   390MB
+    mcr.microsoft.com/mssql/server   2022-latest   3c94bf005911   2 months ago     1.61GB
+    mcr.microsoft.com/mssql/server   latest        3c94bf005911   2 months ago     1.61GB
+    ```
+#### _b\. ☁️ Tagging cho Registry (Để chuẩn bị `push`)_
+* **Mục đích:** Đây là bước **bắt buộc** trước khi `docker push`. Registry (như Docker Hub) cần biết image này thuộc về *ai* (username) và *dự án nào* (repository name).
+* **Định dạng:** Tên mới **phải** theo cấu trúc của registry.
+    * **Docker Hub:** `<username>/<repository_name>:<tag>`
+    * **Registry khác:** `<địa_chỉ_registry>/<repository_name>:<tag>`
+* **Ví dụ (với Docker Hub):**
+  
+> **Ghi nhớ:** `docker tag` là một thao tác *siêu nhẹ* và *siêu nhanh*. Nó chỉ chỉnh sửa "tên" (metadata), chứ không đụng gì đến "dữ liệu" (các layer) của image.
+#### 2.2.5. Docker push   
+* Cú pháp : `docker push [OPTIONS] <name>:<tag>`
+  * **`<name>:<tag>`:** Tên và tag của image bạn muốn đẩy lên.
+* Lệnh `docker push` dùng để **đẩy (upload) một image** từ máy local của bạn lên một remote registry (như Docker Hub, Amazon ECR, Google GCR).
+> **_Yêu cầu quan trọng (Bắt buộc)_** 
+> * Bạn **không thể** `push` một image có tên "local" (như `stemhub:1.0`).
+> * Trước khi `push`, bạn **bắt buộc** phải `docker tag` image đó thành một tên mới theo đúng định dạng của registry.
+> **Đối với Docker Hub:** Định dạng phải là `<username>/<repository_name>:<tag>`.
+
+#### Các bước để `push` image
+* **_Bước 1: Đăng nhập (Chỉ cần làm 1 lần)_**
+  * Đầu tiên, bạn cần xác thực với Docker Hub:
+    ```shell
+    ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025$ docker login
+    
+    USING WEB-BASED LOGIN
+    
+    i Info → To sign in with credentials on the command line, use 'docker login -u <username>'
+             
+    
+    Your one-time device confirmation code is: RNTN-GHSR
+    Press ENTER to open your browser or submit your device code here: https://login.docker.com/activate
+    
+    Waiting for authentication in the browser…
+    
+    WARNING! Your credentials are stored unencrypted in '/home/ngtukien/.docker/config.json'.
+    Configure a credential helper to remove this warning. See
+    https://docs.docker.com/go/credential-store/
+    
+    ```
+    ![docker_login.png](Image/docker_login.png)
+    ![img.png](Image/login_success.png)
+  * **_Bước 2: Tag lại image_**
+      ```shell
+      ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_3_Docker$ docker rmi ngtukien/stemhub:1.0
+      Untagged: ngtukien/stemhub:1.0
+      ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_3_Docker$ docker tag stemhub:1.0 ngtukien218/stemhub:1.0
+      ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_3_Docker$ docker image ls
+      REPOSITORY                       TAG           IMAGE ID       CREATED          SIZE
+      stemhub                          1.0           06fe73a9a64e   40 minutes ago   390MB
+      stemhub                          latest        06fe73a9a64e   40 minutes ago   390MB
+      ngtukien218/stemhub              1.0           06fe73a9a64e   40 minutes ago   390MB
+      mcr.microsoft.com/mssql/server   2022-latest   3c94bf005911   2 months ago     1.61GB
+      mcr.microsoft.com/mssql/server   latest        3c94bf005911   2 months ago     1.61GB
+        ```
+  * **_Bước 3: Đẩy (Push) image_**
+    * Bây giờ bạn dùng cái tên mới (đã tag ở Bước 2) để đẩy lên:
+      ```shell
+      ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_3_Docker$ docker push ngtukien218/stemhub:1.0
+      The push refers to repository [docker.io/ngtukien218/stemhub]
+      34a9ce35bcba: Pushed
+      9e189077e069: Pushed
+      5751ebdb6b76: Pushed
+      f619a5196ff0: Pushed
+      7a00580daedd: Pushed
+      8328f252b6fc: Pushed
+      256f393e029f: Pushed
+      1.0: digest: sha256:56ab4cce69c9aa4d2a0f859e51ab20d4b38ac0e84a88855ba722472ba54165bf size: 1786
+      ```
+      ![img.png](Image/push.png)
+___
+## 2.3. Dockerfile
+Docker xây dựng image (ảnh) bằng cách đọc các chỉ dẫn (instruction) từ một Dockerfile. Dockerfile là một tệp văn bản chứa các chỉ dẫn để xây dựng mã nguồn của bạn. Cú pháp chỉ dẫn của Dockerfile được định nghĩa trong tài liệu tham khảo tại [Dockerfile reference](https://docs.docker.com/engine/reference/builder/).
+
+Các cú pháp chính được dùng trong 'Dockerfile':
+
+| Chỉ dẫn | Mục đích | Ví dụ |
+| :--- | :--- | :--- |
+| **`FROM`** | **(Bắt buộc)** Đặt image cơ sở (base image) để bắt đầu. Luôn là lệnh đầu tiên. | `FROM ubuntu:22.04` <br> `FROM eclipse-temurin:17-jre` |
+| **`WORKDIR`** | Đặt thư mục làm việc (working directory) cho các lệnh theo sau nó. Giúp file sạch sẽ hơn. | `WORKDIR /app` |
+| **`COPY`** | Sao chép tệp/thư mục từ *máy của bạn* (context) vào *bên trong* image. | `COPY . /app` <br> `COPY target/app.jar app.jar` |
+| **`RUN`** | Thực thi một lệnh shell. Dùng để cài đặt phần mềm, thư viện (ví dụ: `apt-get`, `pip install`). | `RUN apt-get update && apt-get install -y curl` <br> `RUN ./mvnw dependency:go-offline` |
+| **`ENV`** | Đặt một biến môi trường (environment variable) cố định bên trong image. | `ENV APP_VERSION=1.0` <br> `ENV PORT=8080` |
+| **`LABEL`** | Thêm metadata (siêu dữ liệu) vào image, ví dụ như tên tác giả, phiên bản, email. | `LABEL maintainer="kiennt@email.com"` <br> `LABEL version="1.0"` |
+| **`EXPOSE`** | Chỉ là một "ghi chú" (tài liệu) thông báo rằng container sẽ lắng nghe trên một cổng cụ thể khi chạy. | `EXPOSE 8080` |
+| **`VOLUME`** | Tạo một "điểm gắn" (mount point) cho volume để lưu trữ dữ liệu bền bỉ (ví dụ: dữ liệu database). | `VOLUME /var/lib/mysql` <br> `VOLUME /app/data` |
+| **`ENTRYPOINT`** | Đặt lệnh chính (executable) của container. Khó bị ghi đè hơn `CMD`. | `ENTRYPOINT ["java", "-jar", "app.jar"]` |
+| **`CMD`** | Cung cấp đối số (argument) **mặc định** cho `ENTRYPOINT`, hoặc là lệnh chính *nếu* `ENTRYPOINT` không được đặt. | `CMD ["--server.port=8080"]` <br> *(Hoặc: `CMD ["bash"]` nếu không có `ENTRYPOINT`)* |
 
