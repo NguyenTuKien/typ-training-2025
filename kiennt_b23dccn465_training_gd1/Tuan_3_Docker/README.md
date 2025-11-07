@@ -651,8 +651,188 @@ drwxr-xr-x  11 root root 4096 Oct  1 02:09 var
 root@72162535cc15:/#     
 ```
 ___
-## 2.2. Các câu lệnh cơ bản
-### 2.2.1. Docker pull
+## 2.2. Kiến trúc Docker
+### 2.2.1. Docker CE/Docker EE
+**Docker CE (Community Edition)** là phiên bản miễn phí và mã nguồn mở, lý tưởng cho các nhà phát triển cá nhân, nhóm nhỏ và những người mới bắt đầu. **Docker EE (Enterprise Edition)** (nay là một phần của các gói trả phí như **Docker Business**) là phiên bản thương mại, có trả phí, cung cấp các tính năng bảo mật, quản lý nâng cao và hỗ trợ chuyên nghiệp cho các doanh nghiệp lớn.
+#### a. Docker CE (Community Edition)
+**Docker Community Edition (CE)** là phiên bản Docker miễn phí và phổ biến nhất.
+* **Lý tưởng cho:** Các nhà phát triển (developers), nhóm DevOps nhỏ, và bất kỳ ai muốn học hoặc thử nghiệm với container.
+* **Tính năng chính:**
+    * Bao gồm **Docker Engine** (cốt lõi để chạy container).
+    * Đi kèm **Docker Compose** và **Docker Swarm** (công cụ điều phối container).
+    * Có hai kênh phát hành:
+        * **Stable (Ổn định):** Phát hành hàng quý, được kiểm thử kỹ lưỡng.
+        * **Edge (Thử nghiệm):** Phát hành hàng tháng với các tính năng mới nhất.
+* **Hạn chế:** Không có hỗ trợ kỹ thuật chính thức (chỉ có hỗ trợ từ cộng đồng) và thiếu các công cụ quản lý/bảo mật cấp doanh nghiệp.
+#### b. Docker EE (Enterprise Edition)
+**Docker Enterprise Edition (EE)** là phiên bản thương mại, được thiết kế cho các ứng dụng quan trọng trong môi trường doanh nghiệp. Gần đây, Docker đã tái cấu trúc các gói của mình, và các tính năng của EE giờ đây là một phần của các gói trả phí như **Docker Business**.
+* **Lý tưởng cho:** Các tổ chức, doanh nghiệp cần một nền tảng container ổn định, an toàn và có hỗ trợ.
+* **Tính năng chính (ngoài những gì CE có):**
+    * **Hỗ trợ chuyên nghiệp:** Được Docker hỗ trợ kỹ thuật chính thức, cam kết thời gian phản hồi (SLA).
+    * **Universal Control Plane (UCP):** Một giao diện quản lý web tập trung để triển khai, quản lý và giám sát cụm Docker (cluster).
+    * **Docker Trusted Registry (DTR):** Một kho lưu trữ (registry) image riêng tư, bảo mật, tích hợp tính năng quét lỗ hổng (vulnerability scanning) và kiểm soát truy cập (RBAC).
+    * **Bảo mật nâng cao:** Các chính sách bảo mật, chứng nhận FIPS 140-2, và quản lý truy cập chặt chẽ hơn.
+    * **Nền tảng được chứng nhận:** Đảm bảo hoạt động ổn định trên các hệ điều hành (như RHEL, SLES) và cơ sở hạ tầng đám mây (Azure, AWS) đã được chứng nhận.
+### 2.2.2. Docker Engine
+**Docker Engine** là công nghệ thực hiện tất cả công việc tạo, chạy và quản lý container.
+
+Nó hoạt động theo mô hình **client-server** và bao gồm 3 thành phần chính:
+#### a. Docker Daemon (Máy chủ)
+* Đây là một dịch vụ (service) chạy ngầm liên tục trên máy chủ của bạn, thường được gọi là `dockerd`.
+* Đây là "bộ não" thực sự, chịu trách nhiệm lắng nghe các yêu cầu và thực hiện công việc nặng nhọc:
+    * Xây dựng (build) images.
+    * Chạy và quản lý containers (khởi động, dừng).
+    * Quản lý mạng (networks) và lưu trữ (volumes).
+#### b. REST API (Giao diện)
+* Đây là "ngôn ngữ" hay "bộ quy tắc" mà Daemon cung cấp để các chương trình bên ngoài có thể giao tiếp và ra lệnh cho nó.
+* API này cho phép các công cụ (như CLI) yêu cầu Daemon làm việc gì đó, ví dụ: "Hãy tạo cho tôi một container mới".
+#### c. Docker CLI (Máy khách)
+* Đây là công cụ dòng lệnh (command-line) mà bạn tương tác trực tiếp.
+* Khi bạn gõ các lệnh như `docker run`, `docker build`, hay `docker ps`, bạn đang sử dụng **CLI**.
+* **CLI** sẽ lấy lệnh của bạn, "dịch" nó thành một yêu cầu API và gửi nó đến **Docker Daemon** để thực thi.
+#### d. Luồng xử lý của Docker Engine
+* **Người dùng**: Mở terminal và gõ lệnh `docker run nginx`.
+* **Docker CLI (Client)**: Nhận lệnh này. Nó *không* tự chạy container.
+* **REST API**: CLI sử dụng API để gửi một yêu cầu "Tạo và chạy container từ image nginx" đến Docker Daemon.
+* **Docker Daemon (Server)**: Nhận yêu cầu này.
+    * Nó kiểm tra xem image `nginx` đã có trên máy (local) chưa.
+    * Nếu chưa, nó sẽ kéo (pull) image `nginx` từ Docker Hub (hoặc registry khác).
+    * Sau khi có image, nó tạo và khởi động một container mới từ image đó.
+    * Cuối cùng, nó gửi lại thông tin (như ID container hoặc lỗi) cho CLI, và CLI hiển thị kết quả ra terminal cho bạn xem.
+### 2.2.3. Docker Compose
+**Docker Compose** là một công cụ giúp bạn **định nghĩa và chạy các ứng dụng Docker có nhiều container** một cách dễ dàng.
+
+Nếu Docker Engine dùng để quản lý *từng container một* (qua lệnh `docker run`), thì Docker Compose dùng để quản lý *toàn bộ ứng dụng* (gồm nhiều container) chỉ bằng một lệnh duy nhất.
+
+#### Ví dụ tính huống:
+
+Hãy tưởng tượng mình có một ứng dụng web đơn giản, cần ít nhất 3 dịch vụ:
+
+1.  Một **Web Server** (ví dụ: Nginx)
+2.  Một **Ứng dụng** (ví dụ: Python/Node.js)
+3.  Một **Database** (ví dụ: Postgres/MySQL)
+
+Nếu không có Compose, mình sẽ phải:
+
+* Tạo một mạng (network) để chúng liên lạc với nhau.
+* Chạy container database (với `docker run ...`) và thiết lập volume.
+* Chạy container ứng dụng (với `docker run ...`), link nó vào database, và đặt biến môi trường.
+* Chạy container web server (với `docker run ...`) và link nó vào ứng dụng.
+
+Nếu có Docker Compose, nó giải quyết vấn đề này bằng cách cho phép bạn định nghĩa tất cả các dịch vụ đó trong một tệp tin duy nhất, thường được gọi là `docker-compose.yml`.
+### 2.2.4. Docker Registry
+**Docker Registry** là một dịch vụ (service) phía máy chủ (server-side) cho phép bạn lưu trữ (push) và lấy về (pull) các Docker image.
+
+Có hai loại Docker Registry chính:
+
+#### a. Public Registry (Registry công khai)
+* **Docker Hub** là Registry công khai lớn nhất và là **Registry mặc định** cho Docker.
+* Bất kỳ ai cũng có thể pull các image công khai (như `nginx`, `ubuntu`, `postgres`).
+* Nó giống như **GitHub** nhưng là dành cho Docker images.
+* Các nhà cung cấp cloud khác cũng có Registry công khai của riêng họ (ví dụ: Google Container Registry (GCR), Amazon Elastic Container Registry (ECR), Azure Container Registry (ACR)).
+#### b. Private Registry (Registry riêng tư)
+* Đây là một Registry mà bạn tự host (tự chạy) hoặc mua dịch vụ để kiểm soát truy cập.
+* **Tại sao cần?**
+    * **Bảo mật:** Bạn không muốn chia sẻ các image chứa mã nguồn hoặc thông tin nhạy cảm của công ty mình lên Docker Hub công khai.
+    * **Tốc độ:** Một Registry riêng tư đặt trong mạng nội bộ (LAN) sẽ cho tốc độ pull/push image nhanh hơn nhiều.
+    * **Kiểm soát:** Quản lý quyền truy cập (ai được push, ai được pull).
+* **Ví dụ:**
+    * Sử dụng chính image `registry` của Docker để tự chạy Registry của riêng bạn.
+    * Sử dụng các giải pháp bên thứ ba như **Harbor** (mã nguồn mở, nhiều tính năng) hoặc **DTR** (của Docker Enterprise).
+    * Sử dụng các dịch vụ Registry riêng tư trên cloud (GCR, ECR, ACR).
+### 2.2.5. Docker Network
+**Docker Network** là cơ chế cho phép các container (và máy chủ Docker) giao tiếp với nhau và với thế giới bên ngoài. Docker sửs dụng các "trình điều khiển" (drivers) mạng để tạo ra các loại mạng khác nhau, tùy thuộc vào nhu cầu của bạn.
+Có một số loại mạng phổ biến :
+
+#### a. Bridge (Mặc định)
+
+Đây là trình điều khiển mạng **mặc định** và được sử dụng phổ biến nhất.
+
+* **Cách hoạt động:** Khi Docker khởi động, nó tạo ra một mạng "cầu" (virtual bridge) riêng tư tên là `docker0` trên máy chủ. Mỗi container kết nối vào mạng này sẽ được gán một địa chỉ IP nội bộ (ví dụ: `172.17.0.2`).
+* **Phạm vi:** Chỉ hoạt động **trong phạm vi một máy chủ (single-host)**. Các container trên cùng một mạng bridge có thể giao tiếp với nhau bằng tên (nếu là user-defined bridge) hoặc IP.
+* **Kết nối ra ngoài:** Docker tự động quản lý NAT (Network Address Translation) để các container này có thể truy cập ra mạng bên ngoài (như internet).
+* **Khi nào dùng:**
+    * Lý tưởng cho các ứng dụng chạy trên **một máy chủ duy nhất**.
+    * Đây là mạng mặc định khi bạn dùng `docker-compose`. Ví dụ: Một container `web` và một container `db` trên cùng một máy chủ, nói chuyện với nhau qua mạng bridge riêng của chúng.
+
+> **Lưu ý:** Luôn nên tạo mạng bridge của riêng bạn (`docker network create my-net`) thay vì dùng mạng `default` bridge. Mạng do người dùng tự định nghĩa (user-defined) cung cấp khả năng phân giải DNS nội bộ tự động (container có thể gọi nhau bằng tên).
+#### b. Host
+* **Cách hoạt động:** Loại bỏ hoàn toàn sự cô lập về mạng. Container sẽ **sử dụng chung** không gian mạng (network namespace) của máy chủ (host).
+* **Kết quả:**
+    * Container không có IP riêng. Nó sử dụng IP của máy chủ.
+    * Nếu bạn chạy một container web trên cổng 80, nó sẽ chiếm dụng cổng 80 của máy chủ.
+    * Tùy chọn `-p` (publish port) bị bỏ qua.
+* **Khi nào dùng:**
+    * Khi bạn cần **hiệu suất mạng tối đa** (vì không có lớp NAT trung gian).
+    * Khi một ứng dụng cần quản lý một lượng lớn các cổng.
+* **Nhược điểm:** Rủi ro về bảo mật, vì container có thể truy cập bất kỳ dịch vụ mạng nào đang chạy trên host (và ngược lại).
+#### c. Overlay
+* **Cách hoạt động:** Đây là mạng dành cho **nhiều máy chủ (multi-host)**. Nó tạo ra một mạng ảo phân tán, trải dài (overlay) trên nhiều máy chủ Docker, cho phép các container trên các máy chủ khác nhau giao tiếp với nhau như thể chúng đang ở trên cùng một mạng riêng.
+* **Phạm vi:** Hoạt động trên toàn bộ cụm (cluster) Docker.
+* **Yêu cầu:** Thường được sử dụng với **Docker Swarm** (công cụ điều phối cụm của Docker).
+* **Khi nào dùng:**
+    * Bắt buộc khi chạy các ứng dụng phân tán trên nhiều máy chủ.
+    * Khi bạn sử dụng Docker Swarm để các service (ví dụ: 3 bản sao của `web-app`) nằm trên 3 máy chủ khác nhau vẫn có thể giao tiếp với service `database`.
+#### d. None
+* **Cách hoạt động:** Đúng như tên gọi, nó không cung cấp cho container bất kỳ kết nối mạng nào.
+* **Kết quả:** Container bị cô lập hoàn toàn về mạng. Nó chỉ có một giao diện "loopback" (cho chính nó).
+* **Khi nào dùng:**
+    * Khi bạn muốn một container bị vô hiệu hóa mạng hoàn toàn (ví dụ: để chạy một tác vụ xử lý batch chỉ đọc/ghi dữ liệu từ một volume mà không cần mạng).
+#### 2.2.6. Docker volume
+* **Dữ liệu bên trong container sẽ bị mất** khi container bị xóa.
+* **Volume** và **Mount** là hai cơ chế chính để lưu trữ dữ liệu *bên ngoài* container, giúp dữ liệu tồn tại ngay cả khi container bị xóa.
+    * **Volume:** Là cách được khuyến nghị. Docker tự quản lý việc lưu trữ.
+    * **Mount (Bind Mount):** Là cách bạn "chỉ" cho Docker một thư mục cụ thể trên máy của bạn để dùng.
+#### a. Docker Volume (Cách được khuyên dùng)
+
+**Volume** là một thư mục được **Docker quản lý hoàn toàn**.
+* **Nó được lưu ở đâu?** Docker tạo ra một thư mục riêng trên máy chủ của bạn (ví dụ: trên Linux là `/var/lib/docker/volumes/`) để lưu trữ dữ liệu của volume. Bạn không cần quan tâm chính xác nó ở đâu, chỉ cần biết tên của nó.
+* **Vòng đời:** Volume tồn tại độc lập với container. Bạn có thể xóa container nhưng volume và dữ liệu bên trong nó vẫn còn đó.
+* **Ưu điểm:**
+    * **Dễ quản lý:** Dễ dàng sao lưu, di chuyển, và quản lý bằng các lệnh (`docker volume create`, `docker volume ls`).
+    * **An toàn:** Được Docker quản lý, không can thiệp vào các tệp tin hệ thống của máy chủ.
+    * **Chia sẻ:** Nhiều container có thể sử dụng chung một volume.
+    * **Hỗ trợ Driver:** Có thể dùng các "volume driver" để lưu dữ liệu trên các dịch vụ đám mây (như AWS, Azure) thay vì máy local.
+* **Khi nào dùng:**
+    * **Lưu trữ dữ liệu vĩnh viễn** cho các ứng dụng có trạng thái, đặc biệt là **database** (như Postgres, MySQL, MongoDB).
+    * Lưu trữ dữ liệu upload của người dùng.
+    * Khi bạn cần chia sẻ dữ liệu giữa nhiều container.
+#### b. Mount (Cụ thể là "Bind Mount")
+
+**Bind Mount** là hành động "gắn" (mount) một tệp tin hoặc thư mục **cụ thể** từ máy chủ (host) của bạn vào bên trong container.
+* **Nó được lưu ở đâu?** Bất cứ đâu trên máy chủ của bạn mà bạn chỉ định.
+* **Cách hoạt động:** Bạn cung cấp một đường dẫn tuyệt đối trên máy chủ và một đường dẫn bên trong container. Hai thư mục này sẽ được đồng bộ hóa.
+* **Ưu điểm:**
+    * **Phát triển (Development):** Cực kỳ hữu ích khi lập trình. Bạn có thể "mount" thư mục code của bạn vào container. Khi bạn sửa code trên máy chủ, container sẽ thấy thay đổi ngay lập tức mà không cần build lại image.
+    * **Chia sẻ tệp cấu hình:** Dễ dàng chia sẻ các tệp config từ máy chủ vào container.
+* **Nhược điểm:**
+    * **Kém di động:** Phụ thuộc vào cấu trúc thư mục của máy chủ. Nếu bạn mang ứng dụng sang máy khác, thư mục đó có thể không tồn tại.
+    * **Rủi ro bảo mật:** Container có quyền truy cập (thậm chí là ghi) vào thư mục trên máy chủ, có thể vô tình làm hỏng tệp tin hệ thống nếu không cẩn thận.
+> **Lưu ý:** `Mount` là một thuật ngữ chung. Cả **Volume** và **Bind Mount** đều là các loại "mount". Khi nói "mount", người ta thường ngầm hiểu là "bind mount".
+* **Khi nào dùng:**
+    * Khi bạn đang phát triển ứng dụng và cần thay đổi code thường xuyên.
+    * Khi bạn cần truy cập các tệp tin cụ thể trên máy chủ từ bên trong container (ví dụ: tệp cấu hình).
+___
+## 2.3. Dockerfile
+Docker xây dựng image (ảnh) bằng cách đọc các chỉ dẫn (instruction) từ một Dockerfile. Dockerfile là một tệp văn bản chứa các chỉ dẫn để xây dựng mã nguồn của bạn. Cú pháp chỉ dẫn của Dockerfile được định nghĩa trong tài liệu tham khảo tại [Dockerfile reference](https://docs.docker.com/engine/reference/builder/).
+
+Các cú pháp chính được dùng trong 'Dockerfile':
+
+| Chỉ dẫn | Mục đích | Ví dụ |
+| :--- | :--- | :--- |
+| **`FROM`** | **(Bắt buộc)** Đặt image cơ sở (base image) để bắt đầu. Luôn là lệnh đầu tiên. | `FROM ubuntu:22.04` <br> `FROM eclipse-temurin:17-jre` |
+| **`WORKDIR`** | Đặt thư mục làm việc (working directory) cho các lệnh theo sau nó. Giúp file sạch sẽ hơn. | `WORKDIR /app` |
+| **`COPY`** | Sao chép tệp/thư mục từ *máy của bạn* (context) vào *bên trong* image. | `COPY . /app` <br> `COPY target/app.jar app.jar` |
+| **`RUN`** | Thực thi một lệnh shell. Dùng để cài đặt phần mềm, thư viện (ví dụ: `apt-get`, `pip install`). | `RUN apt-get update && apt-get install -y curl` <br> `RUN ./mvnw dependency:go-offline` |
+| **`ENV`** | Đặt một biến môi trường (environment variable) cố định bên trong image. | `ENV APP_VERSION=1.0` <br> `ENV PORT=8080` |
+| **`LABEL`** | Thêm metadata (siêu dữ liệu) vào image, ví dụ như tên tác giả, phiên bản, email. | `LABEL maintainer="kiennt@email.com"` <br> `LABEL version="1.0"` |
+| **`EXPOSE`** | Chỉ là một "ghi chú" (tài liệu) thông báo rằng container sẽ lắng nghe trên một cổng cụ thể khi chạy. | `EXPOSE 8080` |
+| **`VOLUME`** | Tạo một "điểm gắn" (mount point) cho volume để lưu trữ dữ liệu bền bỉ (ví dụ: dữ liệu database). | `VOLUME /var/lib/mysql` <br> `VOLUME /app/data` |
+| **`ENTRYPOINT`** | Đặt lệnh chính (executable) của container. Khó bị ghi đè hơn `CMD`. | `ENTRYPOINT ["java", "-jar", "app.jar"]` |
+| **`CMD`** | Cung cấp đối số (argument) **mặc định** cho `ENTRYPOINT`, hoặc là lệnh chính *nếu* `ENTRYPOINT` không được đặt. | `CMD ["--server.port=8080"]` <br> *(Hoặc: `CMD ["bash"]` nếu không có `ENTRYPOINT`)* |
+---
+## 2.4. Các câu lệnh cơ bản
+### 2.4.1. Docker pull
 * Cú pháp: `docker pull [OPTIONS] <image_name>[:<tag>]`
   * `<image_name>`: Tên của image bạn muốn tải (ví dụ: `ubuntu`, `nginx`, `redis`).
   * `[:<tag>]` (Tùy chọn): Chỉ định phiên bản (version) của image _(mặc địch là `latest`)_
@@ -677,7 +857,7 @@ mcr.microsoft.com/mssql/server   2022-latest   3c94bf005911   2 months ago   1.6
         ```shell
         docker pull --platform linux/amd64 mysql:8.0
         ```
-### 2.2.2. Docker run
+### 2.4.2. Docker run
 * **Cú pháp :** `docker run [OPTIONS] IMAGE [COMMAND] [ARG...]`
   * `COMMAND`: Đây là lệnh (instruction) mà bạn muốn thực thi bên trong container thay thế cho `CMD` hoặc `ENTRYPOINT` đã định nghĩa trong `Dockerfile`.
   * `ARG...`: Các đối số (arguments) bổ sung cho lệnh `COMMAND`.
@@ -711,7 +891,7 @@ mcr.microsoft.com/mssql/server   2022-latest   3c94bf005911   2 months ago   1.6
     * `--network <tên_mạng>`: Kết nối container vào một mạng Docker (network) cụ thể.
     * `--restart <policy>`: Thiết lập chính sách **tự động khởi động lại** container khi nó bị dừng.
         * Ví dụ: `--restart unless-stopped` (Luôn khởi động lại, trừ khi bạn chủ động `stop` nó).
-### 2.2.3. Docker build
+### 2.4.3. Docker build
 * Cú pháp : `docker build [OPTIONS] PATH`
 * Mục đích : Lệnh `docker build` được sử dụng để **xây dựng một Docker image** (một "khuôn mẫu" ứng dụng) từ các chỉ dẫn (instructions) chứa trong một tệp `Dockerfile` và một "context" (ngữ cảnh).
   * **Dockerfile:** Là một tệp văn bản (`Dockerfile`) chứa các hướng dẫn từng bước để tạo ra image (ví dụ: `FROM` image nền nào, `COPY` tệp nào vào, `RUN` lệnh gì, `CMD` chạy gì khi khởi động).
@@ -746,7 +926,7 @@ mcr.microsoft.com/mssql/server   latest        3c94bf005911   2 months ago      
   * `-f` (hoặc `--file`): Chỉ định vị trí hoặc tên của `Dockerfile` nếu nó không tên là `Dockerfile` hoặc không nằm ở thư mục gốc của context.
   * `--no-cache` : Buộc Docker build lại từ đầu, **không sử dụng cache** (bộ nhớ đệm) của các layer (lớp) trước đó.
   * `--build-arg <key>=<value>`: Truyền các **biến môi trường lúc build** (build-time variables) vào bên trong `Dockerfile`.
-### 2.2.4. Docker tag
+### 2.4.4. Docker tag
 Lệnh `docker tag` dùng để **tạo một "biệt danh" (alias) mới** cho một image đã tồn tại.
 
 Nó **không sao chép** image. Nó chỉ là một thao tác gán tên siêu nhẹ, giống như tạo một file shortcut (phím tắt) trên desktop trỏ đến một file gốc.
@@ -774,7 +954,7 @@ Nó **không sao chép** image. Nó chỉ là một thao tác gán tên siêu nh
 * **Ví dụ (với Docker Hub):**
   
 > **Ghi nhớ:** `docker tag` là một thao tác *siêu nhẹ* và *siêu nhanh*. Nó chỉ chỉnh sửa "tên" (metadata), chứ không đụng gì đến "dữ liệu" (các layer) của image.
-#### 2.2.5. Docker push   
+#### 2.4.5. Docker push   
 * Cú pháp : `docker push [OPTIONS] <name>:<tag>`
   * **`<name>:<tag>`:** Tên và tag của image bạn muốn đẩy lên.
 * Lệnh `docker push` dùng để **đẩy (upload) một image** từ máy local của bạn lên một remote registry (như Docker Hub, Amazon ECR, Google GCR).
@@ -834,22 +1014,4 @@ Nó **không sao chép** image. Nó chỉ là một thao tác gán tên siêu nh
       1.0: digest: sha256:56ab4cce69c9aa4d2a0f859e51ab20d4b38ac0e84a88855ba722472ba54165bf size: 1786
       ```
       ![img.png](Image/push.png)
-___
-## 2.3. Dockerfile
-Docker xây dựng image (ảnh) bằng cách đọc các chỉ dẫn (instruction) từ một Dockerfile. Dockerfile là một tệp văn bản chứa các chỉ dẫn để xây dựng mã nguồn của bạn. Cú pháp chỉ dẫn của Dockerfile được định nghĩa trong tài liệu tham khảo tại [Dockerfile reference](https://docs.docker.com/engine/reference/builder/).
-
-Các cú pháp chính được dùng trong 'Dockerfile':
-
-| Chỉ dẫn | Mục đích | Ví dụ |
-| :--- | :--- | :--- |
-| **`FROM`** | **(Bắt buộc)** Đặt image cơ sở (base image) để bắt đầu. Luôn là lệnh đầu tiên. | `FROM ubuntu:22.04` <br> `FROM eclipse-temurin:17-jre` |
-| **`WORKDIR`** | Đặt thư mục làm việc (working directory) cho các lệnh theo sau nó. Giúp file sạch sẽ hơn. | `WORKDIR /app` |
-| **`COPY`** | Sao chép tệp/thư mục từ *máy của bạn* (context) vào *bên trong* image. | `COPY . /app` <br> `COPY target/app.jar app.jar` |
-| **`RUN`** | Thực thi một lệnh shell. Dùng để cài đặt phần mềm, thư viện (ví dụ: `apt-get`, `pip install`). | `RUN apt-get update && apt-get install -y curl` <br> `RUN ./mvnw dependency:go-offline` |
-| **`ENV`** | Đặt một biến môi trường (environment variable) cố định bên trong image. | `ENV APP_VERSION=1.0` <br> `ENV PORT=8080` |
-| **`LABEL`** | Thêm metadata (siêu dữ liệu) vào image, ví dụ như tên tác giả, phiên bản, email. | `LABEL maintainer="kiennt@email.com"` <br> `LABEL version="1.0"` |
-| **`EXPOSE`** | Chỉ là một "ghi chú" (tài liệu) thông báo rằng container sẽ lắng nghe trên một cổng cụ thể khi chạy. | `EXPOSE 8080` |
-| **`VOLUME`** | Tạo một "điểm gắn" (mount point) cho volume để lưu trữ dữ liệu bền bỉ (ví dụ: dữ liệu database). | `VOLUME /var/lib/mysql` <br> `VOLUME /app/data` |
-| **`ENTRYPOINT`** | Đặt lệnh chính (executable) của container. Khó bị ghi đè hơn `CMD`. | `ENTRYPOINT ["java", "-jar", "app.jar"]` |
-| **`CMD`** | Cung cấp đối số (argument) **mặc định** cho `ENTRYPOINT`, hoặc là lệnh chính *nếu* `ENTRYPOINT` không được đặt. | `CMD ["--server.port=8080"]` <br> *(Hoặc: `CMD ["bash"]` nếu không có `ENTRYPOINT`)* |
 
