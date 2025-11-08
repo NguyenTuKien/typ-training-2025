@@ -1014,4 +1014,222 @@ Nó **không sao chép** image. Nó chỉ là một thao tác gán tên siêu nh
       1.0: digest: sha256:56ab4cce69c9aa4d2a0f859e51ab20d4b38ac0e84a88855ba722472ba54165bf size: 1786
       ```
       ![img.png](Image/push.png)
+    
+---
+## 2.5. Docker compose
+`Docker compose` như một công cụ giúp **định nghĩa và chạy các ứng dụng Docker có nhiều container** một cách dễ dàng.
 
+Một số khái Niệm Quan Trọng Trong Docker Compose
+* **`Services`** : Chứa các container chạy các dịch vụ bên trong một project (Ví dụ: `backend`, `frontend`, `mysql`, ...). Mỗi service thường được định nghĩa từ một **Docker Image** cụ thể hoặc được xây dựng từ một **Dockerfile**.
+  * **Cấu hình Service:** Định nghĩa chi tiết cho từng service, bao gồm:
+    * **`image`**: Chỉ định **Docker Image** được sử dụng.
+    * **`build`**: Chỉ định đường dẫn đến thư mục chứa **Dockerfile** để tự xây dựng image.
+    * **`ports`**: Ánh xạ các cổng (port) từ container ra máy host.
+    * **`volumes`**: Gắn các thư mục hoặc file từ máy host vào container (thường dùng để lưu trữ dữ liệu hoặc đồng bộ mã nguồn).
+    * **`environment`**: Thiết lập các **biến môi trường** (environment variables) cho container.
+    * **`depends_on`**: Chỉ định sự phụ thuộc giữa các service, đảm bảo một service chỉ được khởi động sau khi các service mà nó phụ thuộc đã sẵn sàng (ví dụ: `backend` phải khởi động sau `mysql`).
+* **`Networks`** : Cho phép các container trong cùng một ứng dụng giao tiếp với nhau. **Docker Compose** tự động tạo ra một network mặc định cho project của bạn.
+    * Các service được định nghĩa trong file **`docker-compose.yml`** sẽ được tự động kết nối vào network này và có thể giao tiếp với nhau bằng cách sử dụng **tên service** làm hostname.
+* **`Volumes`** : Được sử dụng để **lưu trữ dữ liệu** một cách bền vững.
+    * **Volume** giúp dữ liệu không bị mất khi container bị dừng, xóa hoặc được tạo lại.
+    * Chúng có thể được định nghĩa rõ ràng (named volumes) hoặc sử dụng tính năng **bind mounts** để ánh xạ thư mục từ máy host.
+* **`docker-compose.yml`** (hoặc `docker-compose.yaml`): Là **trái tim** của **Docker Compose**.
+    * Đây là một file cấu hình định dạng **YAML** nơi bạn định nghĩa toàn bộ ứng dụng của mình, bao gồm **các service**, **networks**, và **volumes** cần thiết.
+    * File này mô tả cách các thành phần của ứng dụng hoạt động cùng nhau.
+
+**_Các lệnh Cơ Bản:_**
+* **`docker compose up`**: Khởi động toàn bộ ứng dụng được định nghĩa trong file `docker-compose.yml`. Thường dùng kèm cờ `-d` để chạy ở chế độ nền (detached mode).
+* **`docker compose up  --build`**: Xây dựng lại (rebuild) các image cho các service có sử dụng `build`.
+* **`docker compose down`**: Dừng và xóa các container, network và volumes (nếu có cờ `-v`) đã được tạo bởi `up`.
+
+---
+# Phần 3. Thực hành
+Mình có một ứng dụng Spring Boot đơn giản (theo hướng server-side) chạy cùng với datatabase MySQL.
+![img.png](Image/StemHub.png)
+## 3.1. Docker
+### 3.1.1. Docker image
+```dockerfile
+# --- Giai đoạn 1: Xây dựng (Build Stage) ---
+# Chỉ định image cơ sở cho giai đoạn xây dựng. 
+# Sử dụng Maven (phiên bản 3.9.6) với Java 21 (Temurin) để biên dịch code.
+# Đặt tên cho giai đoạn này là 'build' để tham chiếu sau này.
+FROM maven:3.9.6-eclipse-temurin-21 AS build 
+# Đặt thư mục làm việc hiện tại bên trong container là /app. 
+# Tất cả các lệnh sau (COPY, RUN) sẽ được thực thi trong thư mục này.
+WORKDIR /app                                
+# Sao chép file cấu hình Maven (pom.xml) từ thư mục cục bộ vào thư mục /app trong container.
+COPY pom.xml .                              
+# Sao chép toàn bộ mã nguồn (thư mục src) từ thư mục cục bộ vào thư mục /app/src trong container.
+COPY src ./src                              
+# Thực thi lệnh Maven: 
+# - 'clean': Dọn dẹp các artifact cũ.
+# - 'package': Biên dịch mã nguồn và đóng gói thành file JAR (hoặc WAR).
+# - '-DskipTests': Bỏ qua việc chạy các bài kiểm thử để giảm thời gian xây dựng.
+RUN mvn clean package -DskipTests           
+# --- Giai đoạn 2: Chạy (Runtime Stage) ---
+# Chỉ định image cơ sở cho giai đoạn chạy cuối cùng. 
+# Sử dụng image JRE (Java Runtime Environment) nhẹ hơn (phiên bản 21, base Alpine)
+# vì ta chỉ cần môi trường chạy, không cần Maven nữa.
+FROM eclipse-temurin:21-jre-alpine          
+# Đặt lại thư mục làm việc hiện tại là /app.
+WORKDIR /app        
+# Thiết lập biến môi trường TZ (Time Zone) để đảm bảo container sử dụng múi giờ Việt Nam, quan trọng cho việc ghi nhật ký (logging) và xử lý ngày giờ.
+ENV TZ=Asia/HoChiMinh       
+# Sao chép file JAR đã được tạo ra ở GIAI ĐOẠN 'build' (chính xác là từ thư mục 
+# /app/target của giai đoạn đó) và đổi tên thành app.jar trong thư mục /app 
+# của image cuối cùng.
+COPY --from=build /app/target/*.jar ./app.jar 
+# Thông báo rằng container sẽ lắng nghe trên cổng 8080. Đây chỉ là tài liệu, không tự động ánh xạ cổng ra bên ngoài.
+EXPOSE 8080          
+# Xác định lệnh sẽ được thực thi khi container khởi động. Lệnh này chạy ứng dụng Java (file app.jar).                       
+ENTRYPOINT ["java", "-jar", "app.jar"]      
+```
+```shell
+ngtukien@NgTuKien:~/Documents/Team7/StemHub$ docker build --tag stemhub:1.0 .
+[+] Building 43.8s (13/15)                                                                                                                                                  docker:default
+[+] Building 44.0s (13/15)                                                                                                                                                  docker:default
+ => => sha256:1efb71aa46e6fc6589b7af5382eceb462d8a2544336a0c294d3715ef0ead06d7 53.14MB / 53.14MB                                                                                      5.2s 
+...                                                                                           0.0s 
+ => [internal] load build context                                                                                                                                                     0.0s 
+ => => transferring context: 122.79kB                                                                                                                                                 0.0s 
+ => [stage-1 2/3] WORKDIR /app                                                                                                                                                        0.3s 
+ => [build 2/5] WORKDIR /app                                                                                                                                                          0.3s 
+ => [build 3/5] COPY pom.xml .                                                                                                                                                        0.0s 
+ => [build 4/5] COPY src ./src                                                                                                                                                        0.1s 
+ => [build 5/5] RUN mvn clean package -DskipTests                                                                                                                                    68.0s 
+ => [stage-1 3/3] COPY --from=build /app/target/*.jar ./app.jar                                                                                                                       0.2s 
+ => exporting to image                                                                                                                                                                0.3s 
+ => => exporting layers                                                                                                                                                               0.3s 
+ => => writing image sha256:06fe73a9a64ee81f8fff8e1c04dc0f3fdd8bac1bcdb80ee8fda2d27b4bf2a185                                                                                          0.0s 
+ => => naming to docker.io/library/stemhub:1.0  
+ ngtukien@NgTuKien:~/Documents/Team7/StemHub$ docker image ls 
+REPOSITORY                       TAG           IMAGE ID       CREATED              SIZE
+stemhub                          1.0           06fe73a9a64e   About a minute ago   390MB
+```
+### 3.1.2. Docker compose
+```yaml
+services:
+  stemhub:
+    build: ./StemHub
+    container_name: stemhub
+    ports: ["8080:8080"]
+    volumes:
+      - ./StemHub/.m2:/root/.m2
+      - ./StemHub/logs:/app/logs
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - spring.datasource.url=jdbc:mysql://mysql:3306/StemHub?createDatabaseIfNotExist=true
+      - spring.datasource.username=admin
+      - spring.datasource.password=TestAcc@1234
+    networks:
+      - default
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports: ["3306:3306"]
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=TestAcc@1234
+      - MYSQL_DATABASE=StemHub
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=TestAcc@1234
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "admin", "-pTestAcc@1234"]
+      timeout: 10s
+      retries: 10
+    networks:
+      - default
+
+volumes:
+  mysql-data:
+
+networks:
+  default:
+```
+```shell
+ngtukien@NgTuKien:~/Documents/Team7/StemHub$ docker compose up --build
+[+] Building 1.1s (16/16) FINISHED                                                                                                                                                         
+ => [internal] load local bake definitions                                                                                                                                            0.0s
+ => => reading from stdin 732B                                                                                                                                                        0.0s
+ => [internal] load build definition from Dockerfile                                                                                                                                  0.0s 
+ => => transferring dockerfile: 328B                                                                                                                                                  0.0s 
+ => [internal] load metadata for docker.io/library/eclipse-temurin:21-jre-alpine                                                                                                      1.0s 
+ => [internal] load metadata for docker.io/library/maven:3.9.6-eclipse-temurin-21                                                                                                     1.0s
+ => [internal] load .dockerignore                                                                                                                                                     0.0s
+ => => transferring context: 2B                                                                                                                                                       0.0s 
+ => [build 1/5] FROM docker.io/library/maven:3.9.6-eclipse-temurin-21@sha256:8d63d4c1902cb12d9e79a70671b18ebe26358cb592561af33ca1808f00d935cb                                         0.0s 
+ => [internal] load build context                                                                                                                                                     0.0s 
+ => => transferring context: 10.31kB                                                                                                                                                  0.0s 
+ => [stage-1 1/3] FROM docker.io/library/eclipse-temurin:21-jre-alpine@sha256:990397e0495ac088ab6ee3d949a2e97b715a134d8b96c561c5d130b3786a489d                                        0.0s 
+ => CACHED [stage-1 2/3] WORKDIR /app                                                                                                                                                 0.0s 
+ => CACHED [build 2/5] WORKDIR /app                                                                                                                                                   0.0s 
+ => CACHED [build 3/5] COPY pom.xml .                                                                                                                                                 0.0s 
+ => CACHED [build 4/5] COPY src ./src                                                                                                                                                 0.0s 
+ => CACHED [build 5/5] RUN mvn clean package -DskipTests                                                                                                                              0.0s 
+ => CACHED [stage-1 3/3] COPY --from=build /app/target/*.jar ./app.jar                                                                                                                0.0s 
+ => exporting to image                                                                                                                                                                0.0s 
+ => => exporting layers                                                                                                                                                               0.0s 
+ => => writing image sha256:72195bba3793ebc032ac80316ced38ba062e4e4fb466d6863661bc3a87740235                                                                                          0.0s 
+ => => naming to docker.io/library/team7-stemhub                                                                                                                                      0.0s 
+ => resolving provenance for metadata file                                                                                                                                            0.0s 
+[+] Running 3/3                                                                                                                                                                            
+ ✔ team7-stemhub      Built                                                                                                                                                           0.0s 
+ ✔ Container mysql    Created                                                                                                                                                         0.0s 
+ ✔ Container stemhub  Created                                                                                                                                                         0.0s 
+Attaching to mysql, stemhub
+mysql  | 2025-11-08 00:02:49+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.44-1.el9 started.
+mysql  | 2025-11-08 00:02:49+00:00 [Note] [Entrypoint]: Switching to dedicated user 'mysql'
+mysql  | 2025-11-08 00:02:49+00:00 [Note] [Entrypoint]: Entrypoint script for MySQL Server 8.0.44-1.el9 started.
+mysql  | 2025-11-08 00:02:49+00:00 [Note] [Entrypoint]: Initializing database files
+mysql  | 2025-11-08T00:02:49.647084Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+mysql  | 2025-11-08T00:02:49.647281Z 0 [System] [MY-013169] [Server] /usr/sbin/mysqld (mysqld 8.0.44) initializing of server in progress as process 80
+mysql  | 2025-11-08T00:02:49.660657Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+mysql  | 2025-11-08T00:02:50.104875Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+mysql  | 2025-11-08T00:02:51.173015Z 6 [Warning] [MY-010453] [Server] root@localhost is created with an empty password ! Please consider switching off the --initialize-insecure option.
+mysql  | 2025-11-08 00:02:53+00:00 [Note] [Entrypoint]: Database files initialized
+mysql  | 2025-11-08 00:02:53+00:00 [Note] [Entrypoint]: Starting temporary server
+mysql  | 2025-11-08T00:02:53.781798Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+mysql  | 2025-11-08T00:02:53.783308Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.44) starting as process 124
+mysql  | 2025-11-08T00:02:53.800084Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+mysql  | 2025-11-08T00:02:53.997037Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+mysql  | 2025-11-08T00:02:54.292208Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+mysql  | 2025-11-08T00:02:54.292273Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+mysql  | 2025-11-08T00:02:54.295954Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+mysql  | 2025-11-08T00:02:54.332851Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: /var/run/mysqld/mysqlx.sock
+mysql  | 2025-11-08T00:02:54.332957Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.44'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  MySQL Community Server - GPL.
+mysql  | 2025-11-08 00:02:54+00:00 [Note] [Entrypoint]: Temporary server started.
+mysql  | '/var/lib/mysql/mysql.sock' -> '/var/run/mysqld/mysqld.sock'
+mysql  | Warning: Unable to load '/usr/share/zoneinfo/iso3166.tab' as time zone. Skipping it.
+mysql  | Warning: Unable to load '/usr/share/zoneinfo/leap-seconds.list' as time zone. Skipping it.
+mysql  | Warning: Unable to load '/usr/share/zoneinfo/leapseconds' as time zone. Skipping it.
+mysql  | Warning: Unable to load '/usr/share/zoneinfo/tzdata.zi' as time zone. Skipping it.
+mysql  | Warning: Unable to load '/usr/share/zoneinfo/zone.tab' as time zone. Skipping it.
+mysql  | Warning: Unable to load '/usr/share/zoneinfo/zone1970.tab' as time zone. Skipping it.
+mysql  | 2025-11-08 00:02:55+00:00 [Note] [Entrypoint]: Creating database StemHub
+mysql  | 2025-11-08 00:02:55+00:00 [Note] [Entrypoint]: Creating user admin
+mysql  | 2025-11-08 00:02:55+00:00 [Note] [Entrypoint]: Giving user admin access to schema StemHub
+mysql  | 
+mysql  | 2025-11-08 00:02:55+00:00 [Note] [Entrypoint]: Stopping temporary server
+mysql  | 2025-11-08T00:02:55.780682Z 13 [System] [MY-013172] [Server] Received SHUTDOWN from user root. Shutting down mysqld (Version: 8.0.44).
+mysql  | 2025-11-08T00:02:56.940497Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.44)  MySQL Community Server - GPL.
+mysql  | 2025-11-08 00:02:57+00:00 [Note] [Entrypoint]: Temporary server stopped
+mysql  | 
+mysql  | 2025-11-08 00:02:57+00:00 [Note] [Entrypoint]: MySQL init process done. Ready for start up.
+mysql  | 
+mysql  | 2025-11-08T00:02:58.032752Z 0 [Warning] [MY-011068] [Server] The syntax '--skip-host-cache' is deprecated and will be removed in a future release. Please use SET GLOBAL host_cache_size=0 instead.
+mysql  | 2025-11-08T00:02:58.034235Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.44) starting as process 1
+mysql  | 2025-11-08T00:02:58.041220Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+mysql  | 2025-11-08T00:02:58.235385Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+mysql  | 2025-11-08T00:02:58.490423Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+mysql  | 2025-11-08T00:02:58.490467Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+mysql  | 2025-11-08T00:02:58.493800Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+mysql  | 2025-11-08T00:02:58.515641Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060, socket: /var/run/mysqld/mysqlx.sock
+mysql  | 2025-11-08T00:02:58.515781Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.44'  socket: '/var/run/mysqld/mysqld.sock'  port: 3306  MySQL Community Server - GPL.
+stemhub  | 2025-11-08T00:03:23.847Z  WARN 1 --- [StemHub] [           main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+stemhub  | Welcome to StemHub !!!
+stemhub  | 2025-11-08T00:03:37.766Z  WARN 1 --- [StemHub] [nio-8080-exec-1] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+```
