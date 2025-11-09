@@ -22,6 +22,7 @@ Dockerfile                                                                      
 .env 
 ```
 **Trên VM**
+
 ![img.png](Report/upload.png)
 ---
 ## 2. Setup
@@ -32,6 +33,7 @@ Dockerfile                                                                      
     sudo apt install mysql-server
     ```
 * Kết quả :
+
 ![img.png](Report/sql_install.png)
 
 ---
@@ -44,7 +46,8 @@ Dockerfile                                                                      
         mvn --version
     ```
 * Kết quả :
-![img.png](Report/spring_install.png)
+
+* ![img.png](Report/spring_install.png)
 
 ---
 ### c. React
@@ -63,6 +66,7 @@ Dockerfile                                                                      
     npm -v 
     ```
 * Kết quả :
+
 ![img.png](Report/react_install.png)
 ---
 ## 3. Build
@@ -76,13 +80,15 @@ Dockerfile                                                                      
     FLUSH PRIVILEGES;
     EXIT;
     ```
-* Kết quả : 
+* Kết quả :
+
 ![img.png](Report/sql_setup.png)
 ---
 ### b. Spring Boot
 * Vào thư mục `Backend`: `cd MiniLab/Backend`
 * Build project : `mvn clean package`
 * Kết quả :
+
 ![img.png](Report/maven_build.png)
 ---
 ### c. React
@@ -93,11 +99,14 @@ npm install
 npm run build
 ```
 * Kết quả : 
+
 ![img.png](Report/npm_build.png)
 ## 4. Run
 ### a. Backend : `java -jar target/BTL-0.0.1-SNAPSHOT.jar`
+
 ![img.png](Report/backend.png)
 ### b. Frontend : `npm run dev`
+
 ![img.png](Report/frontend.png)
 ![img.png](Report/vm.png)
 ___
@@ -153,4 +162,5 @@ ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_g
  ...
 ```
 **Kết quả :**
+
 ![img.png](Report/docker.png)
