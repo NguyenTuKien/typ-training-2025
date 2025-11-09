@@ -13,5 +13,5 @@ FROM nginx:alpine AS production
 ENV NODE_ENV=production
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=frontend-build /app/dist /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 5173
 CMD ["nginx","-g","daemon off;"]

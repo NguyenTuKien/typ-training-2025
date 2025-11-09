@@ -396,7 +396,7 @@ Cat
     Archive:  image.zip
     testing: Image/                   OK
     testing: Image/less.png           OK
-    testing: Image/terminal.png       OK
+    testing: Image/terminal.png       OKx
     No errors detected in compressed data of image.zip.
     ngtukien@NgTuKien:~/Documents/TYP/typ-training-2025/kiennt_b23dccn465_training_gd1/Tuan_2_Linux$ unzip -l image.zip
     Archive:  image.zip
